@@ -107,16 +107,23 @@ function RecallWorkspacePage() {
   const [checking, setChecking] = useState(true);
   const [email, setEmail] = useState<string | null>(null);
 
+  // View: landing actions vs traceability builder
+  const [view, setView] = useState<"landing" | "builder">("landing");
+
   // Filters
+  const [category, setCategory] = useState("Frozen Protein");
   const [brand, setBrand] = useState("Al Baik");
   const [sku, setSku] = useState("Frozen Chicken Breast 2KG");
   const [batch, setBatch] = useState("A78421");
+  const [expiry, setExpiry] = useState("2026-09-15");
   const [supplier, setSupplier] = useState("ABC Foods");
   const [region, setRegion] = useState<string>("All");
   const [severity, setSeverity] = useState<Severity>("Critical");
   const [scope, setScope] = useState<Scope>("Batch");
   const [from, setFrom] = useState("2026-05-01");
   const [to, setTo] = useState("2026-05-14");
+  const [shippedFrom, setShippedFrom] = useState("2026-04-28");
+  const [shippedTo, setShippedTo] = useState("2026-05-13");
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [showLaunch, setShowLaunch] = useState(false);
