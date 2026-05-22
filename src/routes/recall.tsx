@@ -367,24 +367,31 @@ function RecallWorkspacePage() {
 
       </header>
 
-      {view === "landing" ? (
-        <LandingActions
-          onCreate={() => setView("builder")}
-        />
+      {/* Top action bar — always visible */}
+      <div className="mx-auto max-w-[1700px] px-4 pt-4">
+        <div
+          className="flex flex-wrap items-center gap-2 rounded-xl border bg-white p-2"
+          style={{ borderColor: "oklch(0.55 0.1 40 / 0.15)", boxShadow: "0 1px 2px oklch(0.3 0.05 40 / 0.04)" }}
+        >
+          <TopTab active={view === "active"} onClick={() => setView("active")} icon={<ListChecks className="h-3.5 w-3.5" />} label="Active Recalls" badge="3" />
+          <TopTab active={view === "builder"} onClick={() => setView("builder")} icon={<PlusCircle className="h-3.5 w-3.5" />} label="Create Recall" primary />
+          <TopTab active={view === "restricted"} onClick={() => setView("restricted")} icon={<ShieldOff className="h-3.5 w-3.5" />} label="Restricted Products" badge={RESTRICTIONS.length.toString()} />
+          <TopTab active={view === "trace"} onClick={() => setView("trace")} icon={<GitBranch className="h-3.5 w-3.5" />} label="Traceability Search" />
+        </div>
+      </div>
+
+      {view === "active" ? (
+        <ActiveRecallsView />
+      ) : view === "restricted" ? (
+        <RestrictedView />
       ) : (
       <>
-      {/* Back to actions */}
-      <div className="mx-auto max-w-[1700px] px-4 pt-4">
-        <button
-          onClick={() => setView("landing")}
-          className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs hover:bg-black/5"
-          style={{ borderColor: "oklch(0.55 0.1 40 / 0.25)", color: COCOA }}
-        >
-          <ArrowLeft className="h-3.5 w-3.5" /> Recall Center
-        </button>
-      </div>
-      {/* 3-panel layout */}
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-4 px-4 py-5 lg:grid-cols-[300px_minmax(0,1fr)_260px]">
+      {/* 3-panel layout (builder full · trace without right column) */}
+      <div
+        className={`mx-auto grid max-w-[1600px] grid-cols-1 gap-4 px-4 py-5 ${
+          view === "builder" ? "lg:grid-cols-[300px_minmax(0,1fr)_260px]" : "lg:grid-cols-[300px_minmax(0,1fr)]"
+        }`}
+      >
         {/* LEFT — Filters */}
         <aside className="space-y-3">
           <Panel icon={<Filter className="h-4 w-4" />} title="Recall Filters" caption="Live trace updates instantly">
