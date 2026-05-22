@@ -575,7 +575,8 @@ function RecallWorkspacePage() {
           </Panel>
         </section>
 
-        {/* RIGHT — Actions */}
+        {/* RIGHT — Actions (only in builder view) */}
+        {view === "builder" && (
         <aside className="space-y-3 lg:sticky lg:top-[120px] lg:self-start">
           <Panel icon={<Ban className="h-4 w-4" />} title="Restriction actions">
             <ActionBtn>Restrict SKU</ActionBtn>
