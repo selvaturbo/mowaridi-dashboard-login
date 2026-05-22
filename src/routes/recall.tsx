@@ -1132,7 +1132,7 @@ function RestrictedView() {
             <tr className="text-left" style={{ color: COCOA }}>
               <th className="px-3 py-2">Type</th>
               <th className="px-3 py-2">Name</th>
-              <th className="px-3 py-2">Context</th>
+              <th className="px-3 py-2">Category</th>
               <th className="px-3 py-2">Effective Date</th>
               <th className="px-3 py-2">Recall ID</th>
               <th className="px-3 py-2">Incident</th>
