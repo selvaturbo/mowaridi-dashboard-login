@@ -25,6 +25,10 @@ import {
   Rocket,
   CheckCircle2,
   XCircle,
+  PlusCircle,
+  ListChecks,
+  ShieldOff,
+  GitBranch,
 } from "lucide-react";
 import mowaridiLogo from "@/assets/mowaridi-logo.png";
 import {
@@ -103,16 +107,23 @@ function RecallWorkspacePage() {
   const [checking, setChecking] = useState(true);
   const [email, setEmail] = useState<string | null>(null);
 
+  // View: landing actions vs traceability builder
+  const [view, setView] = useState<"landing" | "builder">("landing");
+
   // Filters
+  const [category, setCategory] = useState("Frozen Protein");
   const [brand, setBrand] = useState("Al Baik");
   const [sku, setSku] = useState("Frozen Chicken Breast 2KG");
   const [batch, setBatch] = useState("A78421");
+  const [expiry, setExpiry] = useState("2026-09-15");
   const [supplier, setSupplier] = useState("ABC Foods");
   const [region, setRegion] = useState<string>("All");
   const [severity, setSeverity] = useState<Severity>("Critical");
   const [scope, setScope] = useState<Scope>("Batch");
   const [from, setFrom] = useState("2026-05-01");
   const [to, setTo] = useState("2026-05-14");
+  const [shippedFrom, setShippedFrom] = useState("2026-04-28");
+  const [shippedTo, setShippedTo] = useState("2026-05-13");
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [showLaunch, setShowLaunch] = useState(false);
@@ -260,35 +271,53 @@ function RecallWorkspacePage() {
         </div>
       </header>
 
+      {view === "landing" ? (
+        <LandingActions
+          onCreate={() => setView("builder")}
+        />
+      ) : (
+      <>
+      {/* Back to actions */}
+      <div className="mx-auto max-w-[1700px] px-4 pt-4">
+        <button
+          onClick={() => setView("landing")}
+          className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs hover:bg-black/5"
+          style={{ borderColor: "oklch(0.55 0.1 40 / 0.25)", color: COCOA }}
+        >
+          <ArrowLeft className="h-3.5 w-3.5" /> Recall Center
+        </button>
+      </div>
       {/* 3-panel layout */}
       <div className="mx-auto grid max-w-[1700px] grid-cols-1 gap-4 px-4 py-5 lg:grid-cols-[280px_minmax(0,1fr)_300px]">
         {/* LEFT — Filters */}
         <aside className="space-y-3">
           <Panel icon={<Filter className="h-4 w-4" />} title="Recall Filters" caption="Live trace updates instantly">
-            <Group title="Product" icon={<Tag className="h-3 w-3" />}>
+            <Group title="Product Filters" icon={<Tag className="h-3 w-3" />}>
+              <Field label="Category" value={category} onChange={setCategory} options={["Frozen Protein", "Dairy", "Produce", "Beverage", "Bakery"]} />
               <Field label="Brand" value={brand} onChange={setBrand} options={["Al Baik", "Americana", "Almarai", "Nadec"]} />
               <Field label="SKU" value={sku} onChange={setSku} options={["Frozen Chicken Breast 2KG", "Whole Chicken 1.2KG", "Beef Mince 1KG"]} />
-              <Field label="Category" value="Frozen Protein" onChange={() => {}} options={["Frozen Protein", "Dairy", "Produce", "Beverage"]} />
-              <Field label="Batch / Lot #" value={batch} onChange={setBatch} icon={<Barcode className="h-3 w-3" />} />
-              <Field label="Expiry" value="2026-09-15" onChange={() => {}} type="date" />
+              <Field label="Batch / Lot Number" value={batch} onChange={setBatch} icon={<Barcode className="h-3 w-3" />} />
+              <Field label="Expiry Date" value={expiry} onChange={setExpiry} type="date" />
             </Group>
 
-            <Group title="Supplier" icon={<Building2 className="h-3 w-3" />}>
+            <Group title="Supplier Filters" icon={<Building2 className="h-3 w-3" />}>
               <Field label="Supplier" value={supplier} onChange={setSupplier} options={["ABC Foods", "Gulf Provisions", "Hijaz Trading"]} />
-              <Field label="Seller" value="Tamimi Distribution" onChange={() => {}} options={["Tamimi Distribution", "Gulf Cold Chain"]} />
-              <Field label="Fulfillment" value="Gulf Cold Chain" onChange={() => {}} options={["Gulf Cold Chain", "Saudi Logistics"]} />
             </Group>
 
-            <Group title="Procurement" icon={<Truck className="h-3 w-3" />}>
+            <Group title="Procurement Filters" icon={<Truck className="h-3 w-3" />}>
               <div className="grid grid-cols-2 gap-2">
                 <Field label="Delivered from" value={from} onChange={setFrom} type="date" />
                 <Field label="Delivered to" value={to} onChange={setTo} type="date" />
               </div>
+              <div className="grid grid-cols-2 gap-2">
+                <Field label="Shipped from" value={shippedFrom} onChange={setShippedFrom} type="date" />
+                <Field label="Shipped to" value={shippedTo} onChange={setShippedTo} type="date" />
+              </div>
             </Group>
 
-            <Group title="Buyer" icon={<MapPin className="h-3 w-3" />}>
+            <Group title="Buyer Filters" icon={<MapPin className="h-3 w-3" />}>
               <Field
-                label="Region / District"
+                label="Region"
                 value={region}
                 onChange={setRegion}
                 options={["All", "Makkah", "Madinah", "Mina", "Arafat"]}
@@ -543,6 +572,9 @@ function RecallWorkspacePage() {
           </button>
         </aside>
       </div>
+      </>
+      )}
+
 
       {/* Launch Modal */}
       {showLaunch && (
@@ -736,3 +768,94 @@ function Row({ k, v }: { k: string; v: string }) {
     </>
   );
 }
+
+function LandingActions({ onCreate }: { onCreate: () => void }) {
+  const tiles = [
+    {
+      title: "Create Recall",
+      desc: "Start a new traceability-driven recall in minutes.",
+      icon: <PlusCircle className="h-5 w-5" />,
+      tone: "primary" as const,
+      onClick: onCreate,
+      cta: "Start builder",
+    },
+    {
+      title: "Active Recalls",
+      desc: "Monitor recalls currently in progress across the platform.",
+      icon: <ListChecks className="h-5 w-5" />,
+      badge: "3 live",
+    },
+    {
+      title: "Restricted Products",
+      desc: "Browse SKUs, brands and suppliers under restriction.",
+      icon: <ShieldOff className="h-5 w-5" />,
+      badge: "12",
+    },
+    {
+      title: "Traceability Search",
+      desc: "Ad-hoc trace by batch, supplier, buyer or region.",
+      icon: <GitBranch className="h-5 w-5" />,
+    },
+  ];
+  return (
+    <div className="mx-auto max-w-[1700px] px-4 py-8">
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold tracking-tight">Recall Center</h2>
+        <p className="mt-1 text-sm" style={{ color: COCOA }}>
+          Choose an action to begin. Create Recall opens the Traceability Recall Builder.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {tiles.map((t) => {
+          const isPrimary = t.tone === "primary";
+          return (
+            <button
+              key={t.title}
+              onClick={t.onClick}
+              className="group flex h-full flex-col items-start gap-3 rounded-2xl border bg-white p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg"
+              style={{
+                borderColor: isPrimary ? CORAL.replace(")", " / 0.4)") : "oklch(0.55 0.1 40 / 0.15)",
+                background: isPrimary
+                  ? `linear-gradient(135deg, white, ${CORAL.replace(")", " / 0.08)")})`
+                  : "white",
+              }}
+            >
+              <div
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl"
+                style={{
+                  background: isPrimary ? CORAL : "oklch(0.96 0.03 60)",
+                  color: isPrimary ? "white" : CORAL,
+                }}
+              >
+                {t.icon}
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-semibold tracking-tight">{t.title}</h3>
+                  {t.badge && (
+                    <span
+                      className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+                      style={{ background: "oklch(0.95 0.05 25)", color: CRITICAL }}
+                    >
+                      {t.badge}
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 text-xs leading-relaxed" style={{ color: COCOA }}>
+                  {t.desc}
+                </p>
+              </div>
+              <span
+                className="inline-flex items-center gap-1 text-xs font-medium transition group-hover:gap-2"
+                style={{ color: isPrimary ? CORAL : ESPRESSO }}
+              >
+                {t.cta ?? "Open"} <ChevronRight className="h-3 w-3" />
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
