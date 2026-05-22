@@ -29,6 +29,7 @@ import {
   ListChecks,
   ShieldOff,
   GitBranch,
+  Check,
 } from "lucide-react";
 import mowaridiLogo from "@/assets/mowaridi-logo.png";
 import {
