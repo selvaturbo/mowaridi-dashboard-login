@@ -271,6 +271,22 @@ function RecallWorkspacePage() {
         </div>
       </header>
 
+      {view === "landing" ? (
+        <LandingActions
+          onCreate={() => setView("builder")}
+        />
+      ) : (
+      <>
+      {/* Back to actions */}
+      <div className="mx-auto max-w-[1700px] px-4 pt-4">
+        <button
+          onClick={() => setView("landing")}
+          className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs hover:bg-black/5"
+          style={{ borderColor: "oklch(0.55 0.1 40 / 0.25)", color: COCOA }}
+        >
+          <ArrowLeft className="h-3.5 w-3.5" /> Recall Center
+        </button>
+      </div>
       {/* 3-panel layout */}
       <div className="mx-auto grid max-w-[1700px] grid-cols-1 gap-4 px-4 py-5 lg:grid-cols-[280px_minmax(0,1fr)_300px]">
         {/* LEFT — Filters */}
