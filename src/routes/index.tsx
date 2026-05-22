@@ -167,22 +167,46 @@ function DashboardPage() {
             <StatTile label="Out for Delivery" value="412" />
           </div>
 
-          <SubHeading className="mt-6">Weekly Order Funnel · Last 4 Weeks</SubHeading>
-          <Card title="Weekly orders — last 4 weeks (W-4 → W-1)">
-            <ResponsiveContainer width="100%" height={320}>
-              <BarChart data={weeklyFunnel} barCategoryGap="25%">
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                <XAxis dataKey="week" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Bar dataKey="Delivered" stackId="a" fill={TEAL} />
-                <Bar dataKey="In Flight" stackId="a" fill="oklch(0.70 0.13 230)" />
-                <Bar dataKey="Cancelled" stackId="a" fill={CORAL} radius={[3, 3, 0, 0]} />
+          <SubHeading className="mt-6">Weekly Order Funnel · Last 4 Weeks &amp; Channel Split</SubHeading>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Card title="Weekly orders — last 4 weeks (W-4 → W-1)">
+              <ResponsiveContainer width="100%" height={260}>
+                <BarChart data={weeklyFunnel} barCategoryGap="25%">
+                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
+                  <XAxis dataKey="week" tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 10 }} />
+                  <Tooltip />
+                  <Legend wrapperStyle={{ fontSize: 11 }} />
+                  <Bar dataKey="Delivered" stackId="a" fill={TEAL} />
+                  <Bar dataKey="In Flight" stackId="a" fill="oklch(0.70 0.13 230)" />
+                  <Bar dataKey="Cancelled" stackId="a" fill={CORAL} radius={[3, 3, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </Card>
+            <Card title="Channel Split — Web / iOS / Android">
+              <ResponsiveContainer width="100%" height={260}>
+                <PieChart>
+                  <Tooltip />
+                  <Legend wrapperStyle={{ fontSize: 11 }} />
+                  <Pie
+                    data={[
+                      { name: "Web", value: 1820 },
+                      { name: "iOS", value: 1480 },
+                      { name: "Android", value: 918 },
+                    ]}
+                    innerRadius={50}
+                    outerRadius={90}
+                    paddingAngle={2}
+                    dataKey="value"
+                    label={{ fontSize: 11 }}
+                  >
+                    {PALETTE.slice(0, 3).map((c, i) => <Cell key={i} fill={c} />)}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </Card>
+          </div>
 
-              </BarChart>
-            </ResponsiveContainer>
-          </Card>
 
 
           <SubHeading className="mt-6">Live Trend Monitoring</SubHeading>
