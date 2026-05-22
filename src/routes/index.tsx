@@ -371,6 +371,34 @@ function DashboardPage() {
             <StatTile label="Total Supplier Referrals" value="48" />
           </div>
 
+          <div
+            className="mt-4 rounded-2xl border p-5 shadow-sm"
+            style={{
+              background: "linear-gradient(135deg, oklch(0.96 0.06 40), oklch(1 0 0))",
+              borderColor: "oklch(0.55 0.2 25 / 0.35)",
+            }}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full" style={{ background: "oklch(0.95 0.05 25)" }}>
+                  <AlertTriangle className="h-6 w-6" style={{ color: RED }} />
+                </div>
+                <div>
+                  <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: RED }}>
+                    Unmet Demand Signal
+                  </div>
+                  <div className="text-sm font-medium" style={{ color: ESPRESSO }}>
+                    Unavailable Item Requests Today
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-4xl font-bold" style={{ color: RED }}>84</div>
+                <div className="text-[11px]" style={{ color: COCOA }}>requests · review for sourcing</div>
+              </div>
+            </div>
+          </div>
+
           <SubHeading className="mt-6">Top Marketplace Participants</SubHeading>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             <Card title="Top 4 Suppliers (Value)">
@@ -451,34 +479,6 @@ function DashboardPage() {
             </Card>
           </div>
 
-          <SubHeading className="mt-6">Demand Intelligence</SubHeading>
-          <div
-            className="rounded-2xl border p-5 shadow-sm"
-            style={{
-              background: "linear-gradient(135deg, oklch(0.96 0.06 40), oklch(1 0 0))",
-              borderColor: "oklch(0.55 0.2 25 / 0.35)",
-            }}
-          >
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full" style={{ background: "oklch(0.95 0.05 25)" }}>
-                  <AlertTriangle className="h-6 w-6" style={{ color: RED }} />
-                </div>
-                <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: RED }}>
-                    Unmet Demand Signal
-                  </div>
-                  <div className="text-sm font-medium" style={{ color: ESPRESSO }}>
-                    Unavailable Item Requests Today
-                  </div>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-4xl font-bold" style={{ color: RED }}>84</div>
-                <div className="text-[11px]" style={{ color: COCOA }}>requests · review for sourcing</div>
-              </div>
-            </div>
-          </div>
         </Section>
 
         {/* ===================== SECTION 7 — INVOICE DISCLOSURE & TRANSPARENCY ===================== */}
