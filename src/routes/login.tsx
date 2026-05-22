@@ -1,10 +1,57 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Loader2, ShieldCheck, ArrowRight } from "lucide-react";
+import { Loader2, ShieldCheck, ArrowRight, Languages } from "lucide-react";
 import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import mowaridiLogo from "@/assets/mowaridi-logo.png";
+
+type Lang = "en" | "ar";
+const translations = {
+  en: {
+    brand: "Mowaridi",
+    sub: "موردي · Dashboards",
+    tag: "AI-Powered Intelligence",
+    heading: (
+      <>
+        Dashboards that<br />think with you.
+      </>
+    ),
+    welcome: "Welcome back",
+    subtitle: "Sign in to access your dashboards",
+    connecting: "Connecting…",
+    continue: "Continue with Google",
+    secure: "Secure access",
+    terms: "By continuing, you agree to Mowaridi's",
+    termsLink: "Terms",
+    and: "and",
+    privacy: "Privacy Policy",
+    signinFailed: "Sign-in failed. Please try again.",
+    switch: "العربية",
+  },
+  ar: {
+    brand: "موردي",
+    sub: "Mowaridi · لوحات التحكم",
+    tag: "ذكاء مدعوم بالذكاء الاصطناعي",
+    heading: (
+      <>
+        لوحات تحكم<br />تفكر معك.
+      </>
+    ),
+    welcome: "مرحباً بعودتك",
+    subtitle: "سجّل الدخول للوصول إلى لوحاتك",
+    connecting: "جارٍ الاتصال…",
+    continue: "المتابعة باستخدام Google",
+    secure: "دخول آمن",
+    terms: "بالمتابعة، فإنك توافق على",
+    termsLink: "الشروط",
+    and: "و",
+    privacy: "سياسة الخصوصية",
+    signinFailed: "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+    switch: "English",
+  },
+} as const;
+
 
 export const Route = createFileRoute("/login")({
   head: () => ({
