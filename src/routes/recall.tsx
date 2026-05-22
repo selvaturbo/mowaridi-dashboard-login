@@ -983,26 +983,32 @@ function ActiveRecallsView() {
               </button>
               {open && (
                 <div
-                  className="border-t px-4 py-3"
+                  className="border-t"
                   style={{ borderColor: "oklch(0.55 0.1 40 / 0.12)", background: "oklch(0.98 0.015 60)" }}
                 >
-                  <p className="mb-3 text-xs leading-relaxed" style={{ color: ESPRESSO }}>
-                    {r.brief}
-                  </p>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[11px] md:grid-cols-4">
-                    <Detail k="Scope" v={`${r.scope} recall`} />
-                    <Detail k="SKU" v={r.sku} />
-                    <Detail k="Brand" v={r.brand} />
-                    <Detail k="Supplier" v={r.supplier} />
-                    <Detail k="Batch" v={r.batch} />
-                    <Detail k="Launched" v={r.launched} />
-                    <Detail k="Owner" v={r.owner} />
-                    <Detail k="Districts" v={r.districts.join(", ")} />
-                    <Detail k="Acknowledgement" v={`${ackPct}% (${r.buyersAck}/${r.buyersNotified})`} />
-                    <Detail k="Quantity recalled" v={`${r.qty.toLocaleString()} KG`} />
+                  <div className="px-4 py-3">
+                    <p className="mb-3 text-xs leading-relaxed" style={{ color: ESPRESSO }}>
+                      {r.brief}
+                    </p>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[11px] md:grid-cols-4">
+                      <Detail k="Scope" v={`${r.scope} recall`} />
+                      <Detail k="SKU" v={r.sku} />
+                      <Detail k="Brand" v={r.brand} />
+                      <Detail k="Supplier" v={r.supplier} />
+                      <Detail k="Batch" v={r.batch} />
+                      <Detail k="Launched" v={r.launched} />
+                      <Detail k="Districts" v={r.districts.join(", ")} />
+                      <Detail k="Total Customers" v={r.totalCustomers.toLocaleString()} />
+                      <Detail k="Total Suppliers" v={r.totalSuppliers.toLocaleString()} />
+                      <Detail k="Total Value" v={`SAR ${r.totalValue.toLocaleString()}`} />
+                      <Detail k="Quantity recalled" v={`${r.qty.toLocaleString()} KG`} />
+                      <Detail k="Acknowledgement" v={`${ackPct}% (${r.buyersAck}/${r.buyersNotified})`} />
+                    </div>
                   </div>
+                  <SupportUpdatesPanel recallId={r.id} updates={r.updates} />
                 </div>
               )}
+
             </div>
           );
         })}
