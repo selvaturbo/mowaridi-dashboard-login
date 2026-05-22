@@ -122,13 +122,111 @@ const BUYER_EXPOSURE: BuyerExposure[] = [
   { id: "b5", buyer: "Arafat Mass Catering", phone: "+966 54 567 8901", district: "Arafat", qty: 1500, totalDeliveries: 27, totalSuppliers: 5, latestDelivered: "2026-05-14" },
 ];
 
+type ActiveRecall = {
+  id: string;
+  title: string;
+  sku: string;
+  brand: string;
+  supplier: string;
+  batch: string;
+  severity: Severity;
+  scope: Scope;
+  status: "Live" | "Containment" | "Closing";
+  launched: string;
+  buyersNotified: number;
+  buyersAck: number;
+  qty: number;
+  districts: string[];
+  owner: string;
+  brief: string;
+};
+
+const ACTIVE_RECALLS: ActiveRecall[] = [
+  {
+    id: "RCL-2026-0142",
+    title: "Frozen Chicken Breast — Salmonella suspicion",
+    sku: "Frozen Chicken Breast 2KG",
+    brand: "Al Baik",
+    supplier: "ABC Foods",
+    batch: "A78421",
+    severity: "Critical",
+    scope: "SKU",
+    status: "Live",
+    launched: "2026-05-14 09:12",
+    buyersNotified: 27,
+    buyersAck: 18,
+    qty: 4740,
+    districts: ["Makkah", "Madinah", "Mina", "Arafat"],
+    owner: "F. Al Harbi",
+    brief:
+      "Lab flagged salmonella indicator in batch A78421. All downstream buyers notified, inventories frozen and SKU restricted across all sellers. Awaiting buyer acknowledgements before closing.",
+  },
+  {
+    id: "RCL-2026-0139",
+    title: "Almarai Yoghurt 500g — cold-chain break",
+    sku: "Greek Yoghurt 500G",
+    brand: "Almarai",
+    supplier: "Gulf Cold Chain",
+    batch: "Y22014",
+    severity: "High",
+    scope: "Brand",
+    status: "Containment",
+    launched: "2026-05-11 14:40",
+    buyersNotified: 14,
+    buyersAck: 12,
+    qty: 1820,
+    districts: ["Riyadh", "Makkah"],
+    owner: "S. Othman",
+    brief:
+      "Temperature excursion detected in reefer GCC-R12 between Jeddah and Makkah. Brand-level hold in place pending QA disposition.",
+  },
+  {
+    id: "RCL-2026-0131",
+    title: "Hijaz Trading — supplier compliance hold",
+    sku: "Multiple",
+    brand: "Multiple",
+    supplier: "Hijaz Trading",
+    batch: "—",
+    severity: "Medium",
+    scope: "Supplier",
+    status: "Closing",
+    launched: "2026-05-06 08:25",
+    buyersNotified: 9,
+    buyersAck: 9,
+    qty: 980,
+    districts: ["Madinah"],
+    owner: "R. Khan",
+    brief:
+      "Supplier license lapse — purchase orders blocked. All deliveries acknowledged, closing recall after compliance reinstatement on 2026-05-22.",
+  },
+];
+
+type Restriction = {
+  id: string;
+  kind: "SKU" | "Brand" | "Supplier";
+  name: string;
+  context: string;
+  effective: string;
+  recallId: string;
+  incident: string;
+};
+
+const RESTRICTIONS: Restriction[] = [
+  { id: "rs1", kind: "SKU", name: "Frozen Chicken Breast 2KG", context: "Al Baik · Batch A78421", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Salmonella suspicion — lab flagged" },
+  { id: "rs2", kind: "SKU", name: "Greek Yoghurt 500G", context: "Almarai · Batch Y22014", effective: "2026-05-11", recallId: "RCL-2026-0139", incident: "Cold-chain break in transit" },
+  { id: "rs3", kind: "Brand", name: "Al Baik", context: "All frozen protein SKUs", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Brand-wide precautionary hold" },
+  { id: "rs4", kind: "Brand", name: "Almarai", context: "Chilled dairy line", effective: "2026-05-11", recallId: "RCL-2026-0139", incident: "Cold-chain break in transit" },
+  { id: "rs5", kind: "Supplier", name: "Hijaz Trading", context: "All POs blocked", effective: "2026-05-06", recallId: "RCL-2026-0131", incident: "Supplier license lapse" },
+  { id: "rs6", kind: "Supplier", name: "ABC Foods", context: "Frozen protein dispatches", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Pending QA disposition" },
+];
+
 function RecallWorkspacePage() {
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
   const [email, setEmail] = useState<string | null>(null);
 
-  // View: landing actions vs traceability builder
-  const [view, setView] = useState<"landing" | "builder">("landing");
+  // View: active recalls (default) · builder · restricted · trace
+  const [view, setView] = useState<"active" | "builder" | "restricted" | "trace">("active");
 
   // Filters
   const [category, setCategory] = useState("Frozen Protein");
@@ -269,24 +367,31 @@ function RecallWorkspacePage() {
 
       </header>
 
-      {view === "landing" ? (
-        <LandingActions
-          onCreate={() => setView("builder")}
-        />
+      {/* Top action bar — always visible */}
+      <div className="mx-auto max-w-[1700px] px-4 pt-4">
+        <div
+          className="flex flex-wrap items-center gap-2 rounded-xl border bg-white p-2"
+          style={{ borderColor: "oklch(0.55 0.1 40 / 0.15)", boxShadow: "0 1px 2px oklch(0.3 0.05 40 / 0.04)" }}
+        >
+          <TopTab active={view === "active"} onClick={() => setView("active")} icon={<ListChecks className="h-3.5 w-3.5" />} label="Active Recalls" badge="3" />
+          <TopTab active={view === "builder"} onClick={() => setView("builder")} icon={<PlusCircle className="h-3.5 w-3.5" />} label="Create Recall" primary />
+          <TopTab active={view === "restricted"} onClick={() => setView("restricted")} icon={<ShieldOff className="h-3.5 w-3.5" />} label="Restricted Products" badge={RESTRICTIONS.length.toString()} />
+          <TopTab active={view === "trace"} onClick={() => setView("trace")} icon={<GitBranch className="h-3.5 w-3.5" />} label="Traceability Search" />
+        </div>
+      </div>
+
+      {view === "active" ? (
+        <ActiveRecallsView />
+      ) : view === "restricted" ? (
+        <RestrictedView />
       ) : (
       <>
-      {/* Back to actions */}
-      <div className="mx-auto max-w-[1700px] px-4 pt-4">
-        <button
-          onClick={() => setView("landing")}
-          className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs hover:bg-black/5"
-          style={{ borderColor: "oklch(0.55 0.1 40 / 0.25)", color: COCOA }}
-        >
-          <ArrowLeft className="h-3.5 w-3.5" /> Recall Center
-        </button>
-      </div>
-      {/* 3-panel layout */}
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-4 px-4 py-5 lg:grid-cols-[300px_minmax(0,1fr)_260px]">
+      {/* 3-panel layout (builder full · trace without right column) */}
+      <div
+        className={`mx-auto grid max-w-[1600px] grid-cols-1 gap-4 px-4 py-5 ${
+          view === "builder" ? "lg:grid-cols-[300px_minmax(0,1fr)_260px]" : "lg:grid-cols-[300px_minmax(0,1fr)]"
+        }`}
+      >
         {/* LEFT — Filters */}
         <aside className="space-y-3">
           <Panel icon={<Filter className="h-4 w-4" />} title="Recall Filters" caption="Live trace updates instantly">
@@ -470,7 +575,8 @@ function RecallWorkspacePage() {
           </Panel>
         </section>
 
-        {/* RIGHT — Actions */}
+        {/* RIGHT — Actions (only in builder view) */}
+        {view === "builder" && (
         <aside className="space-y-3 lg:sticky lg:top-[120px] lg:self-start">
           <Panel icon={<Ban className="h-4 w-4" />} title="Restriction actions">
             <ActionBtn>Restrict SKU</ActionBtn>
@@ -516,6 +622,7 @@ function RecallWorkspacePage() {
             Launch Recall
           </button>
         </aside>
+        )}
       </div>
       </>
       )}
@@ -732,93 +839,240 @@ function Row({ k, v }: { k: string; v: string }) {
   );
 }
 
-function LandingActions({ onCreate }: { onCreate: () => void }) {
-  const tiles = [
-    {
-      title: "Create Recall",
-      desc: "Start a new traceability-driven recall in minutes.",
-      icon: <PlusCircle className="h-5 w-5" />,
-      tone: "primary" as const,
-      onClick: onCreate,
-      cta: "Start builder",
-    },
-    {
-      title: "Active Recalls",
-      desc: "Monitor recalls currently in progress across the platform.",
-      icon: <ListChecks className="h-5 w-5" />,
-      badge: "3 live",
-    },
-    {
-      title: "Restricted Products",
-      desc: "Browse SKUs, brands and suppliers under restriction.",
-      icon: <ShieldOff className="h-5 w-5" />,
-      badge: "12",
-    },
-    {
-      title: "Traceability Search",
-      desc: "Ad-hoc trace by batch, supplier, buyer or region.",
-      icon: <GitBranch className="h-5 w-5" />,
-    },
-  ];
+function TopTab({
+  active,
+  onClick,
+  icon,
+  label,
+  badge,
+  primary,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+  badge?: string;
+  primary?: boolean;
+}) {
+  const baseActive = primary
+    ? { background: `linear-gradient(135deg, ${CRITICAL}, ${CORAL})`, color: "white", borderColor: "transparent" }
+    : { background: ESPRESSO, color: "white", borderColor: ESPRESSO };
+  const baseIdle = primary
+    ? { background: `${CORAL.replace(")", " / 0.10)")}`, color: CRITICAL, borderColor: CORAL.replace(")", " / 0.35)") }
+    : { background: "white", color: ESPRESSO, borderColor: "oklch(0.55 0.1 40 / 0.2)" };
   return (
-    <div className="mx-auto max-w-[1700px] px-4 py-8">
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold tracking-tight">Recall Center</h2>
-        <p className="mt-1 text-sm" style={{ color: COCOA }}>
-          Choose an action to begin. Create Recall opens the Traceability Recall Builder.
-        </p>
+    <button
+      onClick={onClick}
+      className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition hover:scale-[1.02]"
+      style={active ? baseActive : baseIdle}
+    >
+      {icon}
+      {label}
+      {badge && (
+        <span
+          className="ml-1 rounded-full px-1.5 py-0.5 text-[10px] font-bold"
+          style={{
+            background: active ? "oklch(1 0 0 / 0.25)" : "oklch(0.95 0.05 25)",
+            color: active ? "white" : CRITICAL,
+          }}
+        >
+          {badge}
+        </span>
+      )}
+    </button>
+  );
+}
+
+function statusTone(s: ActiveRecall["status"]) {
+  if (s === "Live") return { bg: `${CRITICAL.replace(")", " / 0.12)")}`, fg: CRITICAL };
+  if (s === "Containment") return { bg: `${WARN.replace(")", " / 0.15)")}`, fg: "oklch(0.5 0.16 60)" };
+  return { bg: "oklch(0.95 0.06 160)", fg: "oklch(0.45 0.16 160)" };
+}
+
+function severityTone(s: Severity) {
+  if (s === "Critical") return CRITICAL;
+  if (s === "High") return WARN;
+  if (s === "Medium") return "oklch(0.6 0.15 90)";
+  return "oklch(0.55 0.12 240)";
+}
+
+function ActiveRecallsView() {
+  const [openId, setOpenId] = useState<string | null>(ACTIVE_RECALLS[0]?.id ?? null);
+  return (
+    <div className="mx-auto max-w-[1700px] px-4 py-5">
+      <div className="mb-4 flex items-end justify-between">
+        <div>
+          <h2 className="text-lg font-semibold tracking-tight">Active Recalls</h2>
+          <p className="text-xs" style={{ color: COCOA }}>
+            {ACTIVE_RECALLS.length} recalls in progress · click a row to expand for details
+          </p>
+        </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {tiles.map((t) => {
-          const isPrimary = t.tone === "primary";
+      <div className="space-y-2">
+        {ACTIVE_RECALLS.map((r) => {
+          const open = openId === r.id;
+          const tone = statusTone(r.status);
+          const sev = severityTone(r.severity);
+          const ackPct = Math.round((r.buyersAck / r.buyersNotified) * 100);
           return (
-            <button
-              key={t.title}
-              onClick={t.onClick}
-              className="group flex h-full flex-col items-start gap-3 rounded-2xl border bg-white p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg"
-              style={{
-                borderColor: isPrimary ? CORAL.replace(")", " / 0.4)") : "oklch(0.55 0.1 40 / 0.15)",
-                background: isPrimary
-                  ? `linear-gradient(135deg, white, ${CORAL.replace(")", " / 0.08)")})`
-                  : "white",
-              }}
+            <div
+              key={r.id}
+              className="overflow-hidden rounded-xl border bg-white transition"
+              style={{ borderColor: open ? CORAL.replace(")", " / 0.45)") : "oklch(0.55 0.1 40 / 0.15)" }}
             >
-              <div
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl"
-                style={{
-                  background: isPrimary ? CORAL : "oklch(0.96 0.03 60)",
-                  color: isPrimary ? "white" : CORAL,
-                }}
+              <button
+                onClick={() => setOpenId(open ? null : r.id)}
+                className="flex w-full items-center gap-3 px-4 py-3 text-left hover:bg-black/[0.02]"
               >
-                {t.icon}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-base font-semibold tracking-tight">{t.title}</h3>
-                  {t.badge && (
-                    <span
-                      className="rounded-full px-2 py-0.5 text-[10px] font-medium"
-                      style={{ background: "oklch(0.95 0.05 25)", color: CRITICAL }}
-                    >
-                      {t.badge}
-                    </span>
-                  )}
+                <span
+                  className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold"
+                  style={{ background: tone.bg, color: tone.fg }}
+                >
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ background: tone.fg }} />
+                  {r.status}
+                </span>
+                <span className="font-mono text-[11px]" style={{ color: COCOA }}>{r.id}</span>
+                <span className="min-w-0 flex-1 truncate text-sm font-semibold">{r.title}</span>
+                <span
+                  className="hidden rounded-full px-2 py-0.5 text-[10px] font-medium md:inline-flex"
+                  style={{ background: `${sev.replace(")", " / 0.12)")}`, color: sev }}
+                >
+                  {r.severity}
+                </span>
+                <span className="hidden text-[11px] md:inline" style={{ color: COCOA }}>
+                  {r.buyersAck}/{r.buyersNotified} ack
+                </span>
+                <span className="hidden text-[11px] md:inline" style={{ color: COCOA }}>
+                  {r.qty.toLocaleString()} KG
+                </span>
+                <ChevronRight
+                  className="h-4 w-4 transition"
+                  style={{ color: COCOA, transform: open ? "rotate(90deg)" : "none" }}
+                />
+              </button>
+              {open && (
+                <div
+                  className="border-t px-4 py-3"
+                  style={{ borderColor: "oklch(0.55 0.1 40 / 0.12)", background: "oklch(0.98 0.015 60)" }}
+                >
+                  <p className="mb-3 text-xs leading-relaxed" style={{ color: ESPRESSO }}>
+                    {r.brief}
+                  </p>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[11px] md:grid-cols-4">
+                    <Detail k="Scope" v={`${r.scope} recall`} />
+                    <Detail k="SKU" v={r.sku} />
+                    <Detail k="Brand" v={r.brand} />
+                    <Detail k="Supplier" v={r.supplier} />
+                    <Detail k="Batch" v={r.batch} />
+                    <Detail k="Launched" v={r.launched} />
+                    <Detail k="Owner" v={r.owner} />
+                    <Detail k="Districts" v={r.districts.join(", ")} />
+                    <Detail k="Acknowledgement" v={`${ackPct}% (${r.buyersAck}/${r.buyersNotified})`} />
+                    <Detail k="Quantity recalled" v={`${r.qty.toLocaleString()} KG`} />
+                  </div>
                 </div>
-                <p className="mt-1 text-xs leading-relaxed" style={{ color: COCOA }}>
-                  {t.desc}
-                </p>
-              </div>
-              <span
-                className="inline-flex items-center gap-1 text-xs font-medium transition group-hover:gap-2"
-                style={{ color: isPrimary ? CORAL : ESPRESSO }}
-              >
-                {t.cta ?? "Open"} <ChevronRight className="h-3 w-3" />
-              </span>
-            </button>
+              )}
+            </div>
           );
         })}
       </div>
     </div>
   );
 }
+
+function Detail({ k, v }: { k: string; v: string }) {
+  return (
+    <div>
+      <div className="text-[10px] uppercase tracking-wider" style={{ color: COCOA }}>{k}</div>
+      <div className="font-medium" style={{ color: ESPRESSO }}>{v}</div>
+    </div>
+  );
+}
+
+function RestrictedView() {
+  const [tab, setTab] = useState<"All" | "SKU" | "Brand" | "Supplier">("All");
+  const filtered = tab === "All" ? RESTRICTIONS : RESTRICTIONS.filter((r) => r.kind === tab);
+  return (
+    <div className="mx-auto max-w-[1700px] px-4 py-5">
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-semibold tracking-tight">Restricted Products</h2>
+          <p className="text-xs" style={{ color: COCOA }}>
+            SKUs, brands and suppliers under restriction · linked to source recall incident
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {(["All", "SKU", "Brand", "Supplier"] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className="rounded-full border px-2.5 py-1 text-[11px] font-medium transition"
+              style={
+                tab === t
+                  ? { background: ESPRESSO, color: "white", borderColor: ESPRESSO }
+                  : { borderColor: "oklch(0.55 0.1 40 / 0.25)", color: COCOA, background: "white" }
+              }
+            >
+              {t}
+              <span className="ml-1 text-[10px] opacity-70">
+                {t === "All" ? RESTRICTIONS.length : RESTRICTIONS.filter((r) => r.kind === t).length}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div
+        className="overflow-hidden rounded-xl border bg-white"
+        style={{ borderColor: "oklch(0.55 0.1 40 / 0.15)" }}
+      >
+        <table className="w-full text-xs">
+          <thead style={{ background: "oklch(0.97 0.02 60)" }}>
+            <tr className="text-left" style={{ color: COCOA }}>
+              <th className="px-3 py-2">Type</th>
+              <th className="px-3 py-2">Name</th>
+              <th className="px-3 py-2">Context</th>
+              <th className="px-3 py-2">Effective Date</th>
+              <th className="px-3 py-2">Recall ID</th>
+              <th className="px-3 py-2">Incident</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((r) => (
+              <tr key={r.id} className="border-t" style={{ borderColor: "oklch(0.55 0.1 40 / 0.12)" }}>
+                <td className="px-3 py-2">
+                  <span
+                    className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                    style={{
+                      background:
+                        r.kind === "SKU"
+                          ? "oklch(0.95 0.04 250)"
+                          : r.kind === "Brand"
+                            ? "oklch(0.95 0.05 25)"
+                            : "oklch(0.95 0.06 160)",
+                      color:
+                        r.kind === "SKU"
+                          ? "oklch(0.45 0.18 250)"
+                          : r.kind === "Brand"
+                            ? CRITICAL
+                            : "oklch(0.45 0.16 160)",
+                    }}
+                  >
+                    {r.kind === "SKU" ? <Barcode className="h-3 w-3" /> : r.kind === "Brand" ? <Tag className="h-3 w-3" /> : <Building2 className="h-3 w-3" />}
+                    {r.kind}
+                  </span>
+                </td>
+                <td className="px-3 py-2 font-medium">{r.name}</td>
+                <td className="px-3 py-2" style={{ color: COCOA }}>{r.context}</td>
+                <td className="px-3 py-2 font-mono text-[11px]">{r.effective}</td>
+                <td className="px-3 py-2 font-mono text-[11px]" style={{ color: CRITICAL }}>{r.recallId}</td>
+                <td className="px-3 py-2" style={{ color: ESPRESSO }}>{r.incident}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 
