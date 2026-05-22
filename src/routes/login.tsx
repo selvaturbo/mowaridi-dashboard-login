@@ -107,7 +107,7 @@ function LoginPage() {
                 className="h-1.5 w-1.5 animate-pulse rounded-full"
                 style={{ background: "var(--mow-coral)" }}
               />
-              AI-Powered Supply Intelligence
+              AI-Powered Intelligence
             </div>
             <h1 className="mowaridi-gradient-text text-5xl font-bold leading-[1.05] tracking-tight xl:text-6xl">
               Dashboards that<br />think with you.
