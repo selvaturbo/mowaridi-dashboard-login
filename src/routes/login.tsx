@@ -149,21 +149,17 @@ function LoginPage() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6 py-10 lg:grid lg:grid-cols-2 lg:gap-16">
         {/* Brand panel */}
         <section className="hidden flex-col justify-between lg:flex">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-start gap-3">
             <img
               src={mowaridiLogo}
               alt={t.brand}
-              className="h-20 w-20 object-contain"
+              className="h-28 w-auto object-contain"
             />
-            <div className="flex flex-col leading-tight">
-              <span className="text-4xl font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
-                {t.brand}
-              </span>
-              <span className="mt-1 text-[11px] uppercase tracking-[0.22em]" style={{ color: "var(--mow-cocoa)" }}>
-                {t.sub}
-              </span>
-            </div>
+            <span className="text-[13px] uppercase tracking-[0.32em]" style={{ color: "var(--mow-cocoa)" }}>
+              {t.sub}
+            </span>
           </div>
+
 
           <div className="space-y-6">
             <div
