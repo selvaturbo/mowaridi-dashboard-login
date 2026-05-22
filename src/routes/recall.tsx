@@ -274,7 +274,7 @@ function RecallWorkspacePage() {
               <Field label="Category" value={category} onChange={setCategory} options={["Frozen Protein", "Dairy", "Produce", "Beverage", "Bakery"]} />
               <Field label="Brand" value={brand} onChange={setBrand} options={["Al Baik", "Americana", "Almarai", "Nadec"]} />
               <Field label="SKU" value={sku} onChange={setSku} options={["Frozen Chicken Breast 2KG", "Whole Chicken 1.2KG", "Beef Mince 1KG"]} />
-              <Field label="Batch / Lot Number" value={batch} onChange={setBatch} icon={<Barcode className="h-3 w-3" />} />
+              
               <Field label="Expiry Date" value={expiry} onChange={setExpiry} type="date" />
             </Group>
 
