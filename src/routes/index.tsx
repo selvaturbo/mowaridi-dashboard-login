@@ -176,8 +176,10 @@ function DashboardPage() {
                 <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Bar dataKey="Delivered" stackId="a" fill={TEAL} radius={[0, 0, 0, 0]} />
+                <Bar dataKey="Delivered" stackId="a" fill={TEAL} />
+                <Bar dataKey="In Flight" stackId="a" fill="oklch(0.70 0.13 230)" />
                 <Bar dataKey="Cancelled" stackId="a" fill={CORAL} radius={[3, 3, 0, 0]} />
+
               </BarChart>
             </ResponsiveContainer>
           </Card>
