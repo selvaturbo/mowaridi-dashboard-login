@@ -1164,7 +1164,7 @@ function RestrictedView() {
                   </span>
                 </td>
                 <td className="px-3 py-2 font-medium">{r.name}</td>
-                <td className="px-3 py-2" style={{ color: COCOA }}>{r.context}</td>
+                <td className="px-3 py-2" style={{ color: COCOA }}>{r.category}</td>
                 <td className="px-3 py-2 font-mono text-[11px]">{r.effective}</td>
                 <td className="px-3 py-2 font-mono text-[11px]" style={{ color: CRITICAL }}>{r.recallId}</td>
                 <td className="px-3 py-2" style={{ color: ESPRESSO }}>{r.incident}</td>
