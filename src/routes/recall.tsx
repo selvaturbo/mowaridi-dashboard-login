@@ -572,6 +572,9 @@ function RecallWorkspacePage() {
           </button>
         </aside>
       </div>
+      </>
+      )}
+
 
       {/* Launch Modal */}
       {showLaunch && (
