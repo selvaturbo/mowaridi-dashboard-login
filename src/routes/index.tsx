@@ -168,21 +168,22 @@ function DashboardPage() {
           </div>
 
           <SubHeading className="mt-6">Weekly Order Funnel · Last 4 Weeks</SubHeading>
-          <Card title="Order funnel — week-on-week (W-4 → W-1)">
+          <Card title="Weekly orders — last 4 weeks (W-4 → W-1)">
             <ResponsiveContainer width="100%" height={320}>
-              <BarChart data={weeklyFunnel} barCategoryGap="18%">
+              <BarChart data={weeklyFunnel} barCategoryGap="25%">
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                <XAxis dataKey="stage" tick={{ fontSize: 11 }} />
+                <XAxis dataKey="week" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Bar dataKey="W-4" fill="oklch(0.78 0.10 210)" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="W-3" fill="oklch(0.66 0.14 230)" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="W-2" fill="oklch(0.55 0.17 250)" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="W-1" fill={CORAL} radius={[3, 3, 0, 0]} />
+                <Bar dataKey="Delivered" stackId="a" fill={TEAL} />
+                <Bar dataKey="In Flight" stackId="a" fill="oklch(0.70 0.13 230)" />
+                <Bar dataKey="Cancelled" stackId="a" fill={CORAL} radius={[3, 3, 0, 0]} />
+
               </BarChart>
             </ResponsiveContainer>
           </Card>
+
 
           <SubHeading className="mt-6">Live Trend Monitoring</SubHeading>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -818,12 +819,11 @@ const aovDualTrend = [40, 41, 41.5, 42, 42.8, 43, 43.2, 43.5, 43.8, 44, 44.2, 44
 }));
 
 const weeklyFunnel = [
-  { stage: "Orders Created", "W-4": 16240, "W-3": 17120, "W-2": 17840, "W-1": 18420 },
-  { stage: "Confirmed",      "W-4": 14920, "W-3": 15860, "W-2": 16380, "W-1": 17080 },
-  { stage: "Packed",         "W-4": 14180, "W-3": 15020, "W-2": 15560, "W-1": 16240 },
-  { stage: "Picked Up",      "W-4": 13240, "W-3": 14080, "W-2": 14640, "W-1": 15120 },
-  { stage: "Delivered",      "W-4": 12480, "W-3": 13320, "W-2": 13860, "W-1": 14380 },
-  { stage: "Cancelled",      "W-4": 1420,  "W-3": 1360,  "W-2": 1280,  "W-1": 1240 },
+  { week: "W-4", Delivered: 14820, Cancelled: 1420 },
+  { week: "W-3", Delivered: 15760, Cancelled: 1360 },
+  { week: "W-2", Delivered: 16560, Cancelled: 1280 },
+  { week: "W-1", Delivered: 14380, Cancelled: 1240, "In Flight": 2800 },
+
 ];
 
 const cancelCustomer = [
