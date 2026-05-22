@@ -297,30 +297,8 @@ function DashboardPage() {
             </Card>
           </div>
 
-          <SubHeading className="mt-6">Channel Intelligence · Channel Split</SubHeading>
-          <Card title="Web / iOS / Android">
-            <ResponsiveContainer width="100%" height={260}>
-              <PieChart>
-                <Tooltip />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Pie
-                  data={[
-                    { name: "Web", value: 1820 },
-                    { name: "iOS", value: 1480 },
-                    { name: "Android", value: 918 },
-                  ]}
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={2}
-                  dataKey="value"
-                  label={{ fontSize: 11 }}
-                >
-                  {PALETTE.slice(0, 3).map((c, i) => <Cell key={i} fill={c} />)}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </Card>
         </Section>
+
 
         {/* ===================== SECTION 4 — DELIVERY & FULFILLMENT INTELLIGENCE ===================== */}
         <Section title="Delivery & Fulfillment Intelligence" caption="Logistics efficiency and delivery operations">
