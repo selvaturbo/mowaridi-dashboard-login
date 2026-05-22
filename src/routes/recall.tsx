@@ -122,6 +122,104 @@ const BUYER_EXPOSURE: BuyerExposure[] = [
   { id: "b5", buyer: "Arafat Mass Catering", phone: "+966 54 567 8901", district: "Arafat", qty: 1500, totalDeliveries: 27, totalSuppliers: 5, latestDelivered: "2026-05-14" },
 ];
 
+type ActiveRecall = {
+  id: string;
+  title: string;
+  sku: string;
+  brand: string;
+  supplier: string;
+  batch: string;
+  severity: Severity;
+  scope: Scope;
+  status: "Live" | "Containment" | "Closing";
+  launched: string;
+  buyersNotified: number;
+  buyersAck: number;
+  qty: number;
+  districts: string[];
+  owner: string;
+  brief: string;
+};
+
+const ACTIVE_RECALLS: ActiveRecall[] = [
+  {
+    id: "RCL-2026-0142",
+    title: "Frozen Chicken Breast — Salmonella suspicion",
+    sku: "Frozen Chicken Breast 2KG",
+    brand: "Al Baik",
+    supplier: "ABC Foods",
+    batch: "A78421",
+    severity: "Critical",
+    scope: "SKU",
+    status: "Live",
+    launched: "2026-05-14 09:12",
+    buyersNotified: 27,
+    buyersAck: 18,
+    qty: 4740,
+    districts: ["Makkah", "Madinah", "Mina", "Arafat"],
+    owner: "F. Al Harbi",
+    brief:
+      "Lab flagged salmonella indicator in batch A78421. All downstream buyers notified, inventories frozen and SKU restricted across all sellers. Awaiting buyer acknowledgements before closing.",
+  },
+  {
+    id: "RCL-2026-0139",
+    title: "Almarai Yoghurt 500g — cold-chain break",
+    sku: "Greek Yoghurt 500G",
+    brand: "Almarai",
+    supplier: "Gulf Cold Chain",
+    batch: "Y22014",
+    severity: "High",
+    scope: "Brand",
+    status: "Containment",
+    launched: "2026-05-11 14:40",
+    buyersNotified: 14,
+    buyersAck: 12,
+    qty: 1820,
+    districts: ["Riyadh", "Makkah"],
+    owner: "S. Othman",
+    brief:
+      "Temperature excursion detected in reefer GCC-R12 between Jeddah and Makkah. Brand-level hold in place pending QA disposition.",
+  },
+  {
+    id: "RCL-2026-0131",
+    title: "Hijaz Trading — supplier compliance hold",
+    sku: "Multiple",
+    brand: "Multiple",
+    supplier: "Hijaz Trading",
+    batch: "—",
+    severity: "Medium",
+    scope: "Supplier",
+    status: "Closing",
+    launched: "2026-05-06 08:25",
+    buyersNotified: 9,
+    buyersAck: 9,
+    qty: 980,
+    districts: ["Madinah"],
+    owner: "R. Khan",
+    brief:
+      "Supplier license lapse — purchase orders blocked. All deliveries acknowledged, closing recall after compliance reinstatement on 2026-05-22.",
+  },
+];
+
+type Restriction = {
+  id: string;
+  kind: "SKU" | "Brand" | "Supplier";
+  name: string;
+  context: string;
+  effective: string;
+  recallId: string;
+  incident: string;
+};
+
+const RESTRICTIONS: Restriction[] = [
+  { id: "rs1", kind: "SKU", name: "Frozen Chicken Breast 2KG", context: "Al Baik · Batch A78421", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Salmonella suspicion — lab flagged" },
+  { id: "rs2", kind: "SKU", name: "Greek Yoghurt 500G", context: "Almarai · Batch Y22014", effective: "2026-05-11", recallId: "RCL-2026-0139", incident: "Cold-chain break in transit" },
+  { id: "rs3", kind: "Brand", name: "Al Baik", context: "All frozen protein SKUs", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Brand-wide precautionary hold" },
+  { id: "rs4", kind: "Brand", name: "Almarai", context: "Chilled dairy line", effective: "2026-05-11", recallId: "RCL-2026-0139", incident: "Cold-chain break in transit" },
+  { id: "rs5", kind: "Supplier", name: "Hijaz Trading", context: "All POs blocked", effective: "2026-05-06", recallId: "RCL-2026-0131", incident: "Supplier license lapse" },
+  { id: "rs6", kind: "Supplier", name: "ABC Foods", context: "Frozen protein dispatches", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Pending QA disposition" },
+];
+
 function RecallWorkspacePage() {
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
