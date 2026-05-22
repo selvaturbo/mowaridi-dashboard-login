@@ -4,7 +4,6 @@ import { Loader2, ShieldCheck, ArrowRight } from "lucide-react";
 import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import mowaridiBg from "@/assets/mowaridi-bg.jpg";
 import mowaridiLogo from "@/assets/mowaridi-logo.png";
 
 export const Route = createFileRoute("/login")({
