@@ -276,30 +276,32 @@ function RecallWorkspacePage() {
         {/* LEFT — Filters */}
         <aside className="space-y-3">
           <Panel icon={<Filter className="h-4 w-4" />} title="Recall Filters" caption="Live trace updates instantly">
-            <Group title="Product" icon={<Tag className="h-3 w-3" />}>
+            <Group title="Product Filters" icon={<Tag className="h-3 w-3" />}>
+              <Field label="Category" value={category} onChange={setCategory} options={["Frozen Protein", "Dairy", "Produce", "Beverage", "Bakery"]} />
               <Field label="Brand" value={brand} onChange={setBrand} options={["Al Baik", "Americana", "Almarai", "Nadec"]} />
               <Field label="SKU" value={sku} onChange={setSku} options={["Frozen Chicken Breast 2KG", "Whole Chicken 1.2KG", "Beef Mince 1KG"]} />
-              <Field label="Category" value="Frozen Protein" onChange={() => {}} options={["Frozen Protein", "Dairy", "Produce", "Beverage"]} />
-              <Field label="Batch / Lot #" value={batch} onChange={setBatch} icon={<Barcode className="h-3 w-3" />} />
-              <Field label="Expiry" value="2026-09-15" onChange={() => {}} type="date" />
+              <Field label="Batch / Lot Number" value={batch} onChange={setBatch} icon={<Barcode className="h-3 w-3" />} />
+              <Field label="Expiry Date" value={expiry} onChange={setExpiry} type="date" />
             </Group>
 
-            <Group title="Supplier" icon={<Building2 className="h-3 w-3" />}>
+            <Group title="Supplier Filters" icon={<Building2 className="h-3 w-3" />}>
               <Field label="Supplier" value={supplier} onChange={setSupplier} options={["ABC Foods", "Gulf Provisions", "Hijaz Trading"]} />
-              <Field label="Seller" value="Tamimi Distribution" onChange={() => {}} options={["Tamimi Distribution", "Gulf Cold Chain"]} />
-              <Field label="Fulfillment" value="Gulf Cold Chain" onChange={() => {}} options={["Gulf Cold Chain", "Saudi Logistics"]} />
             </Group>
 
-            <Group title="Procurement" icon={<Truck className="h-3 w-3" />}>
+            <Group title="Procurement Filters" icon={<Truck className="h-3 w-3" />}>
               <div className="grid grid-cols-2 gap-2">
                 <Field label="Delivered from" value={from} onChange={setFrom} type="date" />
                 <Field label="Delivered to" value={to} onChange={setTo} type="date" />
               </div>
+              <div className="grid grid-cols-2 gap-2">
+                <Field label="Shipped from" value={shippedFrom} onChange={setShippedFrom} type="date" />
+                <Field label="Shipped to" value={shippedTo} onChange={setShippedTo} type="date" />
+              </div>
             </Group>
 
-            <Group title="Buyer" icon={<MapPin className="h-3 w-3" />}>
+            <Group title="Buyer Filters" icon={<MapPin className="h-3 w-3" />}>
               <Field
-                label="Region / District"
+                label="Region"
                 value={region}
                 onChange={setRegion}
                 options={["All", "Makkah", "Madinah", "Mina", "Arafat"]}
