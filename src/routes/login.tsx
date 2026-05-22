@@ -57,41 +57,7 @@ function LoginPage() {
         src={mowaridiBg}
         alt=""
         aria-hidden="true"
-        width={1920}
-        height={1080}
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(100deg, oklch(0.985 0.012 80 / 0.94) 0%, oklch(0.985 0.012 80 / 0.6) 42%, oklch(0.985 0.012 80 / 0.15) 72%, transparent 100%)",
-        }}
-      />
-      <div aria-hidden="true" className="mowaridi-grid absolute inset-0" />
-      <div
-        aria-hidden="true"
-        className="mowaridi-glow-orb"
-        style={{
-          width: 460,
-          height: 460,
-          top: "-140px",
-          right: "-140px",
-          background: "oklch(0.72 0.18 38 / 0.5)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="mowaridi-glow-orb"
-        style={{
-          width: 520,
-          height: 520,
-          bottom: "-200px",
-          left: "-180px",
-          background: "oklch(0.55 0.12 40 / 0.35)",
-          animationDelay: "3s",
-        }}
+        className="pointer-events-none absolute inset-y-0 right-0 h-full w-auto max-w-[55%] object-contain object-right opacity-70"
       />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6 py-10 lg:grid lg:grid-cols-2 lg:gap-16">
