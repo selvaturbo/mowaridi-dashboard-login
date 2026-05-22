@@ -168,21 +168,20 @@ function DashboardPage() {
           </div>
 
           <SubHeading className="mt-6">Weekly Order Funnel · Last 4 Weeks</SubHeading>
-          <Card title="Order funnel — week-on-week (W-4 → W-1)">
+          <Card title="Weekly orders — last 4 weeks (W-4 → W-1)">
             <ResponsiveContainer width="100%" height={320}>
-              <BarChart data={weeklyFunnel} barCategoryGap="18%">
+              <BarChart data={weeklyFunnel} barCategoryGap="25%">
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                <XAxis dataKey="stage" tick={{ fontSize: 11 }} />
+                <XAxis dataKey="week" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Bar dataKey="W-4" fill="oklch(0.78 0.10 210)" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="W-3" fill="oklch(0.66 0.14 230)" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="W-2" fill="oklch(0.55 0.17 250)" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="W-1" fill={CORAL} radius={[3, 3, 0, 0]} />
+                <Bar dataKey="Delivered" stackId="a" fill={TEAL} radius={[0, 0, 0, 0]} />
+                <Bar dataKey="Cancelled" stackId="a" fill={CORAL} radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </Card>
+
 
           <SubHeading className="mt-6">Live Trend Monitoring</SubHeading>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
