@@ -125,7 +125,7 @@ function DashboardPage() {
 
       <div className="mx-auto max-w-[1600px] space-y-10 px-6 py-8">
         {/* ===================== SECTION 1 — WAR ROOM OVERVIEW ===================== */}
-        <Section title="1 · War Room Overview" caption="Top fold — always visible on TV">
+        <Section title="War Room Overview" caption="Top fold — always visible on TV">
           <SubHeading>1A · Live Operations Health</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <KpiCard label="Today's GMV" value="SAR 184,920" delta={12.4} spark={sparkUp} />
@@ -158,7 +158,7 @@ function DashboardPage() {
         </Section>
 
         {/* ===================== SECTION 2 — LIVE OPERATIONS MONITORING ===================== */}
-        <Section title="2 · Live Operations Monitoring" caption="Real-time operational visibility">
+        <Section title="Live Operations Monitoring" caption="Real-time operational visibility">
           <SubHeading>Live Open Orders by Status</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             <StatTile label="New" value="320" />
@@ -224,7 +224,7 @@ function DashboardPage() {
         </Section>
 
         {/* ===================== SECTION 3 — PROCUREMENT & ORDER INTELLIGENCE ===================== */}
-        <Section title="3 · Procurement & Order Intelligence" caption="Marketplace transaction performance">
+        <Section title="Procurement & Order Intelligence" caption="Marketplace transaction performance">
           <SubHeading>Procurement KPIs</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
             <StatTile label="Total Orders" value="4,218" />
@@ -298,7 +298,7 @@ function DashboardPage() {
         </Section>
 
         {/* ===================== SECTION 4 — DELIVERY & FULFILLMENT INTELLIGENCE ===================== */}
-        <Section title="4 · Delivery & Fulfillment Intelligence" caption="Logistics efficiency and delivery operations">
+        <Section title="Delivery & Fulfillment Intelligence" caption="Logistics efficiency and delivery operations">
           <SubHeading>Delivery KPIs</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <StatTile label="Vehicles Out for Delivery" value="184" />
@@ -350,7 +350,7 @@ function DashboardPage() {
         </Section>
 
         {/* ===================== SECTION 5 — MARKETPLACE ECOSYSTEM INTELLIGENCE ===================== */}
-        <Section title="5 · Marketplace Ecosystem Intelligence" caption="Platform growth and ecosystem participation">
+        <Section title="Marketplace Ecosystem Intelligence" caption="Platform growth and ecosystem participation">
           <SubHeading>User Intelligence</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <StatTile label="Total Users" value="12,840" />
@@ -407,7 +407,7 @@ function DashboardPage() {
         </Section>
 
         {/* ===================== SECTION 6 — PRODUCT & CATEGORY INTELLIGENCE ===================== */}
-        <Section title="6 · Product & Category Intelligence" caption="Product movement and procurement trends">
+        <Section title="Product & Category Intelligence" caption="Product movement and procurement trends">
           <SubHeading>Product Intelligence</SubHeading>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Card title="Top Categories (Value)">
@@ -479,7 +479,7 @@ function DashboardPage() {
         </Section>
 
         {/* ===================== SECTION 7 — INVOICE DISCLOSURE & TRANSPARENCY ===================== */}
-        <Section title="7 · Procurement Transparency Command Center" caption="Invoice disclosure & transparency monitoring">
+        <Section title="Procurement Transparency Command Center" caption="Invoice disclosure & transparency monitoring">
           <SubHeading>Disclosure KPIs</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <StatTile label="Total Disclosures" value="2,184" />
@@ -545,7 +545,7 @@ function DashboardPage() {
         </Section>
 
         {/* ===================== SECTION 8 — GEOGRAPHIC INTELLIGENCE ===================== */}
-        <Section title="8 · Geographic Intelligence" caption="Regional procurement and logistics visibility">
+        <Section title="Geographic Intelligence" caption="Regional procurement and logistics visibility">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <MapCard title="Pickup Locations Map" total="142" label="Total Pickup Locations" tone={CORAL} />
             <MapCard title="Delivery Locations Map" total="2,184" label="Total Delivery Locations" tone={TEAL} />
@@ -575,7 +575,7 @@ function DashboardPage() {
         </Section>
 
         {/* ===================== SECTION 9 — EXECUTIVE INTELLIGENCE ===================== */}
-        <Section title="9 · Executive Intelligence" caption="Leadership-level strategic monitoring">
+        <Section title="Executive Intelligence" caption="Leadership-level strategic monitoring">
           <SubHeading>Executive KPIs</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             <KpiCard label="Today vs Yesterday GMV" value="SAR 184,920" delta={12.4} spark={sparkUp} />
