@@ -510,31 +510,18 @@ function RecallWorkspacePage() {
           <Panel icon={<Ban className="h-4 w-4" />} title="Restriction actions">
             <ActionBtn>Restrict SKU</ActionBtn>
             <ActionBtn>Restrict Brand</ActionBtn>
-            <ActionBtn>Restrict Seller</ActionBtn>
             <ActionBtn>Restrict Supplier</ActionBtn>
-            <ActionBtn>Pause Fulfillment</ActionBtn>
-            <ActionBtn>Remove From Catalog</ActionBtn>
           </Panel>
 
           <Panel icon={<Bell className="h-4 w-4" />} title="Recall actions">
-            <ActionBtn>Notify Buyers</ActionBtn>
-            <ActionBtn>Notify Authorities</ActionBtn>
-            <ActionBtn>Send Critical Alert</ActionBtn>
-            <ActionBtn>Generate Compliance Case</ActionBtn>
+            <ActionBtn>Notify Buyers &amp; Sellers</ActionBtn>
           </Panel>
 
           <Panel icon={<Snowflake className="h-4 w-4" />} title="Inventory actions">
             <ActionBtn>Freeze Inventory</ActionBtn>
-            <ActionBtn>Block Reorders</ActionBtn>
             <ActionBtn>Flag Active Orders</ActionBtn>
-            <ActionBtn>Stop Future Deliveries</ActionBtn>
           </Panel>
 
-          <Panel icon={<FileCheck2 className="h-4 w-4" />} title="Compliance">
-            <ActionBtn>Request Acknowledgement</ActionBtn>
-            <ActionBtn>Escalate Non-Compliance</ActionBtn>
-            <ActionBtn>Generate Audit Trail</ActionBtn>
-          </Panel>
 
           <button
             onClick={() => setShowLaunch(true)}
