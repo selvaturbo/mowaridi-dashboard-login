@@ -104,6 +104,13 @@ function DashboardPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate({ to: "/recall" })}
+              className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-semibold text-white transition hover:scale-[1.02]"
+              style={{ background: `linear-gradient(135deg, oklch(0.58 0.22 25), ${CORAL})` }}
+            >
+              <ShieldAlert className="h-3.5 w-3.5" /> Recall Workspace
+            </button>
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs"
               style={{ background: "oklch(0.95 0.04 160)", color: "oklch(0.45 0.15 160)" }}>
               <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ background: "oklch(0.6 0.18 160)" }} />
