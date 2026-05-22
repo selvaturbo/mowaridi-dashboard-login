@@ -25,6 +25,10 @@ import {
   Rocket,
   CheckCircle2,
   XCircle,
+  PlusCircle,
+  ListChecks,
+  ShieldOff,
+  GitBranch,
 } from "lucide-react";
 import mowaridiLogo from "@/assets/mowaridi-logo.png";
 import {
