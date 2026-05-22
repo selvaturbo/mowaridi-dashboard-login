@@ -1,10 +1,57 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Loader2, ShieldCheck, ArrowRight } from "lucide-react";
+import { Loader2, ShieldCheck, ArrowRight, Languages } from "lucide-react";
 import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import mowaridiLogo from "@/assets/mowaridi-logo.png";
+
+type Lang = "en" | "ar";
+const translations = {
+  en: {
+    brand: "Mowaridi",
+    sub: "موردي · Dashboards",
+    tag: "AI-Powered Intelligence",
+    heading: (
+      <>
+        Dashboards that<br />think with you.
+      </>
+    ),
+    welcome: "Welcome back",
+    subtitle: "Sign in to access your dashboards",
+    connecting: "Connecting…",
+    continue: "Continue with Google",
+    secure: "Secure access",
+    terms: "By continuing, you agree to Mowaridi's",
+    termsLink: "Terms",
+    and: "and",
+    privacy: "Privacy Policy",
+    signinFailed: "Sign-in failed. Please try again.",
+    switch: "العربية",
+  },
+  ar: {
+    brand: "موردي",
+    sub: "Mowaridi · لوحات التحكم",
+    tag: "ذكاء مدعوم بالذكاء الاصطناعي",
+    heading: (
+      <>
+        لوحات تحكم<br />تفكر معك.
+      </>
+    ),
+    welcome: "مرحباً بعودتك",
+    subtitle: "سجّل الدخول للوصول إلى لوحاتك",
+    connecting: "جارٍ الاتصال…",
+    continue: "المتابعة باستخدام Google",
+    secure: "دخول آمن",
+    terms: "بالمتابعة، فإنك توافق على",
+    termsLink: "الشروط",
+    and: "و",
+    privacy: "سياسة الخصوصية",
+    signinFailed: "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+    switch: "English",
+  },
+} as const;
+
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -23,6 +70,9 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [lang, setLang] = useState<Lang>("en");
+  const t = translations[lang];
+  const isAr = lang === "ar";
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -40,15 +90,19 @@ function LoginPage() {
       redirect_uri: window.location.origin,
     });
     if (result.error) {
-      toast.error("Sign-in failed. Please try again.");
+      toast.error(t.signinFailed);
       setLoading(false);
       return;
     }
     if (result.redirected) return;
   };
 
+  const toggleLang = () => setLang((l) => (l === "en" ? "ar" : "en"));
+
   return (
     <main
+      dir={isAr ? "rtl" : "ltr"}
+      lang={lang}
       className="relative min-h-screen w-full overflow-hidden"
       style={{ background: "var(--mow-cream)", color: "var(--mow-espresso)" }}
     >
@@ -75,21 +129,38 @@ function LoginPage() {
         }}
       />
 
+      {/* Language toggle */}
+      <button
+        type="button"
+        onClick={toggleLang}
+        aria-label={isAr ? "Switch to English" : "التبديل إلى العربية"}
+        className="absolute top-5 z-20 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium backdrop-blur transition-all hover:scale-[1.03]"
+        style={{
+          insetInlineEnd: "1.25rem",
+          borderColor: "oklch(0.55 0.1 40 / 0.25)",
+          background: "oklch(1 0 0 / 0.7)",
+          color: "var(--mow-espresso)",
+        }}
+      >
+        <Languages className="h-3.5 w-3.5" style={{ color: "var(--mow-coral)" }} />
+        {t.switch}
+      </button>
+
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6 py-10 lg:grid lg:grid-cols-2 lg:gap-16">
         {/* Brand panel */}
         <section className="hidden flex-col justify-between lg:flex">
           <div className="flex items-center gap-4">
             <img
               src={mowaridiLogo}
-              alt="Mowaridi"
+              alt={t.brand}
               className="h-16 w-16 object-contain"
             />
             <div className="flex flex-col leading-tight">
               <span className="text-2xl font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
-                Mowaridi
+                {t.brand}
               </span>
               <span className="text-[11px] uppercase tracking-[0.18em]" style={{ color: "var(--mow-cocoa)" }}>
-                موردي · Dashboards
+                {t.sub}
               </span>
             </div>
           </div>
@@ -107,10 +178,10 @@ function LoginPage() {
                 className="h-1.5 w-1.5 animate-pulse rounded-full"
                 style={{ background: "var(--mow-coral)" }}
               />
-              AI-Powered Intelligence
+              {t.tag}
             </div>
             <h1 className="mowaridi-gradient-text text-5xl font-bold leading-[1.05] tracking-tight xl:text-6xl">
-              Dashboards that<br />think with you.
+              {t.heading}
             </h1>
             <p className="max-w-md text-base leading-relaxed" style={{ color: "var(--mow-cocoa)" }}>
             </p>
@@ -124,18 +195,18 @@ function LoginPage() {
         <section className="flex w-full items-center justify-center">
           <div className="mowaridi-glass relative w-full max-w-md rounded-3xl p-8 sm:p-10">
             <div className="mb-8 flex items-center justify-center gap-3 lg:hidden">
-              <img src={mowaridiLogo} alt="Mowaridi" className="h-14 w-14 object-contain" />
+              <img src={mowaridiLogo} alt={t.brand} className="h-14 w-14 object-contain" />
               <span className="text-xl font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
-                Mowaridi
+                {t.brand}
               </span>
             </div>
 
             <div className="mb-8 space-y-2 text-center">
               <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl" style={{ color: "var(--mow-espresso)" }}>
-                Welcome back
+                {t.welcome}
               </h2>
               <p className="text-sm" style={{ color: "var(--mow-cocoa)" }}>
-                Sign in to access your dashboards
+                {t.subtitle}
               </p>
             </div>
 
@@ -154,9 +225,9 @@ function LoginPage() {
               ) : (
                 <GoogleIcon className="h-5 w-5" />
               )}
-              <span>{loading ? "Connecting…" : "Continue with Google"}</span>
+              <span>{loading ? t.connecting : t.continue}</span>
               {!loading && (
-                <ArrowRight className="h-4 w-4 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+                <ArrowRight className={`h-4 w-4 opacity-0 transition-all group-hover:opacity-100 ${isAr ? "rotate-180 translate-x-1 group-hover:translate-x-0" : "-translate-x-1 group-hover:translate-x-0"}`} />
               )}
             </button>
 
@@ -165,18 +236,18 @@ function LoginPage() {
               style={{ color: "var(--mow-cocoa)" }}
             >
               <div className="h-px flex-1" style={{ background: "oklch(0.55 0.1 40 / 0.2)" }} />
-              Secure access
+              {t.secure}
               <div className="h-px flex-1" style={{ background: "oklch(0.55 0.1 40 / 0.2)" }} />
             </div>
 
             <p className="text-center text-xs leading-relaxed" style={{ color: "var(--mow-cocoa)" }}>
-              By continuing, you agree to Mowaridi's{" "}
+              {t.terms}{" "}
               <a href="#" className="underline-offset-4 hover:underline" style={{ color: "var(--mow-espresso)" }}>
-                Terms
+                {t.termsLink}
               </a>{" "}
-              and{" "}
+              {t.and}{" "}
               <a href="#" className="underline-offset-4 hover:underline" style={{ color: "var(--mow-espresso)" }}>
-                Privacy Policy
+                {t.privacy}
               </a>
               .
             </p>
@@ -186,6 +257,7 @@ function LoginPage() {
     </main>
   );
 }
+
 
 function GoogleIcon({ className }: { className?: string }) {
   return (
