@@ -122,6 +122,13 @@ const BUYER_EXPOSURE: BuyerExposure[] = [
   { id: "b5", buyer: "Arafat Mass Catering", phone: "+966 54 567 8901", district: "Arafat", qty: 1500, totalDeliveries: 27, totalSuppliers: 5, latestDelivered: "2026-05-14" },
 ];
 
+type SupportUpdate = {
+  at: string;
+  author: string;
+  role: string;
+  note: string;
+};
+
 type ActiveRecall = {
   id: string;
   title: string;
@@ -131,14 +138,17 @@ type ActiveRecall = {
   batch: string;
   severity: Severity;
   scope: Scope;
-  status: "Live" | "Containment" | "Closing";
+  status: "Open" | "Closed";
   launched: string;
   buyersNotified: number;
   buyersAck: number;
   qty: number;
   districts: string[];
-  owner: string;
+  totalCustomers: number;
+  totalSuppliers: number;
+  totalValue: number;
   brief: string;
+  updates: SupportUpdate[];
 };
 
 const ACTIVE_RECALLS: ActiveRecall[] = [
@@ -151,15 +161,22 @@ const ACTIVE_RECALLS: ActiveRecall[] = [
     batch: "A78421",
     severity: "Critical",
     scope: "SKU",
-    status: "Live",
+    status: "Open",
     launched: "2026-05-14 09:12",
     buyersNotified: 27,
     buyersAck: 18,
     qty: 4740,
     districts: ["Makkah", "Madinah", "Mina", "Arafat"],
-    owner: "F. Al Harbi",
+    totalCustomers: 27,
+    totalSuppliers: 3,
+    totalValue: 189600,
     brief:
       "Lab flagged salmonella indicator in batch A78421. All downstream buyers notified, inventories frozen and SKU restricted across all sellers. Awaiting buyer acknowledgements before closing.",
+    updates: [
+      { at: "2026-05-14 09:20", author: "F. Al Harbi", role: "Recall Lead", note: "Recall launched. Buyer notifications dispatched via SMS + app." },
+      { at: "2026-05-14 11:05", author: "Support Desk", role: "L1", note: "8 buyers confirmed quarantine. Following up with remaining 19." },
+      { at: "2026-05-15 08:40", author: "QA Team", role: "Lab", note: "Secondary lab sample sent. Results expected within 24h." },
+    ],
   },
   {
     id: "RCL-2026-0139",
@@ -170,15 +187,21 @@ const ACTIVE_RECALLS: ActiveRecall[] = [
     batch: "Y22014",
     severity: "High",
     scope: "Brand",
-    status: "Containment",
+    status: "Open",
     launched: "2026-05-11 14:40",
     buyersNotified: 14,
     buyersAck: 12,
     qty: 1820,
     districts: ["Riyadh", "Makkah"],
-    owner: "S. Othman",
+    totalCustomers: 14,
+    totalSuppliers: 2,
+    totalValue: 54600,
     brief:
       "Temperature excursion detected in reefer GCC-R12 between Jeddah and Makkah. Brand-level hold in place pending QA disposition.",
+    updates: [
+      { at: "2026-05-11 15:00", author: "S. Othman", role: "Recall Lead", note: "Reefer GCC-R12 isolated. Brand hold applied." },
+      { at: "2026-05-12 10:15", author: "Support Desk", role: "L2", note: "12/14 buyers acknowledged. Two retail buyers pending response." },
+    ],
   },
   {
     id: "RCL-2026-0131",
@@ -189,17 +212,25 @@ const ACTIVE_RECALLS: ActiveRecall[] = [
     batch: "—",
     severity: "Medium",
     scope: "Supplier",
-    status: "Closing",
+    status: "Closed",
     launched: "2026-05-06 08:25",
     buyersNotified: 9,
     buyersAck: 9,
     qty: 980,
     districts: ["Madinah"],
-    owner: "R. Khan",
+    totalCustomers: 9,
+    totalSuppliers: 1,
+    totalValue: 32400,
     brief:
       "Supplier license lapse — purchase orders blocked. All deliveries acknowledged, closing recall after compliance reinstatement on 2026-05-22.",
+    updates: [
+      { at: "2026-05-06 09:00", author: "R. Khan", role: "Recall Lead", note: "Supplier license lapse confirmed. POs blocked." },
+      { at: "2026-05-20 12:30", author: "Compliance", role: "Ops", note: "Reinstatement documents received and verified." },
+      { at: "2026-05-22 09:10", author: "R. Khan", role: "Recall Lead", note: "All buyers acknowledged. Recall closed." },
+    ],
   },
 ];
+
 
 type Restriction = {
   id: string;
