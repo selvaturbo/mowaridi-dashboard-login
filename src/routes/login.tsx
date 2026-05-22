@@ -117,8 +117,6 @@ function LoginPage() {
           </div>
 
           <div className="flex items-center gap-2 text-xs" style={{ color: "var(--mow-cocoa)" }}>
-            <ShieldCheck className="h-4 w-4" style={{ color: "var(--mow-coral)" }} />
-            Secured by enterprise-grade authentication
           </div>
         </section>
 
