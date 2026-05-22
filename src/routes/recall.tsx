@@ -69,7 +69,7 @@ const CRITICAL = "oklch(0.58 0.22 25)";
 const WARN = "oklch(0.72 0.18 60)";
 
 type Severity = "Critical" | "High" | "Medium" | "Informational";
-type Scope = "SKU" | "Brand" | "Batch" | "Seller" | "Supplier";
+type Scope = "SKU" | "Brand" | "Supplier";
 
 type ExposureRow = {
   id: string;
@@ -324,7 +324,7 @@ function RecallWorkspacePage() {
 
             <Group title="Scope" icon={<Layers className="h-3 w-3" />}>
               <div className="flex flex-wrap gap-1.5">
-                {(["SKU", "Brand", "Batch", "Seller", "Supplier"] as Scope[]).map((s) => (
+                {(["SKU", "Brand", "Supplier"] as Scope[]).map((s) => (
                   <button
                     key={s}
                     onClick={() => setScope(scope === s ? "" : s)}
