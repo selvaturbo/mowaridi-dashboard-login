@@ -122,6 +122,13 @@ const BUYER_EXPOSURE: BuyerExposure[] = [
   { id: "b5", buyer: "Arafat Mass Catering", phone: "+966 54 567 8901", district: "Arafat", qty: 1500, totalDeliveries: 27, totalSuppliers: 5, latestDelivered: "2026-05-14" },
 ];
 
+type SupportUpdate = {
+  at: string;
+  author: string;
+  role: string;
+  note: string;
+};
+
 type ActiveRecall = {
   id: string;
   title: string;
@@ -131,14 +138,17 @@ type ActiveRecall = {
   batch: string;
   severity: Severity;
   scope: Scope;
-  status: "Live" | "Containment" | "Closing";
+  status: "Open" | "Closed";
   launched: string;
   buyersNotified: number;
   buyersAck: number;
   qty: number;
   districts: string[];
-  owner: string;
+  totalCustomers: number;
+  totalSuppliers: number;
+  totalValue: number;
   brief: string;
+  updates: SupportUpdate[];
 };
 
 const ACTIVE_RECALLS: ActiveRecall[] = [
@@ -151,15 +161,22 @@ const ACTIVE_RECALLS: ActiveRecall[] = [
     batch: "A78421",
     severity: "Critical",
     scope: "SKU",
-    status: "Live",
+    status: "Open",
     launched: "2026-05-14 09:12",
     buyersNotified: 27,
     buyersAck: 18,
     qty: 4740,
     districts: ["Makkah", "Madinah", "Mina", "Arafat"],
-    owner: "F. Al Harbi",
+    totalCustomers: 27,
+    totalSuppliers: 3,
+    totalValue: 189600,
     brief:
       "Lab flagged salmonella indicator in batch A78421. All downstream buyers notified, inventories frozen and SKU restricted across all sellers. Awaiting buyer acknowledgements before closing.",
+    updates: [
+      { at: "2026-05-14 09:20", author: "F. Al Harbi", role: "Recall Lead", note: "Recall launched. Buyer notifications dispatched via SMS + app." },
+      { at: "2026-05-14 11:05", author: "Support Desk", role: "L1", note: "8 buyers confirmed quarantine. Following up with remaining 19." },
+      { at: "2026-05-15 08:40", author: "QA Team", role: "Lab", note: "Secondary lab sample sent. Results expected within 24h." },
+    ],
   },
   {
     id: "RCL-2026-0139",
@@ -170,15 +187,21 @@ const ACTIVE_RECALLS: ActiveRecall[] = [
     batch: "Y22014",
     severity: "High",
     scope: "Brand",
-    status: "Containment",
+    status: "Open",
     launched: "2026-05-11 14:40",
     buyersNotified: 14,
     buyersAck: 12,
     qty: 1820,
     districts: ["Riyadh", "Makkah"],
-    owner: "S. Othman",
+    totalCustomers: 14,
+    totalSuppliers: 2,
+    totalValue: 54600,
     brief:
       "Temperature excursion detected in reefer GCC-R12 between Jeddah and Makkah. Brand-level hold in place pending QA disposition.",
+    updates: [
+      { at: "2026-05-11 15:00", author: "S. Othman", role: "Recall Lead", note: "Reefer GCC-R12 isolated. Brand hold applied." },
+      { at: "2026-05-12 10:15", author: "Support Desk", role: "L2", note: "12/14 buyers acknowledged. Two retail buyers pending response." },
+    ],
   },
   {
     id: "RCL-2026-0131",
@@ -189,17 +212,25 @@ const ACTIVE_RECALLS: ActiveRecall[] = [
     batch: "—",
     severity: "Medium",
     scope: "Supplier",
-    status: "Closing",
+    status: "Closed",
     launched: "2026-05-06 08:25",
     buyersNotified: 9,
     buyersAck: 9,
     qty: 980,
     districts: ["Madinah"],
-    owner: "R. Khan",
+    totalCustomers: 9,
+    totalSuppliers: 1,
+    totalValue: 32400,
     brief:
       "Supplier license lapse — purchase orders blocked. All deliveries acknowledged, closing recall after compliance reinstatement on 2026-05-22.",
+    updates: [
+      { at: "2026-05-06 09:00", author: "R. Khan", role: "Recall Lead", note: "Supplier license lapse confirmed. POs blocked." },
+      { at: "2026-05-20 12:30", author: "Compliance", role: "Ops", note: "Reinstatement documents received and verified." },
+      { at: "2026-05-22 09:10", author: "R. Khan", role: "Recall Lead", note: "All buyers acknowledged. Recall closed." },
+    ],
   },
 ];
+
 
 type Restriction = {
   id: string;
@@ -884,10 +915,10 @@ function TopTab({
 }
 
 function statusTone(s: ActiveRecall["status"]) {
-  if (s === "Live") return { bg: `${CRITICAL.replace(")", " / 0.12)")}`, fg: CRITICAL };
-  if (s === "Containment") return { bg: `${WARN.replace(")", " / 0.15)")}`, fg: "oklch(0.5 0.16 60)" };
+  if (s === "Open") return { bg: `${CRITICAL.replace(")", " / 0.12)")}`, fg: CRITICAL };
   return { bg: "oklch(0.95 0.06 160)", fg: "oklch(0.45 0.16 160)" };
 }
+
 
 function severityTone(s: Severity) {
   if (s === "Critical") return CRITICAL;
@@ -952,26 +983,32 @@ function ActiveRecallsView() {
               </button>
               {open && (
                 <div
-                  className="border-t px-4 py-3"
+                  className="border-t"
                   style={{ borderColor: "oklch(0.55 0.1 40 / 0.12)", background: "oklch(0.98 0.015 60)" }}
                 >
-                  <p className="mb-3 text-xs leading-relaxed" style={{ color: ESPRESSO }}>
-                    {r.brief}
-                  </p>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[11px] md:grid-cols-4">
-                    <Detail k="Scope" v={`${r.scope} recall`} />
-                    <Detail k="SKU" v={r.sku} />
-                    <Detail k="Brand" v={r.brand} />
-                    <Detail k="Supplier" v={r.supplier} />
-                    <Detail k="Batch" v={r.batch} />
-                    <Detail k="Launched" v={r.launched} />
-                    <Detail k="Owner" v={r.owner} />
-                    <Detail k="Districts" v={r.districts.join(", ")} />
-                    <Detail k="Acknowledgement" v={`${ackPct}% (${r.buyersAck}/${r.buyersNotified})`} />
-                    <Detail k="Quantity recalled" v={`${r.qty.toLocaleString()} KG`} />
+                  <div className="px-4 py-3">
+                    <p className="mb-3 text-xs leading-relaxed" style={{ color: ESPRESSO }}>
+                      {r.brief}
+                    </p>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[11px] md:grid-cols-4">
+                      <Detail k="Scope" v={`${r.scope} recall`} />
+                      <Detail k="SKU" v={r.sku} />
+                      <Detail k="Brand" v={r.brand} />
+                      <Detail k="Supplier" v={r.supplier} />
+                      <Detail k="Batch" v={r.batch} />
+                      <Detail k="Launched" v={r.launched} />
+                      <Detail k="Districts" v={r.districts.join(", ")} />
+                      <Detail k="Total Customers" v={r.totalCustomers.toLocaleString()} />
+                      <Detail k="Total Suppliers" v={r.totalSuppliers.toLocaleString()} />
+                      <Detail k="Total Value" v={`SAR ${r.totalValue.toLocaleString()}`} />
+                      <Detail k="Quantity recalled" v={`${r.qty.toLocaleString()} KG`} />
+                      <Detail k="Acknowledgement" v={`${ackPct}% (${r.buyersAck}/${r.buyersNotified})`} />
+                    </div>
                   </div>
+                  <SupportUpdatesPanel recallId={r.id} updates={r.updates} />
                 </div>
               )}
+
             </div>
           );
         })}
@@ -985,6 +1022,70 @@ function Detail({ k, v }: { k: string; v: string }) {
     <div>
       <div className="text-[10px] uppercase tracking-wider" style={{ color: COCOA }}>{k}</div>
       <div className="font-medium" style={{ color: ESPRESSO }}>{v}</div>
+    </div>
+  );
+}
+
+
+function SupportUpdatesPanel({ recallId, updates }: { recallId: string; updates: SupportUpdate[] }) {
+  const [open, setOpen] = useState(false);
+  const [log, setLog] = useState<SupportUpdate[]>(updates);
+  const [note, setNote] = useState("");
+  const post = () => {
+    const trimmed = note.trim();
+    if (!trimmed) return;
+    const now = new Date();
+    const at = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+    setLog((prev) => [...prev, { at, author: "Support Desk", role: "L1", note: trimmed }]);
+    setNote("");
+  };
+  return (
+    <div className="border-t" style={{ borderColor: "oklch(0.55 0.1 40 / 0.12)" }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between px-4 py-2 text-left text-[11px] font-semibold hover:bg-black/[0.02]"
+        style={{ color: ESPRESSO }}
+      >
+        <span className="inline-flex items-center gap-2">
+          <span className="rounded-full px-2 py-0.5 text-[10px]" style={{ background: "oklch(0.55 0.1 40 / 0.1)", color: COCOA }}>
+            Support updates
+          </span>
+          <span style={{ color: COCOA }}>{log.length} entries · {recallId}</span>
+        </span>
+        <ChevronRight className="h-3.5 w-3.5 transition" style={{ color: COCOA, transform: open ? "rotate(90deg)" : "none" }} />
+      </button>
+      {open && (
+        <div className="space-y-3 px-4 pb-3">
+          <ul className="space-y-2">
+            {log.map((u, i) => (
+              <li key={i} className="rounded-lg border bg-white p-2.5" style={{ borderColor: "oklch(0.55 0.1 40 / 0.12)" }}>
+                <div className="mb-1 flex items-center justify-between text-[10px]" style={{ color: COCOA }}>
+                  <span className="font-semibold" style={{ color: ESPRESSO }}>{u.author} <span className="font-normal" style={{ color: COCOA }}>· {u.role}</span></span>
+                  <span className="font-mono">{u.at}</span>
+                </div>
+                <p className="text-[11px] leading-relaxed" style={{ color: ESPRESSO }}>{u.note}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-start gap-2">
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Post an update from the support team…"
+              rows={2}
+              className="flex-1 resize-none rounded-lg border bg-white px-2.5 py-1.5 text-[11px] outline-none focus:ring-2"
+              style={{ borderColor: "oklch(0.55 0.1 40 / 0.18)", color: ESPRESSO }}
+            />
+            <button
+              onClick={post}
+              className="rounded-lg px-3 py-1.5 text-[11px] font-semibold text-white"
+              style={{ background: CORAL }}
+            >
+              Post
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
