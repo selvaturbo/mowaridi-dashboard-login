@@ -29,6 +29,7 @@ import {
   ListChecks,
   ShieldOff,
   GitBranch,
+  Check,
 } from "lucide-react";
 import mowaridiLogo from "@/assets/mowaridi-logo.png";
 import {
@@ -510,31 +511,18 @@ function RecallWorkspacePage() {
           <Panel icon={<Ban className="h-4 w-4" />} title="Restriction actions">
             <ActionBtn>Restrict SKU</ActionBtn>
             <ActionBtn>Restrict Brand</ActionBtn>
-            <ActionBtn>Restrict Seller</ActionBtn>
             <ActionBtn>Restrict Supplier</ActionBtn>
-            <ActionBtn>Pause Fulfillment</ActionBtn>
-            <ActionBtn>Remove From Catalog</ActionBtn>
           </Panel>
 
           <Panel icon={<Bell className="h-4 w-4" />} title="Recall actions">
-            <ActionBtn>Notify Buyers</ActionBtn>
-            <ActionBtn>Notify Authorities</ActionBtn>
-            <ActionBtn>Send Critical Alert</ActionBtn>
-            <ActionBtn>Generate Compliance Case</ActionBtn>
+            <ActionBtn>Notify Buyers &amp; Sellers</ActionBtn>
           </Panel>
 
           <Panel icon={<Snowflake className="h-4 w-4" />} title="Inventory actions">
             <ActionBtn>Freeze Inventory</ActionBtn>
-            <ActionBtn>Block Reorders</ActionBtn>
             <ActionBtn>Flag Active Orders</ActionBtn>
-            <ActionBtn>Stop Future Deliveries</ActionBtn>
           </Panel>
 
-          <Panel icon={<FileCheck2 className="h-4 w-4" />} title="Compliance">
-            <ActionBtn>Request Acknowledgement</ActionBtn>
-            <ActionBtn>Escalate Non-Compliance</ActionBtn>
-            <ActionBtn>Generate Audit Trail</ActionBtn>
-          </Panel>
 
           <button
             onClick={() => setShowLaunch(true)}
@@ -726,12 +714,31 @@ function Pill({ children }: { children: React.ReactNode }) {
 }
 
 function ActionBtn({ children }: { children: React.ReactNode }) {
+  const [on, setOn] = useState(false);
   return (
     <button
-      className="mb-1.5 flex w-full items-center justify-between rounded-md border px-2.5 py-1.5 text-[11px] font-medium transition hover:bg-black/[0.03] last:mb-0"
-      style={{ borderColor: "oklch(0.55 0.1 40 / 0.2)", color: ESPRESSO }}
+      type="button"
+      onClick={() => setOn((v) => !v)}
+      aria-pressed={on}
+      className="mb-1.5 flex w-full items-center justify-between rounded-md border px-2.5 py-1.5 text-[11px] font-medium transition last:mb-0 hover:bg-black/[0.03]"
+      style={
+        on
+          ? { borderColor: CORAL, background: "oklch(0.68 0.18 38 / 0.12)", color: ESPRESSO }
+          : { borderColor: "oklch(0.55 0.1 40 / 0.2)", color: ESPRESSO }
+      }
     >
-      {children}
+      <span className="flex items-center gap-2">
+        <span
+          className="grid h-3.5 w-3.5 place-content-center rounded-[3px] border"
+          style={{
+            borderColor: on ? CORAL : "oklch(0.55 0.1 40 / 0.35)",
+            background: on ? CORAL : "transparent",
+          }}
+        >
+          {on && <Check className="h-2.5 w-2.5 text-white" />}
+        </span>
+        {children}
+      </span>
       <ChevronRight className="h-3 w-3" style={{ color: COCOA }} />
     </button>
   );
