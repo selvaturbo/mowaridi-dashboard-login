@@ -4,7 +4,7 @@ import { Loader2, ShieldCheck, ArrowRight, Languages } from "lucide-react";
 import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import mowaridiLogo from "@/assets/mowaridi-logo.jpg";
+import mowaridiLogo from "@/assets/mowaridi-logo.png";
 
 type Lang = "en" | "ar";
 const translations = {
@@ -149,17 +149,21 @@ function LoginPage() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6 py-10 lg:grid lg:grid-cols-2 lg:gap-16">
         {/* Brand panel */}
         <section className="hidden flex-col justify-between lg:flex">
-          <div className="flex flex-col items-start gap-3">
+          <div className="flex items-center gap-4">
             <img
               src={mowaridiLogo}
               alt={t.brand}
-              className="h-28 w-auto object-contain"
+              className="h-16 w-16 object-contain"
             />
-            <span className="text-[13px] uppercase tracking-[0.32em]" style={{ color: "var(--mow-cocoa)" }}>
-              {t.sub}
-            </span>
+            <div className="flex flex-col leading-tight">
+              <span className="text-2xl font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
+                {t.brand}
+              </span>
+              <span className="text-[11px] uppercase tracking-[0.18em]" style={{ color: "var(--mow-cocoa)" }}>
+                {t.sub}
+              </span>
+            </div>
           </div>
-
 
           <div className="space-y-6">
             <div
