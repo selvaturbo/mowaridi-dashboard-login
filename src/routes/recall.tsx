@@ -303,7 +303,7 @@ function RecallWorkspacePage() {
               />
             </Group>
 
-            <Group title="Severity & Scope" icon={<ShieldAlert className="h-3 w-3" />}>
+            <Group title="Severity" icon={<ShieldAlert className="h-3 w-3" />}>
               <div className="flex flex-wrap gap-1.5">
                 {(["Critical", "High", "Medium", "Informational"] as Severity[]).map((s) => (
                   <button
@@ -320,7 +320,10 @@ function RecallWorkspacePage() {
                   </button>
                 ))}
               </div>
-              <div className="mt-2 flex flex-wrap gap-1.5">
+            </Group>
+
+            <Group title="Scope" icon={<Layers className="h-3 w-3" />}>
+              <div className="flex flex-wrap gap-1.5">
                 {(["SKU", "Brand", "Batch", "Seller", "Supplier"] as Scope[]).map((s) => (
                   <button
                     key={s}
