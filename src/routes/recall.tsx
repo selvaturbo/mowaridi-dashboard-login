@@ -103,6 +103,25 @@ const TIMELINE = [
   { d: "May 08", v: 820 }, { d: "May 10", v: 1200 }, { d: "May 12", v: 1500 }, { d: "May 14", v: 1500 },
 ];
 
+type BuyerExposure = {
+  id: string;
+  buyer: string;
+  phone: string;
+  district: string;
+  qty: number;
+  totalDeliveries: number;
+  totalSuppliers: number;
+  latestDelivered: string;
+};
+
+const BUYER_EXPOSURE: BuyerExposure[] = [
+  { id: "b1", buyer: "Ajyad Central Kitchen", phone: "+966 50 123 4567", district: "Makkah", qty: 500, totalDeliveries: 12, totalSuppliers: 3, latestDelivered: "2026-05-08" },
+  { id: "b2", buyer: "Movenpick Hajj Tower", phone: "+966 55 234 5678", district: "Makkah", qty: 320, totalDeliveries: 8, totalSuppliers: 2, latestDelivered: "2026-05-09" },
+  { id: "b3", buyer: "Al Tayseer Catering", phone: "+966 56 345 6789", district: "Madinah", qty: 1200, totalDeliveries: 21, totalSuppliers: 4, latestDelivered: "2026-05-10" },
+  { id: "b4", buyer: "Mina Field Kitchen 04", phone: "+966 53 456 7890", district: "Mina", qty: 800, totalDeliveries: 15, totalSuppliers: 3, latestDelivered: "2026-05-11" },
+  { id: "b5", buyer: "Arafat Mass Catering", phone: "+966 54 567 8901", district: "Arafat", qty: 1500, totalDeliveries: 27, totalSuppliers: 5, latestDelivered: "2026-05-14" },
+];
+
 function RecallWorkspacePage() {
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
