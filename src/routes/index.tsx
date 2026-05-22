@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, LogOut, TrendingUp, TrendingDown, ShieldAlert } from "lucide-react";
+import { Loader2, LogOut, TrendingUp, TrendingDown, ShieldAlert, AlertTriangle } from "lucide-react";
 import mowaridiLogo from "@/assets/mowaridi-logo.png";
 import {
   ResponsiveContainer,
@@ -21,6 +21,7 @@ import {
   FunnelChart,
   Funnel,
   LabelList,
+  Legend,
 } from "recharts";
 
 export const Route = createFileRoute("/")({
@@ -28,7 +29,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Operations Dashboard · Mowaridi" },
-      { name: "description", content: "Mowaridi live operations dashboard — orders, fulfillment, payments and supplier health." },
+      { name: "description", content: "Mowaridi live operations dashboard — war room, procurement, fulfillment, ecosystem and executive intelligence." },
     ],
   }),
   component: DashboardPage,
@@ -38,6 +39,9 @@ const CORAL = "oklch(0.68 0.18 38)";
 const CORAL_SOFT = "oklch(0.78 0.13 40)";
 const ESPRESSO = "oklch(0.28 0.05 40)";
 const COCOA = "oklch(0.55 0.08 45)";
+const TEAL = "oklch(0.55 0.15 200)";
+const GREEN = "oklch(0.55 0.15 160)";
+const RED = "oklch(0.55 0.2 25)";
 
 const PALETTE = [
   "oklch(0.68 0.18 38)",
@@ -71,27 +75,18 @@ function DashboardPage() {
 
   if (checking) {
     return (
-      <div
-        className="flex min-h-screen items-center justify-center"
-        style={{ background: "var(--mow-cream)" }}
-      >
+      <div className="flex min-h-screen items-center justify-center" style={{ background: "var(--mow-cream)" }}>
         <Loader2 className="h-6 w-6 animate-spin" style={{ color: CORAL }} />
       </div>
     );
   }
 
   return (
-    <main
-      className="min-h-screen w-full"
-      style={{ background: "var(--mow-cream)", color: ESPRESSO }}
-    >
+    <main className="min-h-screen w-full" style={{ background: "var(--mow-cream)", color: ESPRESSO }}>
       {/* Header */}
       <header
         className="sticky top-0 z-20 border-b backdrop-blur"
-        style={{
-          background: "oklch(1 0 0 / 0.7)",
-          borderColor: "oklch(0.55 0.1 40 / 0.15)",
-        }}
+        style={{ background: "oklch(1 0 0 / 0.7)", borderColor: "oklch(0.55 0.1 40 / 0.15)" }}
       >
         <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-3">
           <div className="flex items-center gap-3">
@@ -129,107 +124,283 @@ function DashboardPage() {
       </header>
 
       <div className="mx-auto max-w-[1600px] space-y-10 px-6 py-8">
-        {/* Hero KPIs */}
-        <Section title="Hero KPIs" caption="vs same hour yesterday">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-7">
-            <KpiCard label="Orders last 60 min" value="342" delta={8.2} spark={sparkUp} />
+        {/* ===================== SECTION 1 — WAR ROOM OVERVIEW ===================== */}
+        <Section title="1 · War Room Overview" caption="Top fold — always visible on TV">
+          <SubHeading>1A · Live Operations Health</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <KpiCard label="Today's GMV" value="SAR 184,920" delta={12.4} spark={sparkUp} />
-            <KpiCard label="Today's orders" value="4,218" delta={5.1} spark={sparkUp} />
-            <KpiCard label="Open shipments" value="1,067" delta={-2.3} spark={sparkDown} />
-            <KpiCard label="Payment success rate" value="94.6%" delta={0.8} spark={sparkUp} />
-            <KpiCard label="AOV today" value="SAR 43.85" delta={3.7} spark={sparkUp} />
-            <KpiCard label="Cancellation rate" value="6.2%" delta={1.4} negative spark={sparkDown} />
+            <KpiCard label="Today's Orders" value="4,218" delta={5.1} spark={sparkUp} />
+            <KpiCard label="Open Shipments" value="1,067" delta={-2.3} spark={sparkDown} />
+            <KpiCard label="Fulfillment Rate" value="93.8%" delta={1.2} spark={sparkUp} />
+            <KpiCard label="On-Time Delivery" value="87.4%" delta={-0.6} negative spark={sparkDown} />
+            <KpiCard label="Vehicles Out for Delivery" value="184" delta={4.0} spark={sparkUp} />
+          </div>
+
+          <SubHeading className="mt-6">1B · Marketplace Health</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+            <KpiCard label="Active Users" value="1,842" delta={6.4} spark={sparkUp} />
+            <KpiCard label="Active Suppliers" value="312" delta={2.1} spark={sparkUp} />
+            <KpiCard label="AOV Today" value="SAR 43.85" delta={3.7} spark={sparkUp} />
+            <KpiCard label="Cancellation Rate" value="6.2%" delta={1.4} negative spark={sparkDown} />
+            <KpiCard label="Repeat Purchase Rate" value="42.8%" delta={2.6} spark={sparkUp} />
+            <KpiCard label="Promo Usage Today" value="528" delta={9.1} spark={sparkUp} />
+          </div>
+
+          <SubHeading className="mt-6">1C · Procurement Transparency</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+            <KpiCard label="Total Disclosures" value="2,184" delta={8.2} spark={sparkUp} />
+            <KpiCard label="Invoices Disclosed" value="1,962" delta={7.4} spark={sparkUp} />
+            <KpiCard label="Value Disclosed" value="SAR 4.82M" delta={11.6} spark={sparkUp} />
+            <KpiCard label="Disclosure : Invoice Ratio" value="89.8%" delta={1.4} spark={sparkUp} />
+            <KpiCard label="Suppliers (Disclosed)" value="248" delta={3.0} spark={sparkUp} />
+            <KpiCard label="Customers (Disclosed)" value="612" delta={5.2} spark={sparkUp} />
           </div>
         </Section>
 
-        {/* Orders & Commerce */}
-        <Section title="Orders & Commerce">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <Card title="Order funnel today" badge="1.1">
-              <ResponsiveContainer width="100%" height={220}>
-                <FunnelChart>
+        {/* ===================== SECTION 2 — LIVE OPERATIONS MONITORING ===================== */}
+        <Section title="2 · Live Operations Monitoring" caption="Real-time operational visibility">
+          <SubHeading>Live Open Orders by Status</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <StatTile label="New" value="320" />
+            <StatTile label="Confirmed" value="280" />
+            <StatTile label="Waiting for Pickup" value="240" />
+            <StatTile label="Out for Delivery" value="412" />
+          </div>
+
+          <SubHeading className="mt-6">Weekly Order Funnel · Last 4 Weeks</SubHeading>
+          <Card title="Order funnel — W-4 → W-1">
+            <ResponsiveContainer width="100%" height={260}>
+              <FunnelChart>
+                <Tooltip />
+                <Funnel
+                  dataKey="value"
+                  data={[
+                    { name: "Orders Created", value: 18420, fill: "oklch(0.45 0.18 260)" },
+                    { name: "Confirmed", value: 17080, fill: "oklch(0.55 0.18 245)" },
+                    { name: "Packed", value: 16240, fill: "oklch(0.6 0.16 230)" },
+                    { name: "Picked Up", value: 15120, fill: "oklch(0.65 0.14 215)" },
+                    { name: "Delivered", value: 14380, fill: "oklch(0.7 0.13 205)" },
+                    { name: "Cancelled", value: 1240, fill: "oklch(0.6 0.2 25)" },
+                  ]}
+                  isAnimationActive
+                >
+                  <LabelList position="right" fill={ESPRESSO} stroke="none" dataKey="name" fontSize={11} />
+                </Funnel>
+              </FunnelChart>
+            </ResponsiveContainer>
+          </Card>
+
+          <SubHeading className="mt-6">Live Trend Monitoring</SubHeading>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Card title="GMV — 14-Day Trend (GMV vs Delivered GMV / NMV)">
+              <ResponsiveContainer width="100%" height={240}>
+                <LineChart data={gmvDualTrend}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
+                  <XAxis dataKey="d" tick={{ fontSize: 10 }} />
+                  <YAxis tick={{ fontSize: 10 }} />
                   <Tooltip />
-                  <Funnel
-                    dataKey="value"
-                    data={[
-                      { name: "New", value: 4218, fill: "oklch(0.45 0.18 260)" },
-                      { name: "Confirmed", value: 3980, fill: "oklch(0.55 0.18 245)" },
-                      { name: "Ready for prep", value: 3640, fill: "oklch(0.6 0.16 230)" },
-                      { name: "Ready for delivery", value: 3210, fill: "oklch(0.65 0.14 215)" },
-                      { name: "On the way", value: 2840, fill: "oklch(0.7 0.13 205)" },
-                      { name: "Delivered", value: 2398, fill: "oklch(0.78 0.12 195)" },
-                    ]}
-                    isAnimationActive
-                  >
-                    <LabelList position="right" fill={ESPRESSO} stroke="none" dataKey="name" fontSize={11} />
-                  </Funnel>
-                </FunnelChart>
+                  <Legend wrapperStyle={{ fontSize: 11 }} />
+                  <Line type="monotone" name="GMV" dataKey="gmv" stroke={CORAL} strokeWidth={2} dot={{ r: 2 }} />
+                  <Line type="monotone" name="Delivered GMV (NMV)" dataKey="nmv" stroke={TEAL} strokeWidth={2} dot={{ r: 2 }} />
+                </LineChart>
               </ResponsiveContainer>
             </Card>
-            <Card title="Live orders by status" badge="1.2">
-              <ResponsiveContainer width="100%" height={220}>
+            <Card title="AOV — 14-Day Trend (AOV vs Delivered AOV)">
+              <ResponsiveContainer width="100%" height={240}>
+                <LineChart data={aovDualTrend}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
+                  <XAxis dataKey="d" tick={{ fontSize: 10 }} />
+                  <YAxis tick={{ fontSize: 10 }} />
+                  <Tooltip />
+                  <Legend wrapperStyle={{ fontSize: 11 }} />
+                  <Line type="monotone" name="AOV" dataKey="aov" stroke={CORAL} strokeWidth={2} dot={{ r: 2 }} />
+                  <Line type="monotone" name="Delivered AOV" dataKey="daov" stroke={GREEN} strokeWidth={2} dot={{ r: 2 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </Card>
+          </div>
+
+          <SubHeading className="mt-6">Operational Latency Monitoring</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <StatTile label="Supplier Confirmation Latency" value="18 min" sub="avg today" />
+            <StatTile label="Avg Time-to-Deliver from Pickup" value="42 min" sub="vs 14d avg 44 min" />
+            <StatTile label="Order Lead Time" value="1h 28m" sub="created → delivered" />
+            <StatTile label="Open Shipments" value="1,067" sub="in transit" />
+          </div>
+        </Section>
+
+        {/* ===================== SECTION 3 — PROCUREMENT & ORDER INTELLIGENCE ===================== */}
+        <Section title="3 · Procurement & Order Intelligence" caption="Marketplace transaction performance">
+          <SubHeading>Procurement KPIs</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
+            <StatTile label="Total Orders" value="4,218" />
+            <StatTile label="GMV" value="SAR 184,920" />
+            <StatTile label="Delivered GMV (NMV)" value="SAR 162,480" />
+            <StatTile label="AOV" value="SAR 43.85" />
+            <StatTile label="Delivered AOV" value="SAR 41.20" />
+            <StatTile label="COD / PP Ratio (Value)" value="38% / 62%" />
+            <StatTile label="Fulfillment Option Mix" value="71% / 29%" sub="supplier / pickup" />
+            <StatTile label="Fulfillment Rate" value="93.8%" />
+            <StatTile label="On-Time Delivery" value="87.4%" />
+          </div>
+
+          <SubHeading className="mt-6">Cancellation Intelligence</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <StatTile label="Total Cancelled Orders" value="262" accent />
+            <StatTile label="Cancelled GMV" value="SAR 11,840" accent />
+            <StatTile label="Customer Cancellations (Value)" value="SAR 7,420" />
+            <StatTile label="Supplier Cancellations (Value)" value="SAR 4,420" />
+          </div>
+
+          <SubHeading className="mt-6">Cancellation Analytics</SubHeading>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Card title="Cancellation Reasons — Customer">
+              <ResponsiveContainer width="100%" height={240}>
+                <BarChart data={cancelCustomer} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
+                  <XAxis type="number" tick={{ fontSize: 10 }} />
+                  <YAxis type="category" dataKey="name" width={140} tick={{ fontSize: 10 }} />
+                  <Tooltip />
+                  <Bar dataKey="v" fill={CORAL} radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </Card>
+            <Card title="Cancellation Reasons — Supplier">
+              <ResponsiveContainer width="100%" height={240}>
+                <BarChart data={cancelSupplier} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
+                  <XAxis type="number" tick={{ fontSize: 10 }} />
+                  <YAxis type="category" dataKey="name" width={140} tick={{ fontSize: 10 }} />
+                  <Tooltip />
+                  <Bar dataKey="v" fill={RED} radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </Card>
+          </div>
+
+          <SubHeading className="mt-6">Channel Intelligence · Channel Split</SubHeading>
+          <Card title="Web / iOS / Android">
+            <ResponsiveContainer width="100%" height={260}>
+              <PieChart>
+                <Tooltip />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Pie
+                  data={[
+                    { name: "Web", value: 1820 },
+                    { name: "iOS", value: 1480 },
+                    { name: "Android", value: 918 },
+                  ]}
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={2}
+                  dataKey="value"
+                  label={{ fontSize: 11 }}
+                >
+                  {PALETTE.slice(0, 3).map((c, i) => <Cell key={i} fill={c} />)}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+          </Card>
+        </Section>
+
+        {/* ===================== SECTION 4 — DELIVERY & FULFILLMENT INTELLIGENCE ===================== */}
+        <Section title="4 · Delivery & Fulfillment Intelligence" caption="Logistics efficiency and delivery operations">
+          <SubHeading>Delivery KPIs</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+            <StatTile label="Vehicles Out for Delivery" value="184" />
+            <StatTile label="Waiting for Pickup Orders" value="240" />
+            <StatTile label="Avg Pickup-to-Delivery" value="42 min" />
+            <StatTile label="Supplier Confirmation Latency" value="18 min" />
+            <StatTile label="Order Lead Time" value="1h 28m" />
+            <StatTile label="Open Shipments" value="1,067" />
+          </div>
+
+          <SubHeading className="mt-6">Fulfillment Intelligence · Fulfillment Option Mix</SubHeading>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Card title="Supplier Delivery vs Self Pickup">
+              <ResponsiveContainer width="100%" height={240}>
                 <PieChart>
                   <Tooltip />
+                  <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Pie
                     data={[
-                      { name: "New", value: 320 },
-                      { name: "Confirmed", value: 280 },
-                      { name: "Preparing", value: 240 },
-                      { name: "Out for delivery", value: 180 },
-                      { name: "Delivered", value: 420 },
-                      { name: "Cancelled", value: 60 },
+                      { name: "Supplier Delivery", value: 71 },
+                      { name: "Self Pickup", value: 29 },
                     ]}
-                    innerRadius={55}
-                    outerRadius={85}
-                    paddingAngle={2}
+                    innerRadius={60}
+                    outerRadius={100}
                     dataKey="value"
+                    label={{ fontSize: 11 }}
                   >
-                    {PALETTE.map((c, i) => <Cell key={i} fill={c} />)}
+                    <Cell fill={CORAL} />
+                    <Cell fill={TEAL} />
                   </Pie>
                 </PieChart>
               </ResponsiveContainer>
             </Card>
-            <Card title="GMV — 14-day trend" badge="1.3">
-              <ResponsiveContainer width="100%" height={220}>
-                <LineChart data={gmvTrend}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                  <XAxis dataKey="d" tick={{ fontSize: 10 }} />
-                  <YAxis tick={{ fontSize: 10 }} />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="v" stroke={CORAL} strokeWidth={2} dot={{ r: 3 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </Card>
-            <Card title="AOV — 14-day trend" badge="1.4">
-              <ResponsiveContainer width="100%" height={220}>
-                <LineChart data={aovTrend}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                  <XAxis dataKey="d" tick={{ fontSize: 10 }} />
-                  <YAxis tick={{ fontSize: 10 }} />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="v" stroke="oklch(0.55 0.15 160)" strokeWidth={2} dot={{ r: 3 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </Card>
-          </div>
-
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <Card title="Channel split (web/iOS/Android)" badge="1.5">
+            <Card title="Supplier Geography — Makkah vs Outside Makkah">
               <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={channelSplit}>
+                <BarChart data={[
+                  { name: "Makkah", v: 142 },
+                  { name: "Outside Makkah", v: 170 },
+                ]}>
                   <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                  <XAxis dataKey="h" tick={{ fontSize: 10 }} />
+                  <XAxis dataKey="name" tick={{ fontSize: 11 }} />
                   <YAxis tick={{ fontSize: 10 }} />
                   <Tooltip />
-                  <Bar dataKey="web" stackId="a" fill={PALETTE[1]} />
-                  <Bar dataKey="ios" stackId="a" fill={PALETTE[2]} />
-                  <Bar dataKey="android" stackId="a" fill={PALETTE[0]} />
+                  <Bar dataKey="v" fill={CORAL} radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </Card>
-            <Card title="Top branches by GMV today" badge="1.6">
+          </div>
+        </Section>
+
+        {/* ===================== SECTION 5 — MARKETPLACE ECOSYSTEM INTELLIGENCE ===================== */}
+        <Section title="5 · Marketplace Ecosystem Intelligence" caption="Platform growth and ecosystem participation">
+          <SubHeading>User Intelligence</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+            <StatTile label="Total Users" value="12,840" />
+            <StatTile label="Verified Users" value="9,612" />
+            <StatTile label="Unverified Users" value="3,228" accent />
+            <StatTile label="Active Users" value="1,842" />
+            <StatTile label="Repeat Purchase Rate" value="42.8%" />
+            <StatTile label="Promo Usage Today" value="528" />
+          </div>
+
+          <SubHeading className="mt-6">Supplier Ecosystem Intelligence</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+            <StatTile label="Total Suppliers" value="612" />
+            <StatTile label="Active Suppliers" value="312" />
+            <StatTile label="Total Supplier Referrals" value="48" />
+          </div>
+
+          <SubHeading className="mt-6">Top Marketplace Participants</SubHeading>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <Card title="Top 4 Suppliers (Value)">
+              <DataTable
+                columns={["#", "Supplier", "GMV (SAR)"]}
+                rows={[
+                  ["1", "Almarai", "48,200"],
+                  ["2", "Sadia", "38,400"],
+                  ["3", "Nadec", "31,200"],
+                  ["4", "Goody", "24,800"],
+                ]}
+              />
+            </Card>
+            <Card title="Top 4 Customers (Value)">
+              <DataTable
+                columns={["#", "Customer", "GMV (SAR)"]}
+                rows={[
+                  ["1", "Almarai Co", "42,180"],
+                  ["2", "Panda Express", "34,920"],
+                  ["3", "Tamimi Markets", "28,640"],
+                  ["4", "Bin Dawood", "22,140"],
+                ]}
+              />
+            </Card>
+            <Card title="Top Branches by GMV">
               <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={topBranches} layout="vertical">
+                <BarChart data={topBranches.slice(0, 6)} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
                   <XAxis type="number" tick={{ fontSize: 10 }} />
                   <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 10 }} />
@@ -238,297 +409,243 @@ function DashboardPage() {
                 </BarChart>
               </ResponsiveContainer>
             </Card>
-            <Card title="Cancellation reasons today" badge="1.7">
-              <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={cancelReasons} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                  <XAxis type="number" tick={{ fontSize: 10 }} />
-                  <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 10 }} />
-                  <Tooltip />
-                  <Bar dataKey="v" fill="oklch(0.6 0.2 25)" radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+          </div>
+        </Section>
+
+        {/* ===================== SECTION 6 — PRODUCT & CATEGORY INTELLIGENCE ===================== */}
+        <Section title="6 · Product & Category Intelligence" caption="Product movement and procurement trends">
+          <SubHeading>Product Intelligence</SubHeading>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <Card title="Top Categories (Value)">
+              <DataTable columns={["#", "Category", "GMV"]} rows={[
+                ["1", "Dairy", "62,180"],
+                ["2", "Beverages", "48,420"],
+                ["3", "Frozen", "32,140"],
+                ["4", "Bakery", "24,820"],
+                ["5", "Snacks", "18,640"],
+              ]} />
+            </Card>
+            <Card title="Top Subcategories (Value)">
+              <DataTable columns={["#", "Subcategory", "GMV"]} rows={[
+                ["1", "Fresh Milk", "28,420"],
+                ["2", "Juices", "22,140"],
+                ["3", "Frozen Chicken", "18,820"],
+                ["4", "Yoghurt", "14,640"],
+                ["5", "Soft Drinks", "12,180"],
+              ]} />
+            </Card>
+            <Card title="Top Products (Value)">
+              <DataTable columns={["#", "Product", "GMV"]} rows={[
+                ["1", "Almarai Full Cream 1L", "18,200"],
+                ["2", "Nadec Juice 1L", "14,840"],
+                ["3", "Sadia Chicken 1.2kg", "12,640"],
+                ["4", "Goody Tuna 185g", "9,420"],
+                ["5", "AlSafi Yoghurt 170g", "7,180"],
+              ]} />
+            </Card>
+            <Card title="Top Brands (Value)">
+              <DataTable columns={["#", "Brand", "GMV"]} rows={[
+                ["1", "Almarai", "62,400"],
+                ["2", "Nadec", "38,200"],
+                ["3", "Sadia", "32,140"],
+                ["4", "Goody", "21,640"],
+                ["5", "AlSafi", "16,820"],
+              ]} />
+            </Card>
+          </div>
+
+          <SubHeading className="mt-6">Demand Intelligence</SubHeading>
+          <div
+            className="rounded-2xl border p-5 shadow-sm"
+            style={{
+              background: "linear-gradient(135deg, oklch(0.96 0.06 40), oklch(1 0 0))",
+              borderColor: "oklch(0.55 0.2 25 / 0.35)",
+            }}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full" style={{ background: "oklch(0.95 0.05 25)" }}>
+                  <AlertTriangle className="h-6 w-6" style={{ color: RED }} />
+                </div>
+                <div>
+                  <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: RED }}>
+                    Unmet Demand Signal
+                  </div>
+                  <div className="text-sm font-medium" style={{ color: ESPRESSO }}>
+                    Unavailable Item Requests Today
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-4xl font-bold" style={{ color: RED }}>84</div>
+                <div className="text-[11px]" style={{ color: COCOA }}>requests · review for sourcing</div>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* ===================== SECTION 7 — INVOICE DISCLOSURE & TRANSPARENCY ===================== */}
+        <Section title="7 · Procurement Transparency Command Center" caption="Invoice disclosure & transparency monitoring">
+          <SubHeading>Disclosure KPIs</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+            <StatTile label="Total Disclosures" value="2,184" />
+            <StatTile label="Invoices Disclosed" value="1,962" />
+            <StatTile label="Value Disclosed" value="SAR 4.82M" />
+            <StatTile label="Disclosure : Invoice Ratio" value="89.8%" />
+            <StatTile label="Suppliers (Disclosed)" value="248" />
+            <StatTile label="Customers (Disclosed)" value="612" />
+          </div>
+
+          <SubHeading className="mt-6">Disclosure Trends</SubHeading>
+          <Card title="Disclosures · Invoice Count · Invoice Value">
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={disclosureTrend}>
+                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
+                <XAxis dataKey="d" tick={{ fontSize: 10 }} />
+                <YAxis yAxisId="left" tick={{ fontSize: 10 }} />
+                <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10 }} />
+                <Tooltip />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Line yAxisId="left" type="monotone" name="Disclosures" dataKey="disclosures" stroke={CORAL} strokeWidth={2} dot={{ r: 2 }} />
+                <Line yAxisId="left" type="monotone" name="Invoice Count" dataKey="invoices" stroke={TEAL} strokeWidth={2} dot={{ r: 2 }} />
+                <Line yAxisId="right" type="monotone" name="Invoice Value (SAR k)" dataKey="value" stroke={GREEN} strokeWidth={2} dot={{ r: 2 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </Card>
+
+          <SubHeading className="mt-6">Disclosure Product Intelligence</SubHeading>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <Card title="Top Categories — Invoices Disclosed">
+              <DataTable columns={["#", "Category", "Value"]} rows={[
+                ["1", "Dairy", "1.42M"],
+                ["2", "Beverages", "0.98M"],
+                ["3", "Frozen", "0.72M"],
+                ["4", "Bakery", "0.48M"],
+              ]} />
+            </Card>
+            <Card title="Top Subcategories — Invoices Disclosed">
+              <DataTable columns={["#", "Subcategory", "Value"]} rows={[
+                ["1", "Fresh Milk", "0.64M"],
+                ["2", "Juices", "0.48M"],
+                ["3", "Frozen Chicken", "0.38M"],
+                ["4", "Yoghurt", "0.32M"],
+              ]} />
+            </Card>
+            <Card title="Top Products — Invoices Disclosed">
+              <DataTable columns={["#", "Product", "Value"]} rows={[
+                ["1", "Almarai Full Cream 1L", "0.42M"],
+                ["2", "Nadec Juice 1L", "0.32M"],
+                ["3", "Sadia Chicken 1.2kg", "0.28M"],
+                ["4", "Goody Tuna 185g", "0.21M"],
+              ]} />
+            </Card>
+            <Card title="Top Brands — Invoices Disclosed">
+              <DataTable columns={["#", "Brand", "Value"]} rows={[
+                ["1", "Almarai", "1.42M"],
+                ["2", "Nadec", "0.84M"],
+                ["3", "Sadia", "0.72M"],
+                ["4", "Goody", "0.48M"],
+              ]} />
             </Card>
           </div>
         </Section>
 
-        {/* Delivery & Fulfillment */}
-        <Section title="Delivery & Fulfillment">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
-            <StatTile label="Picked up" value="142" />
-            <StatTile label="In transit" value="318" />
-            <StatTile label="Arrived hub" value="96" />
-            <StatTile label="Out for delivery" value="412" />
-            <StatTile label="Failed attempt" value="47" accent />
+        {/* ===================== SECTION 8 — GEOGRAPHIC INTELLIGENCE ===================== */}
+        <Section title="8 · Geographic Intelligence" caption="Regional procurement and logistics visibility">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <MapCard title="Pickup Locations Map" total="142" label="Total Pickup Locations" tone={CORAL} />
+            <MapCard title="Delivery Locations Map" total="2,184" label="Total Delivery Locations" tone={TEAL} />
           </div>
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <Card title="On-time delivery rate today" badge="2.2">
-              <div className="flex items-end justify-between">
-                <span className="text-4xl font-bold" style={{ color: ESPRESSO }}>87.4%</span>
-                <span className="text-xs" style={{ color: COCOA }}>target 90%</span>
-              </div>
-              <div className="mt-4 h-3 w-full rounded-full" style={{ background: "oklch(0.92 0.02 40)" }}>
-                <div className="h-3 rounded-full" style={{ width: "87.4%", background: "var(--gradient-brand, oklch(0.68 0.18 38))" }} />
-              </div>
-            </Card>
-            <Card title="Avg time-to-deliver today" badge="2.5">
-              <div className="flex items-baseline justify-between">
-                <span className="text-4xl font-bold">42 min</span>
-                <span className="text-xs" style={{ color: COCOA }}>vs 14d avg 44 min</span>
-              </div>
-              <ResponsiveContainer width="100%" height={120}>
-                <AreaChart data={deliverTime}>
-                  <Area type="monotone" dataKey="v" stroke={CORAL} fill={CORAL_SOFT} fillOpacity={0.3} />
+
+          <SubHeading className="mt-6">District Intelligence · Top Districts by GMV (Customer Areas)</SubHeading>
+          <Card title="Heatmap — Top Districts">
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-7">
+              {topDistricts.map((d) => {
+                const intensity = d.v / topDistricts[0].v;
+                return (
+                  <div
+                    key={d.name}
+                    className="flex flex-col gap-1 rounded-xl p-3"
+                    style={{
+                      background: `oklch(0.68 ${0.06 + intensity * 0.14} 38 / ${0.18 + intensity * 0.6})`,
+                      color: intensity > 0.6 ? "white" : ESPRESSO,
+                    }}
+                  >
+                    <span className="text-[10px] font-semibold uppercase tracking-wider opacity-80">{d.name}</span>
+                    <span className="text-lg font-bold">SAR {d.v.toLocaleString()}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </Card>
+        </Section>
+
+        {/* ===================== SECTION 9 — EXECUTIVE INTELLIGENCE ===================== */}
+        <Section title="9 · Executive Intelligence" caption="Leadership-level strategic monitoring">
+          <SubHeading>Executive KPIs</SubHeading>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <KpiCard label="Today vs Yesterday GMV" value="SAR 184,920" delta={12.4} spark={sparkUp} />
+            <KpiCard label="GMV Growth %" value="+12.4%" delta={12.4} spark={sparkUp} />
+            <KpiCard label="Delivery Efficiency" value="87.4%" delta={1.2} spark={sparkUp} />
+            <KpiCard label="Procurement Velocity" value="1.42x" delta={4.8} spark={sparkUp} />
+          </div>
+
+          <SubHeading className="mt-6">Strategic Analytics</SubHeading>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Card title="Procurement Trend">
+              <ResponsiveContainer width="100%" height={240}>
+                <AreaChart data={procurementTrend}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
+                  <XAxis dataKey="d" tick={{ fontSize: 10 }} />
+                  <YAxis tick={{ fontSize: 10 }} />
+                  <Tooltip />
+                  <Area type="monotone" dataKey="v" stroke={CORAL} fill={CORAL_SOFT} fillOpacity={0.35} />
                 </AreaChart>
               </ResponsiveContainer>
             </Card>
-            <Card title="Pickup task health" badge="2.9">
-              <div className="flex items-baseline justify-between">
-                <span className="text-4xl font-bold" style={{ color: "oklch(0.55 0.2 25)" }}>17</span>
-                <span className="text-xs" style={{ color: COCOA }}>of 142 overdue</span>
-              </div>
-              <ul className="mt-3 space-y-1.5 text-xs" style={{ color: COCOA }}>
-                <li className="flex justify-between"><span>PCK-3821 · Olaya</span><span style={{ color: "oklch(0.55 0.2 25)" }}>+18m</span></li>
-                <li className="flex justify-between"><span>PCK-3814 · Tahlia</span><span style={{ color: "oklch(0.55 0.2 25)" }}>+14m</span></li>
-                <li className="flex justify-between"><span>PCK-3809 · Malaz</span><span style={{ color: "oklch(0.55 0.2 25)" }}>+9m</span></li>
-                <li className="flex justify-between"><span>PCK-3802 · Corniche</span><span style={{ color: "oklch(0.55 0.2 25)" }}>+6m</span></li>
-              </ul>
-            </Card>
-          </div>
-          <Card title="Late shipments — alerts" badge="2.3" className="mt-4">
-            <DataTable
-              columns={["Shipment", "Branch", "Customer", "Driver", "Overdue (min)"]}
-              rows={[
-                ["SHP-48211", "Riyadh — Olaya", "Almarai Co", "Khalid A.", "124"],
-                ["SHP-48137", "Jeddah — Tahlia", "Panda Express", "Saeed M.", "92"],
-                ["SHP-48092", "Dammam — Corniche", "Tamimi Mkt", "Faisal R.", "78"],
-                ["SHP-48065", "Riyadh — Malaz", "Bin Dawood", "Omar Z.", "64"],
-                ["SHP-48041", "Mecca — Aziziyah", "LuLu Hyper", "Yousef K.", "41"],
-                ["SHP-48022", "Jeddah — Rawdah", "Carrefour", "Hamad S.", "33"],
-              ]}
-              lastColAccent
-            />
-          </Card>
-        </Section>
-
-        {/* Payments, Refunds & Wallets */}
-        <Section title="Payments, Refunds & Wallets">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <Card title="Payment success rate trend" badge="3.1">
-              <ResponsiveContainer width="100%" height={220}>
-                <LineChart data={paymentSuccess}>
+            <Card title="Supplier Concentration (Top 5 share)">
+              <ResponsiveContainer width="100%" height={240}>
+                <BarChart data={supplierConcentration} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                  <XAxis dataKey="d" tick={{ fontSize: 10 }} />
-                  <YAxis domain={[85, 100]} tick={{ fontSize: 10 }} />
+                  <XAxis type="number" tick={{ fontSize: 10 }} />
+                  <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 10 }} />
                   <Tooltip />
-                  <Line type="monotone" dataKey="v" stroke="oklch(0.55 0.15 160)" strokeWidth={2} dot={{ r: 3 }} />
-                </LineChart>
+                  <Bar dataKey="v" fill={TEAL} radius={[0, 4, 4, 0]} />
+                </BarChart>
               </ResponsiveContainer>
             </Card>
-            <Card title="Payment status breakdown" badge="3.2">
-              <ResponsiveContainer width="100%" height={220}>
-                <PieChart>
-                  <Tooltip />
-                  <Pie
-                    data={[
-                      { name: "Approved", value: 2840 },
-                      { name: "Attempted", value: 320 },
-                      { name: "Declined", value: 160 },
-                      { name: "Pending 3DS", value: 90 },
-                      { name: "Processed", value: 540 },
-                      { name: "Not attempted", value: 80 },
-                    ]}
-                    innerRadius={55}
-                    outerRadius={85}
-                    dataKey="value"
-                    paddingAngle={2}
-                  >
-                    {PALETTE.map((c, i) => <Cell key={i} fill={c} />)}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-            </Card>
-            <div className="grid grid-cols-1 gap-4">
-              <Card title="3DS stuck-in-pending" badge="3.4">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-5xl font-bold" style={{ color: "oklch(0.55 0.2 60)" }}>23</span>
-                  <div className="text-right text-xs" style={{ color: COCOA }}>
-                    <div>stuck &gt; 15 min</div>
-                    <div>needs investigation</div>
-                  </div>
-                </div>
-              </Card>
-              <Card title="Wallet activity today" badge="3.9">
-                <div className="flex justify-between text-sm">
-                  <div>
-                    <div style={{ color: COCOA }} className="text-xs">Transactions</div>
-                    <div className="text-2xl font-bold">312</div>
-                  </div>
-                  <div>
-                    <div style={{ color: COCOA }} className="text-xs">Net flow</div>
-                    <div className="text-2xl font-bold">SAR 18,420</div>
-                  </div>
-                </div>
-              </Card>
-            </div>
-          </div>
-
-          <Card title="Declined payments — alerts" badge="3.3" className="mt-4">
-            <DataTable
-              columns={["Payment", "Customer", "Reason", "Amount (SAR)"]}
-              rows={[
-                ["PAY-9821", "Modern Trading", "Insufficient funds", "4,820"],
-                ["PAY-9817", "Gulf Foods", "Card declined", "3,640"],
-                ["PAY-9802", "AlBaik", "Expired card", "2,980"],
-                ["PAY-9794", "Herfy", "Limit exceeded", "1,820"],
-                ["PAY-9788", "Tamimi Mkt", "Invalid CVV", "1,240"],
-              ]}
-            />
-          </Card>
-
-          <Card title="Payment method performance" badge="3.6" className="mt-4">
-            <DataTable
-              columns={["#", "Method", "Attempts", "Success %", "GMV"]}
-              rows={[
-                ["1", "Mada", "1,820", "96.2%", "84,210"],
-                ["2", "Visa", "920", "92.4%", "41,840"],
-                ["3", "Mastercard", "640", "91.8%", "28,960"],
-                ["4", "Apple Pay", "380", "98.1%", "19,420"],
-                ["5", "STC Pay", "240", "94.6%", "10,490"],
-              ]}
-            />
-          </Card>
-        </Section>
-
-        {/* Suppliers, Branches & Inventory */}
-        <Section title="Suppliers, Branches & Inventory">
-          <Card title="Top suppliers today" badge="4.1">
-            <DataTable
-              columns={["#", "Supplier", "Orders", "Fill %", "GMV"]}
-              rows={[
-                ["1", "Almarai", "412", "96.4%", "48,200"],
-                ["2", "Sadia", "318", "94.1%", "38,400"],
-                ["3", "Nadec", "284", "91.8%", "31,200"],
-                ["4", "Goody", "198", "93.2%", "24,800"],
-                ["5", "AlSafi", "162", "89.4%", "19,600"],
-                ["6", "Halwani", "124", "92.1%", "14,200"],
-              ]}
-            />
-          </Card>
-
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Card title="Branch availability" badge="4.2">
-              <DataTable
-                columns={["Branch", "Status", "Reason"]}
-                rows={[
-                  ["Riyadh — Olaya", "Active", "—"],
-                  ["Jeddah — Tahlia", "Active", "—"],
-                  ["Riyadh — Malaz", "Inactive", "Staff shortage"],
-                  ["Dammam — Corniche", "Active", "—"],
-                  ["Jeddah — Rawdah", "Inactive", "Renovation"],
-                  ["Mecca — Aziziyah", "Active", "—"],
-                  ["Taif — Shifa", "Inactive", "Power outage"],
-                ]}
-                statusCol={1}
-              />
-            </Card>
-            <Card title="Underperforming branches" badge="4.3">
-              <DataTable
-                columns={["Branch", "Cancel %", "Confirm lag (min)"]}
-                rows={[
-                  ["Taif — Shifa", "14.2%", "38"],
-                  ["Medina — Central", "11.8%", "29"],
-                  ["Khobar — North", "9.4%", "24"],
-                ]}
-              />
-            </Card>
-          </div>
-
-          <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-            <StatTile label="Stockout cancellations" value="142" sub="today" accent />
-            <StatTile label="Unavailable item requests" value="84" sub="today" />
-            <StatTile label="Open POs (SaryDirect)" value="142" sub="fill rate 91.8%" />
-            <StatTile label="Supplier confirm latency" value="18 min" sub="avg today" />
-          </div>
-        </Section>
-
-        {/* Customers, Promo & Growth */}
-        <Section title="Customers, Promo & Growth">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <StatTile label="New customers" value="184" sub="signups today" />
-            <StatTile label="Active businesses (DAU)" value="1,842" />
-            <StatTile label="Repeat purchase rate" value="42.8%" />
-            <StatTile label="Referral signups" value="38" sub="today" />
-          </div>
-
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Card title="Business segment mix" badge="5.4">
+            <Card title="Buyer Concentration (Top 5 share)">
               <ResponsiveContainer width="100%" height={240}>
-                <PieChart>
-                  <Tooltip />
-                  <Pie
-                    data={[
-                      { name: "Restaurants", value: 820 },
-                      { name: "Grocery", value: 540 },
-                      { name: "Cafes", value: 320 },
-                      { name: "Convenience", value: 220 },
-                      { name: "Other", value: 140 },
-                    ]}
-                    outerRadius={90}
-                    dataKey="value"
-                    label={{ fontSize: 10 }}
-                  >
-                    {PALETTE.map((c, i) => <Cell key={i} fill={c} />)}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-            </Card>
-            <Card title="Top cities/districts by GMV" badge="5.8">
-              <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={topCities} layout="vertical">
+                <BarChart data={buyerConcentration} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
                   <XAxis type="number" tick={{ fontSize: 10 }} />
                   <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 10 }} />
                   <Tooltip />
-                  <Bar dataKey="v" fill={CORAL} radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="v" fill={GREEN} radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </Card>
+            <Card title="Regional Demand Heatmap">
+              <div className="grid grid-cols-3 gap-2">
+                {regionalDemand.map((r) => {
+                  const intensity = r.v / 100;
+                  return (
+                    <div
+                      key={r.name}
+                      className="flex flex-col items-center justify-center rounded-xl p-4"
+                      style={{
+                        background: `oklch(0.55 ${0.08 + intensity * 0.12} 200 / ${0.2 + intensity * 0.6})`,
+                        color: intensity > 0.55 ? "white" : ESPRESSO,
+                      }}
+                    >
+                      <span className="text-[10px] font-semibold uppercase tracking-wider opacity-80">{r.name}</span>
+                      <span className="mt-1 text-xl font-bold">{r.v}%</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </Card>
           </div>
-
-          <Card title="Promo ROI leaderboard" badge="5.6" className="mt-4">
-            <DataTable
-              columns={["#", "Code", "Uses", "Discount", "GMV influenced", "ROAS"]}
-              rows={[
-                ["1", "WELCOME20", "184", "4,820", "38,400", "7.97x"],
-                ["2", "RAMADAN15", "142", "3,640", "28,960", "7.96x"],
-                ["3", "FREESHIP", "98", "1,820", "19,420", "10.67x"],
-                ["4", "VIP10", "64", "1,240", "14,200", "11.45x"],
-                ["5", "BULK25", "42", "980", "9,800", "10x"],
-              ]}
-            />
-          </Card>
-        </Section>
-
-        {/* Quality & Reviews */}
-        <Section title="Quality & Reviews">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <StatTile label="CSAT today" value="4.62" sub="out of 5" />
-            <StatTile label="Perfect match rate" value="92.4%" sub="of delivered" />
-            <StatTile label="Quality check pass rate" value="96.1%" sub="of delivered" />
-            <StatTile label="Ready-on-time rate" value="88.7%" sub="of delivered" />
-          </div>
-          <Card title="Recent ops feedback (low scores)" badge="6.5" className="mt-4">
-            <DataTable
-              columns={["Feedback", "Branch", "Score", "Comment"]}
-              rows={[
-                ["FB-2841", "Taif — Shifa", "2/5", "Long wait at pickup"],
-                ["FB-2837", "Medina — Central", "2/5", "Items missing from order"],
-                ["FB-2832", "Khobar — North", "3/5", "Slow confirmation"],
-                ["FB-2828", "Jeddah — Tahlia", "3/5", "Driver communication"],
-              ]}
-            />
-          </Card>
         </Section>
       </div>
     </main>
@@ -540,9 +657,8 @@ function DashboardPage() {
 function Section({ title, caption, children }: { title: string; caption?: string; children: React.ReactNode }) {
   return (
     <section className="space-y-4">
-      <div className="flex items-end justify-between border-b pb-2"
-        style={{ borderColor: "oklch(0.55 0.1 40 / 0.15)" }}>
-        <h2 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: COCOA }}>
+      <div className="flex items-end justify-between border-b pb-2" style={{ borderColor: "oklch(0.55 0.1 40 / 0.15)" }}>
+        <h2 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: ESPRESSO }}>
           {title}
         </h2>
         {caption && <span className="text-[11px]" style={{ color: COCOA }}>{caption}</span>}
@@ -552,14 +668,19 @@ function Section({ title, caption, children }: { title: string; caption?: string
   );
 }
 
+function SubHeading({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <h3 className={`text-[11px] font-semibold uppercase tracking-wider ${className}`} style={{ color: COCOA }}>
+      {children}
+    </h3>
+  );
+}
+
 function Card({ title, badge, children, className = "" }: { title: string; badge?: string; children: React.ReactNode; className?: string }) {
   return (
     <div
       className={`rounded-2xl border p-4 shadow-sm ${className}`}
-      style={{
-        background: "oklch(1 0 0 / 0.85)",
-        borderColor: "oklch(0.55 0.1 40 / 0.15)",
-      }}
+      style={{ background: "oklch(1 0 0 / 0.85)", borderColor: "oklch(0.55 0.1 40 / 0.15)" }}
     >
       <div className="mb-3 flex items-center justify-between">
         <h3 className="text-sm font-semibold" style={{ color: ESPRESSO }}>{title}</h3>
@@ -570,10 +691,32 @@ function Card({ title, badge, children, className = "" }: { title: string; badge
   );
 }
 
+function MapCard({ title, total, label, tone }: { title: string; total: string; label: string; tone: string }) {
+  return (
+    <div
+      className="relative overflow-hidden rounded-2xl border p-5 shadow-sm"
+      style={{ background: "oklch(1 0 0 / 0.85)", borderColor: "oklch(0.55 0.1 40 / 0.15)", minHeight: 220 }}
+    >
+      <div
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: `radial-gradient(circle at 20% 30%, ${tone} 1px, transparent 1.5px), radial-gradient(circle at 70% 60%, ${tone} 1px, transparent 1.5px), radial-gradient(circle at 50% 80%, ${tone} 1px, transparent 1.5px), radial-gradient(circle at 85% 20%, ${tone} 1px, transparent 1.5px), radial-gradient(circle at 30% 70%, ${tone} 1px, transparent 1.5px)`,
+          backgroundSize: "60px 60px, 80px 80px, 100px 100px, 70px 70px, 90px 90px",
+        }}
+      />
+      <div className="relative">
+        <h3 className="text-sm font-semibold" style={{ color: ESPRESSO }}>{title}</h3>
+        <div className="mt-8 text-4xl font-bold" style={{ color: tone }}>{total}</div>
+        <div className="text-[11px]" style={{ color: COCOA }}>{label}</div>
+      </div>
+    </div>
+  );
+}
+
 function KpiCard({ label, value, delta, negative, spark }: { label: string; value: string; delta: number; negative?: boolean; spark: { d: string; v: number }[] }) {
   const isUp = delta >= 0;
   const isGood = negative ? !isUp : isUp;
-  const color = isGood ? "oklch(0.55 0.15 160)" : "oklch(0.55 0.2 25)";
+  const color = isGood ? GREEN : RED;
   const Arrow = isUp ? TrendingUp : TrendingDown;
   return (
     <div
@@ -585,7 +728,7 @@ function KpiCard({ label, value, delta, negative, spark }: { label: string; valu
     >
       <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: COCOA }}>{label}</span>
       <div className="mt-1 flex items-baseline justify-between gap-2">
-        <span className="text-xl font-bold leading-tight" style={{ color: negative ? "oklch(0.55 0.2 25)" : ESPRESSO }}>{value}</span>
+        <span className="text-xl font-bold leading-tight" style={{ color: negative ? RED : ESPRESSO }}>{value}</span>
         <span className="inline-flex items-center gap-0.5 text-[11px] font-medium" style={{ color }}>
           <Arrow className="h-3 w-3" />
           {Math.abs(delta)}%
@@ -610,7 +753,7 @@ function StatTile({ label, value, sub, accent }: { label: string; value: string;
       }}
     >
       <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: COCOA }}>{label}</div>
-      <div className="mt-1 text-2xl font-bold" style={{ color: accent ? "oklch(0.55 0.2 25)" : ESPRESSO }}>{value}</div>
+      <div className="mt-1 text-2xl font-bold" style={{ color: accent ? RED : ESPRESSO }}>{value}</div>
       {sub && <div className="text-[11px]" style={{ color: COCOA }}>{sub}</div>}
     </div>
   );
@@ -637,7 +780,7 @@ function DataTable({ columns, rows, lastColAccent, statusCol }: { columns: strin
                 const isLast = ci === row.length - 1;
                 const isStatus = statusCol === ci;
                 let style: React.CSSProperties = { color: ESPRESSO };
-                if (isLast && lastColAccent) style = { color: "oklch(0.55 0.2 25)", fontWeight: 600 };
+                if (isLast && lastColAccent) style = { color: RED, fontWeight: 600 };
                 if (isStatus) {
                   const ok = cell === "Active";
                   return (
@@ -645,7 +788,7 @@ function DataTable({ columns, rows, lastColAccent, statusCol }: { columns: strin
                       <span className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs"
                         style={{
                           background: ok ? "oklch(0.95 0.05 160)" : "oklch(0.95 0.05 25)",
-                          color: ok ? "oklch(0.45 0.15 160)" : "oklch(0.55 0.2 25)",
+                          color: ok ? "oklch(0.45 0.15 160)" : RED,
                         }}>
                         <span className="h-1.5 w-1.5 rounded-full" style={{ background: ok ? "oklch(0.6 0.18 160)" : "oklch(0.6 0.2 25)" }} />
                         {cell}
@@ -668,17 +811,35 @@ function DataTable({ columns, rows, lastColAccent, statusCol }: { columns: strin
 const sparkUp = Array.from({ length: 14 }, (_, i) => ({ d: `D${i + 1}`, v: 40 + Math.sin(i / 2) * 6 + i * 1.2 }));
 const sparkDown = Array.from({ length: 14 }, (_, i) => ({ d: `D${i + 1}`, v: 60 + Math.cos(i / 2) * 6 - i * 0.8 }));
 
-const gmvTrend = [150000, 158000, 162000, 170000, 168000, 175000, 172000, 180000, 178000, 176000, 182000, 184000, 186000, 188000].map((v, i) => ({ d: `D${i + 1}`, v }));
-const aovTrend = [40, 41, 41.5, 42, 42.8, 43, 43.2, 43.5, 43.8, 44, 44.2, 44.6, 44.9, 45].map((v, i) => ({ d: `D${i + 1}`, v }));
-const deliverTime = [44, 45, 43, 44, 42, 43, 41, 42, 43, 42, 41, 42, 42, 42].map((v, i) => ({ d: `D${i + 1}`, v }));
-const paymentSuccess = [92.4, 93.1, 93.8, 94, 93.6, 94.2, 94.5, 94.1, 94.6, 94.8, 94.4, 94.7, 94.6, 94.6].map((v, i) => ({ d: `D${i + 1}`, v }));
-
-const channelSplit = Array.from({ length: 12 }, (_, i) => ({
-  h: `${i * 2}:00`,
-  web: 80 + Math.round(Math.sin(i / 2) * 30 + 40),
-  ios: 90 + Math.round(Math.cos(i / 2) * 30 + 40),
-  android: 60 + Math.round(Math.sin(i / 3) * 25 + 30),
+const gmvDualTrend = [150, 158, 162, 170, 168, 175, 172, 180, 178, 176, 182, 184, 186, 188].map((v, i) => ({
+  d: `D${i + 1}`,
+  gmv: v * 1000,
+  nmv: Math.round(v * 1000 * (0.84 + Math.sin(i / 3) * 0.03)),
 }));
+
+const aovDualTrend = [40, 41, 41.5, 42, 42.8, 43, 43.2, 43.5, 43.8, 44, 44.2, 44.6, 44.9, 45].map((v, i) => ({
+  d: `D${i + 1}`,
+  aov: v,
+  daov: +(v * 0.93).toFixed(2),
+}));
+
+const cancelCustomer = [
+  { name: "Changed mind", v: 64 },
+  { name: "Wrong address", v: 38 },
+  { name: "Late delivery", v: 28 },
+  { name: "Found cheaper", v: 22 },
+  { name: "Payment failed", v: 18 },
+  { name: "Other", v: 8 },
+];
+
+const cancelSupplier = [
+  { name: "Out of stock", v: 92 },
+  { name: "Capacity exceeded", v: 36 },
+  { name: "Pricing error", v: 22 },
+  { name: "Quality issue", v: 14 },
+  { name: "Delivery zone", v: 10 },
+  { name: "Other", v: 6 },
+];
 
 const topBranches = [
   { name: "Riyadh — Olaya", gmv: 28400 },
@@ -688,27 +849,55 @@ const topBranches = [
   { name: "Jeddah — Rawdah", gmv: 16200 },
   { name: "Mecca — Aziziyah", gmv: 14800 },
   { name: "Khobar — North", gmv: 12400 },
-  { name: "Riyadh — Sulaymaniyah", gmv: 10800 },
   { name: "Medina — Central", gmv: 9200 },
-  { name: "Taif — Shifa", gmv: 7400 },
 ];
 
-const cancelReasons = [
-  { name: "Out of stock", v: 92 },
-  { name: "Late delivery", v: 64 },
-  { name: "Wrong address", v: 38 },
-  { name: "Customer changed mind", v: 28 },
-  { name: "Payment failed", v: 18 },
-  { name: "Duplicate order", v: 12 },
-  { name: "Other", v: 8 },
+const disclosureTrend = Array.from({ length: 14 }, (_, i) => ({
+  d: `D${i + 1}`,
+  disclosures: 120 + Math.round(Math.sin(i / 2) * 18 + i * 4),
+  invoices: 100 + Math.round(Math.cos(i / 2) * 14 + i * 3.5),
+  value: 240 + Math.round(Math.sin(i / 3) * 40 + i * 8),
+}));
+
+const topDistricts = [
+  { name: "Olaya", v: 58000 },
+  { name: "Rawdah", v: 46000 },
+  { name: "Malaz", v: 38000 },
+  { name: "Shati", v: 31000 },
+  { name: "Aziziyah", v: 26000 },
+  { name: "Corniche", v: 22000 },
+  { name: "Tahlia", v: 18000 },
 ];
 
-const topCities = [
-  { name: "Riyadh — Olaya", v: 58000 },
-  { name: "Jeddah — Rawdah", v: 46000 },
-  { name: "Riyadh — Malaz", v: 38000 },
-  { name: "Dammam — Shati", v: 31000 },
-  { name: "Mecca — Aziziyah", v: 26000 },
-  { name: "Khobar — North", v: 21000 },
-  { name: "Medina — Central", v: 16000 },
+const procurementTrend = Array.from({ length: 12 }, (_, i) => ({
+  d: `W${i + 1}`,
+  v: 120 + Math.round(Math.sin(i / 2) * 15 + i * 6),
+}));
+
+const supplierConcentration = [
+  { name: "Almarai", v: 26 },
+  { name: "Nadec", v: 18 },
+  { name: "Sadia", v: 14 },
+  { name: "Goody", v: 10 },
+  { name: "AlSafi", v: 8 },
+];
+
+const buyerConcentration = [
+  { name: "Almarai Co", v: 18 },
+  { name: "Panda Express", v: 14 },
+  { name: "Tamimi Mkt", v: 11 },
+  { name: "Bin Dawood", v: 9 },
+  { name: "Carrefour", v: 7 },
+];
+
+const regionalDemand = [
+  { name: "Riyadh", v: 92 },
+  { name: "Jeddah", v: 78 },
+  { name: "Makkah", v: 64 },
+  { name: "Dammam", v: 58 },
+  { name: "Medina", v: 44 },
+  { name: "Khobar", v: 38 },
+  { name: "Taif", v: 28 },
+  { name: "Abha", v: 22 },
+  { name: "Tabuk", v: 18 },
 ];
