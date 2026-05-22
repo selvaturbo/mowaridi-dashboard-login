@@ -10,7 +10,7 @@ type Lang = "en" | "ar";
 const translations = {
   en: {
     brand: "Mowaridi",
-    sub: "موردي · Dashboards",
+    sub: "Dashboards",
     tag: "AI-Powered Intelligence",
     heading: (
       <>
