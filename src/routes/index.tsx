@@ -126,7 +126,7 @@ function DashboardPage() {
       <div className="mx-auto max-w-[1600px] space-y-10 px-6 py-8">
         {/* ===================== SECTION 1 — WAR ROOM OVERVIEW ===================== */}
         <Section title="War Room Overview" caption="Top fold — always visible on TV">
-          <SubHeading>1A · Live Operations Health</SubHeading>
+          <SubHeading<Live Operations Health</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <KpiCard label="Today's GMV" value="SAR 184,920" delta={12.4} spark={sparkUp} />
             <KpiCard label="Today's Orders" value="4,218" delta={5.1} spark={sparkUp} />
@@ -136,7 +136,7 @@ function DashboardPage() {
             <KpiCard label="Vehicles Out for Delivery" value="184" delta={4.0} spark={sparkUp} />
           </div>
 
-          <SubHeading className="mt-6">1B · Marketplace Health</SubHeading>
+          <SubHeading className="mt-6"<Marketplace Health</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <KpiCard label="Active Users" value="1,842" delta={6.4} spark={sparkUp} />
             <KpiCard label="Active Suppliers" value="312" delta={2.1} spark={sparkUp} />
@@ -146,7 +146,7 @@ function DashboardPage() {
             <KpiCard label="Promo Usage Today" value="528" delta={9.1} spark={sparkUp} />
           </div>
 
-          <SubHeading className="mt-6">1C · Procurement Transparency</SubHeading>
+          <SubHeading className="mt-6"<Procurement Transparency</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <KpiCard label="Total Disclosures" value="2,184" delta={8.2} spark={sparkUp} />
             <KpiCard label="Invoices Disclosed" value="1,962" delta={7.4} spark={sparkUp} />
