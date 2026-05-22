@@ -514,6 +514,21 @@ function RecallWorkspacePage() {
           <Panel icon={<Bell className="h-4 w-4" />} title="Recall actions">
             <ActionBtn>Notify Buyers</ActionBtn>
             <ActionBtn>Notify Sellers</ActionBtn>
+            <div className="mt-2">
+              <label className="mb-1 flex items-center justify-between text-[10px] font-medium uppercase tracking-wider" style={{ color: "oklch(0.45 0.04 40)" }}>
+                <span>Note</span>
+                <span style={{ color: note.length >= 36 ? CRITICAL : "oklch(0.55 0.04 40)" }}>{note.length}/36</span>
+              </label>
+              <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value.slice(0, 36))}
+                maxLength={36}
+                rows={2}
+                placeholder="Add a note to recipients…"
+                className="w-full resize-none rounded-lg border bg-white/60 px-2.5 py-2 text-xs outline-none transition focus:border-[color:var(--ring)]"
+                style={{ borderColor: "oklch(0.85 0.02 40)" }}
+              />
+            </div>
           </Panel>
 
           <Panel icon={<Snowflake className="h-4 w-4" />} title="Inventory actions">
