@@ -266,7 +266,7 @@ function RecallWorkspacePage() {
         </button>
       </div>
       {/* 3-panel layout */}
-      <div className="mx-auto grid max-w-[1700px] grid-cols-1 gap-4 px-4 py-5 lg:grid-cols-[280px_minmax(0,1fr)_300px]">
+      <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-4 px-4 py-5 lg:grid-cols-[300px_minmax(0,1fr)_260px]">
         {/* LEFT — Filters */}
         <aside className="space-y-3">
           <Panel icon={<Filter className="h-4 w-4" />} title="Recall Filters" caption="Live trace updates instantly">
