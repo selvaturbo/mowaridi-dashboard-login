@@ -296,7 +296,7 @@ function RecallWorkspacePage() {
 
             <Group title="Buyer Filters" icon={<MapPin className="h-3 w-3" />}>
               <Field
-                label="Region"
+                label="Districts"
                 value={region}
                 onChange={setRegion}
                 options={["All", "Makkah", "Madinah", "Mina", "Arafat"]}
