@@ -98,12 +98,11 @@ function LoginPage() {
         {/* Brand panel */}
         <section className="hidden flex-col justify-between lg:flex">
           <div className="flex items-center gap-3">
-            <div
-              className="relative flex h-11 w-11 items-center justify-center rounded-xl"
-              style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
-            >
-              <Mountain className="h-5 w-5 text-white" strokeWidth={2.5} />
-            </div>
+            <img
+              src={mowaridiLogo}
+              alt="Mowaridi"
+              className="h-11 w-11 object-contain"
+            />
             <div className="flex flex-col leading-tight">
               <span className="text-lg font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
                 Mowaridi
@@ -148,12 +147,7 @@ function LoginPage() {
         <section className="flex w-full items-center justify-center">
           <div className="mowaridi-glass relative w-full max-w-md rounded-3xl p-8 sm:p-10">
             <div className="mb-8 flex items-center justify-center gap-3 lg:hidden">
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-xl"
-                style={{ background: "var(--gradient-brand)" }}
-              >
-                <Mountain className="h-5 w-5 text-white" strokeWidth={2.5} />
-              </div>
+              <img src={mowaridiLogo} alt="Mowaridi" className="h-10 w-10 object-contain" />
               <span className="text-lg font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
                 Mowaridi
               </span>
