@@ -349,39 +349,14 @@ function RecallWorkspacePage() {
           <div className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6">
             <Kpi label="Impacted buyers" value={impacted.toString()} />
             <Kpi label="Total orders" value={impacted.toString()} />
-            <Kpi label="Total quantity (KG)" value={totalQty.toLocaleString()} />
-            <Kpi label="Invoice value" value={`SAR ${invoiceValue.toLocaleString()}`} />
-            <Kpi label="Active inventory (KG)" value={remaining.toLocaleString()} accent />
-            <Kpi label="Regions impacted" value={regions.toString()} />
+            <Kpi label="Total order quantity (KG)" value={totalQty.toLocaleString()} />
+            <Kpi label="Total order value" value={`SAR ${invoiceValue.toLocaleString()}`} />
+            <Kpi label="Districts impacted" value={regions.toString()} />
+            <Kpi label="Total suppliers fulfilled" value={new Set(rows.map((r) => r.supplier)).size.toString()} accent />
           </div>
 
-          {/* Trace breadcrumb */}
-          <Panel icon={<Activity className="h-4 w-4" />} title="Live trace" caption="Filters → exposure recomputes on every change">
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <Pill>{brand}</Pill>
-              <Pill>{sku}</Pill>
-              <Pill>Batch {batch}</Pill>
-              <Pill>{supplier}</Pill>
-              <Pill>
-                {from} → {to}
-              </Pill>
-            </div>
-          </Panel>
-
           {/* Charts grid */}
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-            <Panel icon={<MapPin className="h-4 w-4" />} title="Geographic exposure" caption="Quantity (KG) by region">
-              <ResponsiveContainer width="100%" height={180}>
-                <BarChart data={regionData} margin={{ left: -20, right: 8, top: 8 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                  <XAxis dataKey="name" tick={{ fontSize: 10 }} />
-                  <YAxis tick={{ fontSize: 10 }} />
-                  <Tooltip />
-                  <Bar dataKey="value" fill={CORAL} radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </Panel>
-
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             <Panel icon={<Layers className="h-4 w-4" />} title="Buyer distribution" caption="Type · KG">
               <ResponsiveContainer width="100%" height={180}>
                 <PieChart>
@@ -408,98 +383,68 @@ function RecallWorkspacePage() {
             </Panel>
           </div>
 
-          {/* Exposure Table */}
-          <Panel icon={<Search className="h-4 w-4" />} title="Buyer exposure" caption={`${rows.length} buyers · ${selected.size} selected`}>
-            <div className="mb-2 flex flex-wrap items-center gap-2">
+          {/* Buyer Exposure Table */}
+          <Panel
+            icon={<Search className="h-4 w-4" />}
+            title="Buyer exposure"
+            caption={`${BUYER_EXPOSURE.length} buyers`}
+          >
+            <div className="mb-2 flex items-center justify-end">
               <button
-                onClick={() => setSelected(new Set(rows.map((r) => r.id)))}
-                className="rounded-md border px-2 py-1 text-[11px]"
-                style={{ borderColor: "oklch(0.55 0.1 40 / 0.25)" }}
+                onClick={() => {
+                  const headers = ["Buyer Name", "Phone Number", "District", "Qty (KG)", "Total Deliveries", "Total Suppliers", "Latest Delivered"];
+                  const csv = [
+                    headers.join(","),
+                    ...BUYER_EXPOSURE.map((b) =>
+                      [b.buyer, b.phone, b.district, b.qty, b.totalDeliveries, b.totalSuppliers, b.latestDelivered].join(",")
+                    ),
+                  ].join("\n");
+                  const blob = new Blob([csv], { type: "text/csv" });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = "buyer-exposure.csv";
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+                className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[11px] font-medium hover:bg-black/5"
+                style={{ borderColor: "oklch(0.55 0.1 40 / 0.25)", color: COCOA }}
               >
-                Select all
+                <FileCheck2 className="h-3 w-3" /> Download CSV
               </button>
-              <button
-                onClick={() => setSelected(new Set(rows.filter((r) => r.region === "Makkah").map((r) => r.id)))}
-                className="rounded-md border px-2 py-1 text-[11px]"
-                style={{ borderColor: "oklch(0.55 0.1 40 / 0.25)" }}
-              >
-                Select region: Makkah
-              </button>
-              <button
-                onClick={() => setSelected(new Set(rows.filter((r) => r.supplier === supplier).map((r) => r.id)))}
-                className="rounded-md border px-2 py-1 text-[11px]"
-                style={{ borderColor: "oklch(0.55 0.1 40 / 0.25)" }}
-              >
-                Select supplier
-              </button>
-              <span className="ml-auto text-[11px]" style={{ color: COCOA }}>
-                Est. remaining inventory in-field: <b style={{ color: CRITICAL }}>{remaining.toLocaleString()} KG</b>
-              </span>
             </div>
-
-            <div className="overflow-x-auto rounded-lg border" style={{ borderColor: "oklch(0.55 0.1 40 / 0.15)" }}>
+            <div
+              className="max-h-[260px] overflow-auto rounded-lg border"
+              style={{ borderColor: "oklch(0.55 0.1 40 / 0.15)" }}
+            >
               <table className="w-full text-xs">
-                <thead style={{ background: "oklch(0.97 0.02 60)" }}>
+                <thead className="sticky top-0" style={{ background: "oklch(0.97 0.02 60)" }}>
                   <tr className="text-left" style={{ color: COCOA }}>
-                    <th className="px-2 py-2">
-                      <input type="checkbox" checked={selected.size === rows.length && rows.length > 0} onChange={toggleAll} />
-                    </th>
-                    <th className="px-2 py-2">Buyer</th>
-                    <th className="px-2 py-2">Type</th>
-                    <th className="px-2 py-2">Batch</th>
+                    <th className="px-2 py-2">Buyer Name</th>
+                    <th className="px-2 py-2">Phone Number</th>
+                    <th className="px-2 py-2">District</th>
                     <th className="px-2 py-2 text-right">Qty (KG)</th>
-                    <th className="px-2 py-2 text-right">Est. left</th>
-                    <th className="px-2 py-2">Delivered</th>
-                    <th className="px-2 py-2">Region</th>
-                    <th className="px-2 py-2">Status</th>
-                    <th className="px-2 py-2">Ack</th>
+                    <th className="px-2 py-2 text-right">Total Deliveries</th>
+                    <th className="px-2 py-2 text-right">Total Suppliers</th>
+                    <th className="px-2 py-2">Latest Delivered</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {rows.map((r) => (
+                  {BUYER_EXPOSURE.map((b) => (
                     <tr
-                      key={r.id}
+                      key={b.id}
                       className="border-t transition hover:bg-black/[0.02]"
                       style={{ borderColor: "oklch(0.55 0.1 40 / 0.12)" }}
                     >
-                      <td className="px-2 py-2">
-                        <input type="checkbox" checked={selected.has(r.id)} onChange={() => toggle(r.id)} />
-                      </td>
-                      <td className="px-2 py-2 font-medium">{r.buyer}</td>
-                      <td className="px-2 py-2">{r.type}</td>
-                      <td className="px-2 py-2 font-mono text-[10px]">{r.batch}</td>
-                      <td className="px-2 py-2 text-right">{r.qty}</td>
-                      <td className="px-2 py-2 text-right font-semibold" style={{ color: CRITICAL }}>{r.est}</td>
-                      <td className="px-2 py-2">{r.delivered}</td>
-                      <td className="px-2 py-2">{r.region}</td>
-                      <td className="px-2 py-2">
-                        <span
-                          className="rounded-full px-2 py-0.5 text-[10px] font-medium"
-                          style={
-                            r.status === "Active"
-                              ? { background: "oklch(0.95 0.05 60)", color: WARN }
-                              : { background: "oklch(0.95 0.05 25)", color: CRITICAL }
-                          }
-                        >
-                          {r.status}
-                        </span>
-                      </td>
-                      <td className="px-2 py-2">
-                        {r.ack ? (
-                          <CheckCircle2 className="h-3.5 w-3.5" style={{ color: "oklch(0.6 0.16 160)" }} />
-                        ) : (
-                          <XCircle className="h-3.5 w-3.5" style={{ color: COCOA }} />
-                        )}
-                      </td>
+                      <td className="px-2 py-2 font-medium">{b.buyer}</td>
+                      <td className="px-2 py-2 font-mono text-[10px]">{b.phone}</td>
+                      <td className="px-2 py-2">{b.district}</td>
+                      <td className="px-2 py-2 text-right">{b.qty.toLocaleString()}</td>
+                      <td className="px-2 py-2 text-right">{b.totalDeliveries}</td>
+                      <td className="px-2 py-2 text-right">{b.totalSuppliers}</td>
+                      <td className="px-2 py-2">{b.latestDelivered}</td>
                     </tr>
                   ))}
-                  {rows.length === 0 && (
-                    <tr>
-                      <td colSpan={10} className="px-2 py-6 text-center" style={{ color: COCOA }}>
-                        No exposure found for current filters
-                      </td>
-                    </tr>
-                  )}
                 </tbody>
               </table>
             </div>
