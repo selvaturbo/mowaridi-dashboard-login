@@ -147,7 +147,7 @@ function RecallWorkspacePage() {
         (brand === "" || r.brand === brand) &&
         (sku === "" || r.sku === sku) &&
         (batch === "" || r.batch === batch) &&
-        (supplier === "" || r.supplier === supplier) &&
+        (supplier === "" || supplier === "All" || r.supplier === supplier) &&
         (region === "All" || r.region === region) &&
         r.delivered >= from &&
         r.delivered <= to
@@ -280,7 +280,7 @@ function RecallWorkspacePage() {
             </Group>
 
             <Group title="Supplier Filters" icon={<Building2 className="h-3 w-3" />}>
-              <Field label="Supplier" value={supplier} onChange={setSupplier} options={["ABC Foods", "Gulf Provisions", "Hijaz Trading"]} />
+              <Field label="Supplier" value={supplier} onChange={setSupplier} options={["All", "ABC Foods", "Gulf Provisions", "Hijaz Trading"]} />
             </Group>
 
             <Group title="Procurement Filters" icon={<Truck className="h-3 w-3" />}>
