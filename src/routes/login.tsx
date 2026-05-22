@@ -153,13 +153,13 @@ function LoginPage() {
             <img
               src={mowaridiLogo}
               alt={t.brand}
-              className="h-16 w-16 object-contain"
+              className="h-20 w-20 object-contain"
             />
             <div className="flex flex-col leading-tight">
-              <span className="text-2xl font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
+              <span className="text-4xl font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
                 {t.brand}
               </span>
-              <span className="text-[11px] uppercase tracking-[0.18em]" style={{ color: "var(--mow-cocoa)" }}>
+              <span className="mt-1 text-[11px] uppercase tracking-[0.22em]" style={{ color: "var(--mow-cocoa)" }}>
                 {t.sub}
               </span>
             </div>
