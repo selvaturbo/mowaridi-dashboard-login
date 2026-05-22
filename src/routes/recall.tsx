@@ -511,7 +511,8 @@ function RecallWorkspacePage() {
           </Panel>
 
           <Panel icon={<Bell className="h-4 w-4" />} title="Recall actions">
-            <ActionBtn>Notify Buyers &amp; Sellers</ActionBtn>
+            <ActionBtn>Notify Buyers</ActionBtn>
+            <ActionBtn>Notify Sellers</ActionBtn>
           </Panel>
 
           <Panel icon={<Snowflake className="h-4 w-4" />} title="Inventory actions">
