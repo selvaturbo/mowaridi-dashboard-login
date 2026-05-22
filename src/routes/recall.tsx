@@ -324,7 +324,7 @@ function RecallWorkspacePage() {
 
             <Group title="Scope" icon={<Layers className="h-3 w-3" />}>
               <div className="flex flex-wrap gap-1.5">
-                {(["SKU", "Brand", "Batch", "Seller", "Supplier"] as Scope[]).map((s) => (
+                {(["SKU", "Brand", "Supplier"] as Scope[]).map((s) => (
                   <button
                     key={s}
                     onClick={() => setScope(scope === s ? "" : s)}
