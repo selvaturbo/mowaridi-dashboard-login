@@ -915,10 +915,10 @@ function TopTab({
 }
 
 function statusTone(s: ActiveRecall["status"]) {
-  if (s === "Live") return { bg: `${CRITICAL.replace(")", " / 0.12)")}`, fg: CRITICAL };
-  if (s === "Containment") return { bg: `${WARN.replace(")", " / 0.15)")}`, fg: "oklch(0.5 0.16 60)" };
+  if (s === "Open") return { bg: `${CRITICAL.replace(")", " / 0.12)")}`, fg: CRITICAL };
   return { bg: "oklch(0.95 0.06 160)", fg: "oklch(0.45 0.16 160)" };
 }
+
 
 function severityTone(s: Severity) {
   if (s === "Critical") return CRITICAL;
