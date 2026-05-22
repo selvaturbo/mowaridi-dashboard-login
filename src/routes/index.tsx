@@ -168,25 +168,19 @@ function DashboardPage() {
           </div>
 
           <SubHeading className="mt-6">Weekly Order Funnel · Last 4 Weeks</SubHeading>
-          <Card title="Order funnel — W-4 → W-1">
-            <ResponsiveContainer width="100%" height={260}>
-              <FunnelChart>
+          <Card title="Order funnel — week-on-week (W-4 → W-1)">
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={weeklyFunnel} barCategoryGap="18%">
+                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
+                <XAxis dataKey="stage" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip />
-                <Funnel
-                  dataKey="value"
-                  data={[
-                    { name: "Orders Created", value: 18420, fill: "oklch(0.45 0.18 260)" },
-                    { name: "Confirmed", value: 17080, fill: "oklch(0.55 0.18 245)" },
-                    { name: "Packed", value: 16240, fill: "oklch(0.6 0.16 230)" },
-                    { name: "Picked Up", value: 15120, fill: "oklch(0.65 0.14 215)" },
-                    { name: "Delivered", value: 14380, fill: "oklch(0.7 0.13 205)" },
-                    { name: "Cancelled", value: 1240, fill: "oklch(0.6 0.2 25)" },
-                  ]}
-                  isAnimationActive
-                >
-                  <LabelList position="right" fill={ESPRESSO} stroke="none" dataKey="name" fontSize={11} />
-                </Funnel>
-              </FunnelChart>
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Bar dataKey="W-4" fill="oklch(0.78 0.10 210)" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="W-3" fill="oklch(0.66 0.14 230)" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="W-2" fill="oklch(0.55 0.17 250)" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="W-1" fill={CORAL} radius={[3, 3, 0, 0]} />
+              </BarChart>
             </ResponsiveContainer>
           </Card>
 
