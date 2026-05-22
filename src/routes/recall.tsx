@@ -355,13 +355,9 @@ function RecallWorkspacePage() {
           <Panel icon={<Activity className="h-4 w-4" />} title="Live trace" caption="Filters → exposure recomputes on every change">
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <Pill>{brand}</Pill>
-              <ChevronRight className="h-3 w-3" style={{ color: COCOA }} />
               <Pill>{sku}</Pill>
-              <ChevronRight className="h-3 w-3" style={{ color: COCOA }} />
               <Pill>Batch {batch}</Pill>
-              <ChevronRight className="h-3 w-3" style={{ color: COCOA }} />
               <Pill>{supplier}</Pill>
-              <ChevronRight className="h-3 w-3" style={{ color: COCOA }} />
               <Pill>
                 {from} → {to}
               </Pill>
