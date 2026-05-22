@@ -139,7 +139,7 @@ function LoginPage() {
                 Welcome back
               </h2>
               <p className="text-sm" style={{ color: "var(--mow-cocoa)" }}>
-                Sign in to access your AI dashboards
+                Sign in to access your dashboards
               </p>
             </div>
 
