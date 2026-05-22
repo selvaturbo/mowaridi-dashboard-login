@@ -78,14 +78,14 @@ function LoginPage() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6 py-10 lg:grid lg:grid-cols-2 lg:gap-16">
         {/* Brand panel */}
         <section className="hidden flex-col justify-between lg:flex">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <img
               src={mowaridiLogo}
               alt="Mowaridi"
-              className="h-11 w-11 object-contain"
+              className="h-16 w-16 object-contain"
             />
             <div className="flex flex-col leading-tight">
-              <span className="text-lg font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
+              <span className="text-2xl font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
                 Mowaridi
               </span>
               <span className="text-[11px] uppercase tracking-[0.18em]" style={{ color: "var(--mow-cocoa)" }}>
@@ -124,8 +124,8 @@ function LoginPage() {
         <section className="flex w-full items-center justify-center">
           <div className="mowaridi-glass relative w-full max-w-md rounded-3xl p-8 sm:p-10">
             <div className="mb-8 flex items-center justify-center gap-3 lg:hidden">
-              <img src={mowaridiLogo} alt="Mowaridi" className="h-10 w-10 object-contain" />
-              <span className="text-lg font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
+              <img src={mowaridiLogo} alt="Mowaridi" className="h-14 w-14 object-contain" />
+              <span className="text-xl font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
                 Mowaridi
               </span>
             </div>
