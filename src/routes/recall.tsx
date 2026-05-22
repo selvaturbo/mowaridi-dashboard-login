@@ -542,7 +542,7 @@ function RecallWorkspacePage() {
                 <dl className="mb-5 grid grid-cols-2 gap-x-4 gap-y-2 rounded-lg p-3 text-sm" style={{ background: "oklch(0.97 0.02 60)" }}>
                   <Row k="Impacted buyers" v={impacted.toString()} />
                   <Row k="Total orders" v={impacted.toString()} />
-                  <Row k="Total order quantity (KG)" v="40" />
+                  <Row k="Total order quantity" v="40" />
                   <Row k="Total order value" v={`SAR ${invoiceValue.toLocaleString()}`} />
                   <Row k="Districts impacted" v={regions.toString()} />
                   <Row k="Total suppliers fulfilled" v={new Set(rows.map((r) => r.supplier)).size.toString()} />
