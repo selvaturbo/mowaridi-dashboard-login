@@ -713,12 +713,31 @@ function Pill({ children }: { children: React.ReactNode }) {
 }
 
 function ActionBtn({ children }: { children: React.ReactNode }) {
+  const [on, setOn] = React.useState(false);
   return (
     <button
-      className="mb-1.5 flex w-full items-center justify-between rounded-md border px-2.5 py-1.5 text-[11px] font-medium transition hover:bg-black/[0.03] last:mb-0"
-      style={{ borderColor: "oklch(0.55 0.1 40 / 0.2)", color: ESPRESSO }}
+      type="button"
+      onClick={() => setOn((v) => !v)}
+      aria-pressed={on}
+      className="mb-1.5 flex w-full items-center justify-between rounded-md border px-2.5 py-1.5 text-[11px] font-medium transition last:mb-0 hover:bg-black/[0.03]"
+      style={
+        on
+          ? { borderColor: CORAL, background: "oklch(0.68 0.18 38 / 0.12)", color: ESPRESSO }
+          : { borderColor: "oklch(0.55 0.1 40 / 0.2)", color: ESPRESSO }
+      }
     >
-      {children}
+      <span className="flex items-center gap-2">
+        <span
+          className="grid h-3.5 w-3.5 place-content-center rounded-[3px] border"
+          style={{
+            borderColor: on ? CORAL : "oklch(0.55 0.1 40 / 0.35)",
+            background: on ? CORAL : "transparent",
+          }}
+        >
+          {on && <Check className="h-2.5 w-2.5 text-white" />}
+        </span>
+        {children}
+      </span>
       <ChevronRight className="h-3 w-3" style={{ color: COCOA }} />
     </button>
   );
