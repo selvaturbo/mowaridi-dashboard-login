@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, LogOut, TrendingUp, TrendingDown } from "lucide-react";
+import { Loader2, LogOut, TrendingUp, TrendingDown, ShieldAlert } from "lucide-react";
 import mowaridiLogo from "@/assets/mowaridi-logo.png";
 import {
   ResponsiveContainer,
