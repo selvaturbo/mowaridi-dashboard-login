@@ -573,7 +573,7 @@ function RecallWorkspacePage() {
                 </div>
                 <h2 className="text-lg font-semibold">Recall launched</h2>
                 <p className="mb-4 text-sm" style={{ color: COCOA }}>
-                  Buyers notified · inventory frozen · compliance case opened.
+                  Buyers notified · Inventories frozen · SKUs restricted
                 </p>
                 <button
                   onClick={() => {
