@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Loader2, ShieldCheck, ArrowRight, Mountain } from "lucide-react";
+import { Loader2, ShieldCheck, ArrowRight } from "lucide-react";
 import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import mowaridiBg from "@/assets/mowaridi-bg.jpg";
+import mowaridiLogo from "@/assets/mowaridi-logo.png";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -56,53 +57,18 @@ function LoginPage() {
         src={mowaridiBg}
         alt=""
         aria-hidden="true"
-        width={1920}
-        height={1080}
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(100deg, oklch(0.985 0.012 80 / 0.94) 0%, oklch(0.985 0.012 80 / 0.6) 42%, oklch(0.985 0.012 80 / 0.15) 72%, transparent 100%)",
-        }}
-      />
-      <div aria-hidden="true" className="mowaridi-grid absolute inset-0" />
-      <div
-        aria-hidden="true"
-        className="mowaridi-glow-orb"
-        style={{
-          width: 460,
-          height: 460,
-          top: "-140px",
-          right: "-140px",
-          background: "oklch(0.72 0.18 38 / 0.5)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="mowaridi-glow-orb"
-        style={{
-          width: 520,
-          height: 520,
-          bottom: "-200px",
-          left: "-180px",
-          background: "oklch(0.55 0.12 40 / 0.35)",
-          animationDelay: "3s",
-        }}
+        className="pointer-events-none absolute inset-y-0 right-0 h-full w-auto max-w-[55%] object-contain object-right opacity-70"
       />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6 py-10 lg:grid lg:grid-cols-2 lg:gap-16">
         {/* Brand panel */}
         <section className="hidden flex-col justify-between lg:flex">
           <div className="flex items-center gap-3">
-            <div
-              className="relative flex h-11 w-11 items-center justify-center rounded-xl"
-              style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
-            >
-              <Mountain className="h-5 w-5 text-white" strokeWidth={2.5} />
-            </div>
+            <img
+              src={mowaridiLogo}
+              alt="Mowaridi"
+              className="h-11 w-11 object-contain"
+            />
             <div className="flex flex-col leading-tight">
               <span className="text-lg font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
                 Mowaridi
@@ -147,12 +113,7 @@ function LoginPage() {
         <section className="flex w-full items-center justify-center">
           <div className="mowaridi-glass relative w-full max-w-md rounded-3xl p-8 sm:p-10">
             <div className="mb-8 flex items-center justify-center gap-3 lg:hidden">
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-xl"
-                style={{ background: "var(--gradient-brand)" }}
-              >
-                <Mountain className="h-5 w-5 text-white" strokeWidth={2.5} />
-              </div>
+              <img src={mowaridiLogo} alt="Mowaridi" className="h-10 w-10 object-contain" />
               <span className="text-lg font-semibold tracking-tight" style={{ color: "var(--mow-espresso)" }}>
                 Mowaridi
               </span>
