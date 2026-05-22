@@ -24,6 +24,7 @@ import {
 } from "recharts";
 
 export const Route = createFileRoute("/")({
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Operations Dashboard · Mowaridi" },
