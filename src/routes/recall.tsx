@@ -120,7 +120,7 @@ function RecallWorkspacePage() {
   const [supplier, setSupplier] = useState("ABC Foods");
   const [region, setRegion] = useState<string>("All");
   const [severity, setSeverity] = useState<Severity>("Critical");
-  const [scope, setScope] = useState<Scope>("Batch");
+  const [scope, setScope] = useState<Scope | "">("");
   const [from, setFrom] = useState("2026-05-01");
   const [to, setTo] = useState("2026-05-14");
   const [shippedFrom, setShippedFrom] = useState("2026-04-28");
@@ -324,7 +324,7 @@ function RecallWorkspacePage() {
                 {(["SKU", "Brand", "Batch", "Seller", "Supplier"] as Scope[]).map((s) => (
                   <button
                     key={s}
-                    onClick={() => setScope(s)}
+                    onClick={() => setScope(scope === s ? "" : s)}
                     className="rounded-md border px-2 py-0.5 text-[10px] font-medium"
                     style={
                       scope === s
