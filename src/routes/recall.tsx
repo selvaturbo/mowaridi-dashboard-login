@@ -768,3 +768,94 @@ function Row({ k, v }: { k: string; v: string }) {
     </>
   );
 }
+
+function LandingActions({ onCreate }: { onCreate: () => void }) {
+  const tiles = [
+    {
+      title: "Create Recall",
+      desc: "Start a new traceability-driven recall in minutes.",
+      icon: <PlusCircle className="h-5 w-5" />,
+      tone: "primary" as const,
+      onClick: onCreate,
+      cta: "Start builder",
+    },
+    {
+      title: "Active Recalls",
+      desc: "Monitor recalls currently in progress across the platform.",
+      icon: <ListChecks className="h-5 w-5" />,
+      badge: "3 live",
+    },
+    {
+      title: "Restricted Products",
+      desc: "Browse SKUs, brands and suppliers under restriction.",
+      icon: <ShieldOff className="h-5 w-5" />,
+      badge: "12",
+    },
+    {
+      title: "Traceability Search",
+      desc: "Ad-hoc trace by batch, supplier, buyer or region.",
+      icon: <GitBranch className="h-5 w-5" />,
+    },
+  ];
+  return (
+    <div className="mx-auto max-w-[1700px] px-4 py-8">
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold tracking-tight">Recall Center</h2>
+        <p className="mt-1 text-sm" style={{ color: COCOA }}>
+          Choose an action to begin. Create Recall opens the Traceability Recall Builder.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {tiles.map((t) => {
+          const isPrimary = t.tone === "primary";
+          return (
+            <button
+              key={t.title}
+              onClick={t.onClick}
+              className="group flex h-full flex-col items-start gap-3 rounded-2xl border bg-white p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg"
+              style={{
+                borderColor: isPrimary ? CORAL.replace(")", " / 0.4)") : "oklch(0.55 0.1 40 / 0.15)",
+                background: isPrimary
+                  ? `linear-gradient(135deg, white, ${CORAL.replace(")", " / 0.08)")})`
+                  : "white",
+              }}
+            >
+              <div
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl"
+                style={{
+                  background: isPrimary ? CORAL : "oklch(0.96 0.03 60)",
+                  color: isPrimary ? "white" : CORAL,
+                }}
+              >
+                {t.icon}
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-semibold tracking-tight">{t.title}</h3>
+                  {t.badge && (
+                    <span
+                      className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+                      style={{ background: "oklch(0.95 0.05 25)", color: CRITICAL }}
+                    >
+                      {t.badge}
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 text-xs leading-relaxed" style={{ color: COCOA }}>
+                  {t.desc}
+                </p>
+              </div>
+              <span
+                className="inline-flex items-center gap-1 text-xs font-medium transition group-hover:gap-2"
+                style={{ color: isPrimary ? CORAL : ESPRESSO }}
+              >
+                {t.cta ?? "Open"} <ChevronRight className="h-3 w-3" />
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
