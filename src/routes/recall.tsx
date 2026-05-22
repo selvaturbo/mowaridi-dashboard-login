@@ -225,8 +225,8 @@ function RecallWorkspacePage() {
   const [checking, setChecking] = useState(true);
   const [email, setEmail] = useState<string | null>(null);
 
-  // View: landing actions vs traceability builder
-  const [view, setView] = useState<"landing" | "builder">("landing");
+  // View: active recalls (default) · builder · restricted · trace
+  const [view, setView] = useState<"active" | "builder" | "restricted" | "trace">("active");
 
   // Filters
   const [category, setCategory] = useState("Frozen Protein");
