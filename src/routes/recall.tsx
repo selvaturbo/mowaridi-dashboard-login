@@ -246,29 +246,6 @@ function RecallWorkspacePage() {
           </div>
         </div>
 
-        {/* Sub-nav */}
-        <div className="mx-auto flex max-w-[1700px] gap-1 overflow-x-auto px-4 pb-2 text-xs">
-          {[
-            { l: "Recall Workspace", a: true },
-            { l: "Active Recalls" },
-            { l: "Restricted Products" },
-            { l: "Traceability Explorer" },
-            { l: "Compliance Tracking" },
-            { l: "Recall Reports" },
-          ].map((t) => (
-            <button
-              key={t.l}
-              className="whitespace-nowrap rounded-md px-3 py-1.5 transition"
-              style={
-                t.a
-                  ? { background: CORAL, color: "white", fontWeight: 600 }
-                  : { color: COCOA }
-              }
-            >
-              {t.l}
-            </button>
-          ))}
-        </div>
       </header>
 
       {view === "landing" ? (
