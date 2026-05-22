@@ -113,8 +113,6 @@ function LoginPage() {
               Dashboards that<br />think with you.
             </h1>
             <p className="max-w-md text-base leading-relaxed" style={{ color: "var(--mow-cocoa)" }}>
-              Sign in to Mowaridi Dashboards to monitor kitchens, suppliers, invoices
-              and the entire Hajj-season supply chain in real time — powered by AI.
             </p>
           </div>
 
