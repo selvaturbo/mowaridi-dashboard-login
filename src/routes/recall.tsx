@@ -1026,6 +1026,70 @@ function Detail({ k, v }: { k: string; v: string }) {
   );
 }
 
+
+function SupportUpdatesPanel({ recallId, updates }: { recallId: string; updates: SupportUpdate[] }) {
+  const [open, setOpen] = useState(false);
+  const [log, setLog] = useState<SupportUpdate[]>(updates);
+  const [note, setNote] = useState("");
+  const post = () => {
+    const trimmed = note.trim();
+    if (!trimmed) return;
+    const now = new Date();
+    const at = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+    setLog((prev) => [...prev, { at, author: "Support Desk", role: "L1", note: trimmed }]);
+    setNote("");
+  };
+  return (
+    <div className="border-t" style={{ borderColor: "oklch(0.55 0.1 40 / 0.12)" }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between px-4 py-2 text-left text-[11px] font-semibold hover:bg-black/[0.02]"
+        style={{ color: ESPRESSO }}
+      >
+        <span className="inline-flex items-center gap-2">
+          <span className="rounded-full px-2 py-0.5 text-[10px]" style={{ background: "oklch(0.55 0.1 40 / 0.1)", color: COCOA }}>
+            Support updates
+          </span>
+          <span style={{ color: COCOA }}>{log.length} entries · {recallId}</span>
+        </span>
+        <ChevronRight className="h-3.5 w-3.5 transition" style={{ color: COCOA, transform: open ? "rotate(90deg)" : "none" }} />
+      </button>
+      {open && (
+        <div className="space-y-3 px-4 pb-3">
+          <ul className="space-y-2">
+            {log.map((u, i) => (
+              <li key={i} className="rounded-lg border bg-white p-2.5" style={{ borderColor: "oklch(0.55 0.1 40 / 0.12)" }}>
+                <div className="mb-1 flex items-center justify-between text-[10px]" style={{ color: COCOA }}>
+                  <span className="font-semibold" style={{ color: ESPRESSO }}>{u.author} <span className="font-normal" style={{ color: COCOA }}>· {u.role}</span></span>
+                  <span className="font-mono">{u.at}</span>
+                </div>
+                <p className="text-[11px] leading-relaxed" style={{ color: ESPRESSO }}>{u.note}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-start gap-2">
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Post an update from the support team…"
+              rows={2}
+              className="flex-1 resize-none rounded-lg border bg-white px-2.5 py-1.5 text-[11px] outline-none focus:ring-2"
+              style={{ borderColor: "oklch(0.55 0.1 40 / 0.18)", color: ESPRESSO }}
+            />
+            <button
+              onClick={post}
+              className="rounded-lg px-3 py-1.5 text-[11px] font-semibold text-white"
+              style={{ background: CORAL }}
+            >
+              Post
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function RestrictedView() {
   const [tab, setTab] = useState<"All" | "SKU" | "Brand" | "Supplier">("All");
   const filtered = tab === "All" ? RESTRICTIONS : RESTRICTIONS.filter((r) => r.kind === tab);
