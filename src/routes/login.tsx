@@ -4,7 +4,7 @@ import { Loader2, ShieldCheck, ArrowRight, Languages } from "lucide-react";
 import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import mowaridiLogo from "@/assets/mowaridi-logo.png";
+import mowaridiLogo from "@/assets/mowaridi-logo.jpg";
 
 type Lang = "en" | "ar";
 const translations = {
