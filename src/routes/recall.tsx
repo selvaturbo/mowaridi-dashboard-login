@@ -368,7 +368,7 @@ function RecallWorkspacePage() {
           <div className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6">
             <Kpi label="Impacted buyers" value={impacted.toString()} />
             <Kpi label="Total orders" value={impacted.toString()} />
-            <Kpi label="Total order quantity (KG)" value="40" />
+            <Kpi label="Total order quantity" value="40" />
             <Kpi label="Total order value" value={`SAR ${invoiceValue.toLocaleString()}`} />
             <Kpi label="Districts impacted" value={regions.toString()} />
             <Kpi label="Total suppliers fulfilled" value={new Set(rows.map((r) => r.supplier)).size.toString()} accent />
@@ -542,7 +542,7 @@ function RecallWorkspacePage() {
                 <dl className="mb-5 grid grid-cols-2 gap-x-4 gap-y-2 rounded-lg p-3 text-sm" style={{ background: "oklch(0.97 0.02 60)" }}>
                   <Row k="Impacted buyers" v={impacted.toString()} />
                   <Row k="Total orders" v={impacted.toString()} />
-                  <Row k="Total order quantity (KG)" v="40" />
+                  <Row k="Total order quantity" v="40" />
                   <Row k="Total order value" v={`SAR ${invoiceValue.toLocaleString()}`} />
                   <Row k="Districts impacted" v={regions.toString()} />
                   <Row k="Total suppliers fulfilled" v={new Set(rows.map((r) => r.supplier)).size.toString()} />
