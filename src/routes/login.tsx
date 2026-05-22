@@ -52,11 +52,27 @@ function LoginPage() {
       className="relative min-h-screen w-full overflow-hidden"
       style={{ background: "var(--mow-cream)", color: "var(--mow-espresso)" }}
     >
-      <img
-        src={mowaridiBg}
-        alt=""
+      {/* Minimal AI-essence background: soft coral aura + faint grid */}
+      <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 right-0 h-full w-auto max-w-[55%] object-contain object-right opacity-70"
+        className="pointer-events-none absolute -top-40 -right-40 h-[520px] w-[520px] rounded-full opacity-40"
+        style={{ background: "radial-gradient(closest-side, var(--mow-coral) 0%, transparent 70%)", filter: "blur(60px)" }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-48 -left-32 h-[460px] w-[460px] rounded-full opacity-30"
+        style={{ background: "radial-gradient(closest-side, var(--mow-coral-soft) 0%, transparent 70%)", filter: "blur(70px)" }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.18]"
+        style={{
+          backgroundImage:
+            "linear-gradient(oklch(0.40 0.07 40 / 0.4) 1px, transparent 1px), linear-gradient(90deg, oklch(0.40 0.07 40 / 0.4) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+          maskImage: "radial-gradient(ellipse at center, black 20%, transparent 70%)",
+          WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, transparent 70%)",
+        }}
       />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6 py-10 lg:grid lg:grid-cols-2 lg:gap-16">
