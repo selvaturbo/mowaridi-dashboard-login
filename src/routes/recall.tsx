@@ -129,6 +129,7 @@ function RecallWorkspacePage() {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [showLaunch, setShowLaunch] = useState(false);
   const [launched, setLaunched] = useState(false);
+  const [note, setNote] = useState("");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
