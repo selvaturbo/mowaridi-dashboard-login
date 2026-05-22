@@ -620,6 +620,7 @@ function RecallWorkspacePage() {
           >
             <Rocket className="h-4 w-4 transition group-hover:rotate-12" />
             Launch Recall
+          </button>
         </aside>
         )}
       </div>
