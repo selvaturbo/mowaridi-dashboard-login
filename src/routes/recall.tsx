@@ -236,20 +236,21 @@ type Restriction = {
   id: string;
   kind: "SKU" | "Brand" | "Supplier";
   name: string;
-  context: string;
+  category: string;
   effective: string;
   recallId: string;
   incident: string;
 };
 
 const RESTRICTIONS: Restriction[] = [
-  { id: "rs1", kind: "SKU", name: "Frozen Chicken Breast 2KG", context: "Al Baik · Batch A78421", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Salmonella suspicion — lab flagged" },
-  { id: "rs2", kind: "SKU", name: "Greek Yoghurt 500G", context: "Almarai · Batch Y22014", effective: "2026-05-11", recallId: "RCL-2026-0139", incident: "Cold-chain break in transit" },
-  { id: "rs3", kind: "Brand", name: "Al Baik", context: "All frozen protein SKUs", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Brand-wide precautionary hold" },
-  { id: "rs4", kind: "Brand", name: "Almarai", context: "Chilled dairy line", effective: "2026-05-11", recallId: "RCL-2026-0139", incident: "Cold-chain break in transit" },
-  { id: "rs5", kind: "Supplier", name: "Hijaz Trading", context: "All POs blocked", effective: "2026-05-06", recallId: "RCL-2026-0131", incident: "Supplier license lapse" },
-  { id: "rs6", kind: "Supplier", name: "ABC Foods", context: "Frozen protein dispatches", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Pending QA disposition" },
+  { id: "rs1", kind: "SKU", name: "Frozen Chicken Breast 2KG", category: "Frozen Protein", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Salmonella suspicion — lab flagged" },
+  { id: "rs2", kind: "SKU", name: "Greek Yoghurt 500G", category: "Chilled Dairy", effective: "2026-05-11", recallId: "RCL-2026-0139", incident: "Cold-chain break in transit" },
+  { id: "rs3", kind: "Brand", name: "Al Baik", category: "Frozen Protein", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Brand-wide precautionary hold" },
+  { id: "rs4", kind: "Brand", name: "Almarai", category: "Chilled Dairy", effective: "2026-05-11", recallId: "RCL-2026-0139", incident: "Cold-chain break in transit" },
+  { id: "rs5", kind: "Supplier", name: "Hijaz Trading", category: "Distributor", effective: "2026-05-06", recallId: "RCL-2026-0131", incident: "Supplier license lapse" },
+  { id: "rs6", kind: "Supplier", name: "ABC Foods", category: "Manufacturer", effective: "2026-05-14", recallId: "RCL-2026-0142", incident: "Pending QA disposition" },
 ];
+
 
 function RecallWorkspacePage() {
   const navigate = useNavigate();
