@@ -817,12 +817,11 @@ const aovDualTrend = [40, 41, 41.5, 42, 42.8, 43, 43.2, 43.5, 43.8, 44, 44.2, 44
 }));
 
 const weeklyFunnel = [
-  { stage: "Orders Created", "W-4": 16240, "W-3": 17120, "W-2": 17840, "W-1": 18420 },
-  { stage: "Confirmed",      "W-4": 14920, "W-3": 15860, "W-2": 16380, "W-1": 17080 },
-  { stage: "Packed",         "W-4": 14180, "W-3": 15020, "W-2": 15560, "W-1": 16240 },
-  { stage: "Picked Up",      "W-4": 13240, "W-3": 14080, "W-2": 14640, "W-1": 15120 },
-  { stage: "Delivered",      "W-4": 12480, "W-3": 13320, "W-2": 13860, "W-1": 14380 },
-  { stage: "Cancelled",      "W-4": 1420,  "W-3": 1360,  "W-2": 1280,  "W-1": 1240 },
+  { week: "W-4", Delivered: 14820, Cancelled: 1420 },
+  { week: "W-3", Delivered: 15760, Cancelled: 1360 },
+  { week: "W-2", Delivered: 16560, Cancelled: 1280 },
+  { week: "W-1", Delivered: 14380, Cancelled: 1240, "In Flight": 2800 },
+
 ];
 
 const cancelCustomer = [
