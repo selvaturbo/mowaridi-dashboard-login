@@ -804,17 +804,28 @@ function KpiCard({ label, value, delta, negative, spark }: { label: string; valu
   );
 }
 
-function StatTile({ label, value, sub, accent }: { label: string; value: string; sub?: string; accent?: boolean }) {
+const TONE_MAP: Record<string, { bar: string; tint: string; value: string }> = {
+  coral:   { bar: "oklch(0.68 0.18 38)",  tint: "oklch(0.68 0.18 38 / 0.10)",  value: "oklch(0.50 0.18 35)" },
+  amber:   { bar: "oklch(0.78 0.16 75)",  tint: "oklch(0.78 0.16 75 / 0.12)",  value: "oklch(0.52 0.15 70)" },
+  emerald: { bar: "oklch(0.70 0.15 160)", tint: "oklch(0.70 0.15 160 / 0.10)", value: "oklch(0.42 0.13 160)" },
+  teal:    { bar: "oklch(0.70 0.12 200)", tint: "oklch(0.70 0.12 200 / 0.10)", value: "oklch(0.45 0.11 200)" },
+  violet:  { bar: "oklch(0.65 0.18 295)", tint: "oklch(0.65 0.18 295 / 0.10)", value: "oklch(0.45 0.16 295)" },
+  pink:    { bar: "oklch(0.72 0.18 350)", tint: "oklch(0.72 0.18 350 / 0.10)", value: "oklch(0.50 0.17 350)" },
+};
+
+function StatTile({ label, value, sub, accent, tone }: { label: string; value: string; sub?: string; accent?: boolean; tone?: keyof typeof TONE_MAP }) {
+  const t = tone ? TONE_MAP[tone] : null;
   return (
     <div
-      className="rounded-2xl border p-4 shadow-sm"
+      className="relative overflow-hidden rounded-2xl border p-4 shadow-sm"
       style={{
-        background: "oklch(1 0 0 / 0.85)",
-        borderColor: accent ? "oklch(0.55 0.2 25 / 0.35)" : "oklch(0.55 0.1 40 / 0.15)",
+        background: t ? `linear-gradient(180deg, ${t.tint}, oklch(1 0 0 / 0.9))` : "oklch(1 0 0 / 0.85)",
+        borderColor: t ? t.bar.replace(")", " / 0.35)") : accent ? "oklch(0.55 0.2 25 / 0.35)" : "oklch(0.55 0.1 40 / 0.15)",
       }}
     >
+      {t && <div className="absolute inset-x-0 top-0 h-1" style={{ background: t.bar }} />}
       <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: COCOA }}>{label}</div>
-      <div className="mt-1 text-2xl font-bold" style={{ color: accent ? RED : ESPRESSO }}>{value}</div>
+      <div className="mt-1 text-2xl font-bold" style={{ color: t ? t.value : accent ? RED : ESPRESSO }}>{value}</div>
       {sub && <div className="text-[11px]" style={{ color: COCOA }}>{sub}</div>}
     </div>
   );
