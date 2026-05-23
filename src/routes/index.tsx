@@ -134,7 +134,7 @@ function DashboardPage() {
             <StatTile label="Delivered GMV (NMV)" value="SAR 162,480" />
             <StatTile label="AOV" value="SAR 43.85" />
             <StatTile label="Delivered AOV" value="SAR 41.20" />
-            <StatTile label="Fulfillment Option Mix" value="71% / 29%" sub="supplier / pickup" />
+            <StatTile label="COD / PP Mix" value="62% / 38%" sub="COD / prepaid" />
           </div>
 
           <SubHeading className="mt-6">Live Operations Health</SubHeading>
