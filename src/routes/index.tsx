@@ -581,15 +581,55 @@ function DashboardPage() {
               </ResponsiveContainer>
             </Card>
             <Card title="Supplier Concentration (Top 5 share)">
-              <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={supplierConcentration} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                  <XAxis type="number" tick={{ fontSize: 10 }} />
-                  <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 10 }} />
-                  <Tooltip />
-                  <Bar dataKey="v" fill={TEAL} radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+              {(() => {
+                const top5Share = supplierConcentration.reduce((s, b) => s + b.v, 0);
+                const restShare = Math.max(0, 100 - top5Share);
+                const donutData = [
+                  { name: "Top 5 Suppliers", value: top5Share },
+                  { name: "Rest of Market", value: restShare },
+                ];
+                return (
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                    <div className="relative">
+                      <ResponsiveContainer width="100%" height={220}>
+                        <PieChart>
+                          <Tooltip formatter={(v: number) => `${v}%`} />
+                          <Pie
+                            data={donutData}
+                            innerRadius={60}
+                            outerRadius={90}
+                            paddingAngle={2}
+                            dataKey="value"
+                            stroke="none"
+                          >
+                            <Cell fill={TEAL} />
+                            <Cell fill="oklch(0.85 0.03 40)" />
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-2xl font-bold" style={{ color: ESPRESSO }}>{top5Share}%</span>
+                        <span className="text-[10px] uppercase tracking-wider" style={{ color: COCOA }}>Top 5 share</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col justify-center gap-1.5">
+                      {supplierConcentration.map((b, i) => (
+                        <div key={b.name} className="flex items-center justify-between text-xs">
+                          <span className="flex items-center gap-2" style={{ color: ESPRESSO }}>
+                            <span className="inline-block h-2 w-2 rounded-full" style={{ background: TEAL, opacity: 1 - i * 0.15 }} />
+                            {b.name}
+                          </span>
+                          <span className="font-mono font-semibold" style={{ color: ESPRESSO }}>{b.v}%</span>
+                        </div>
+                      ))}
+                      <div className="mt-1 flex items-center justify-between border-t pt-1.5 text-xs" style={{ borderColor: "oklch(0.55 0.1 40 / 0.15)" }}>
+                        <span style={{ color: COCOA }}>Rest of Market</span>
+                        <span className="font-mono font-semibold" style={{ color: COCOA }}>{restShare}%</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
             </Card>
             <Card title="Buyer Concentration (Top 5 share)">
               {(() => {
