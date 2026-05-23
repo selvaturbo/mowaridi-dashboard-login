@@ -159,7 +159,7 @@ function DashboardPage() {
             <KpiCard label="Promo Usage Today" value="528" delta={9.1} spark={sparkUp} />
           </div>
 
-          <SubHeading className="mt-6">Invoice Disclosure Transparency</SubHeading>
+          <SubHeading className="mt-6">Digitised by Mowaridi (Invoice Disclosure)</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <KpiCard label="Total Disclosures" value="2,184" delta={8.2} spark={sparkUp} />
             <KpiCard label="Invoices Disclosed" value="1,962" delta={7.4} spark={sparkUp} />
