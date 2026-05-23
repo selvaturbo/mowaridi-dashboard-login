@@ -569,7 +569,7 @@ function DashboardPage() {
 
           <SubHeading className="mt-6">Strategic Analytics</SubHeading>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Card title="Procurement Trend">
+            <Card title="Delivery Trend">
               <ResponsiveContainer width="100%" height={240}>
                 <AreaChart data={procurementTrend}>
                   <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
