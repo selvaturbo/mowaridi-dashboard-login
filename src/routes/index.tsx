@@ -129,12 +129,12 @@ function DashboardPage() {
 
           <SubHeading>Marketplace KPIs</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
-            <StatTile label="Total Orders" value="4,218" />
-            <StatTile label="GMV" value="SAR 184,920" />
-            <StatTile label="Delivered GMV (NMV)" value="SAR 162,480" />
-            <StatTile label="AOV" value="SAR 43.85" />
-            <StatTile label="Delivered AOV" value="SAR 41.20" />
-            <StatTile label="COD / PP Mix" value="62% / 38%" sub="COD / prepaid" />
+            <StatTile label="Total Orders" value="4,218" tone="coral" />
+            <StatTile label="GMV" value="SAR 184,920" tone="amber" />
+            <StatTile label="Delivered GMV (NMV)" value="SAR 162,480" tone="emerald" />
+            <StatTile label="AOV" value="SAR 43.85" tone="teal" />
+            <StatTile label="Delivered AOV" value="SAR 41.20" tone="violet" />
+            <StatTile label="COD / PP Mix" value="62% / 38%" sub="COD / prepaid" tone="pink" />
           </div>
 
           <SubHeading className="mt-6">Live Operations Health</SubHeading>
