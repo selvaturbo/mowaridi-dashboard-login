@@ -642,7 +642,7 @@ function DashboardPage() {
                 );
               })()}
             </Card>
-            <Card title="Regional Demand Heatmap">
+            <Card title="District Demand Heatmap">
               <div className="grid grid-cols-3 gap-2">
                 {(() => {
                   const maxV = Math.max(...regionalDemand.map((r) => r.v));
