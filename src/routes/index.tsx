@@ -124,8 +124,21 @@ function DashboardPage() {
       </header>
 
       <div className="mx-auto max-w-[1600px] space-y-10 px-6 py-8">
+        {/* ===================== PROCUREMENT KPIS (TOP) ===================== */}
+        <Section title="Procurement KPIs" caption="Marketplace transaction performance">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+            <StatTile label="Total Orders" value="4,218" />
+            <StatTile label="GMV" value="SAR 184,920" />
+            <StatTile label="Delivered GMV (NMV)" value="SAR 162,480" />
+            <StatTile label="AOV" value="SAR 43.85" />
+            <StatTile label="Delivered AOV" value="SAR 41.20" />
+            <StatTile label="Fulfillment Option Mix" value="71% / 29%" sub="supplier / pickup" />
+          </div>
+        </Section>
+
         {/* ===================== SECTION 1 — WAR ROOM OVERVIEW ===================== */}
         <Section title="War Room Overview" caption="​">
+
           <SubHeading>Live Operations Health</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <KpiCard label="Today's GMV" value="SAR 184,920" delta={12.4} spark={sparkUp} />
