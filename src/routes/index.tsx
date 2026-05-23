@@ -28,7 +28,7 @@ export const Route = createFileRoute("/")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Operations Dashboard · Mowaridi" },
+      { title: "Mowaridi Dashboard" },
       { name: "description", content: "Mowaridi live operations dashboard — war room, procurement, fulfillment, ecosystem and executive intelligence." },
     ],
   }),
@@ -92,7 +92,7 @@ function DashboardPage() {
           <div className="flex items-center gap-3">
             <img src={mowaridiLogo} alt="Mowaridi" className="h-9 w-9 object-contain" />
             <div className="flex flex-col leading-tight">
-              <h1 className="text-base font-semibold tracking-tight">Operations Dashboard</h1>
+              <h1 className="text-base font-semibold tracking-tight">Mowaridi Dashboard</h1>
               <span className="text-[11px]" style={{ color: COCOA }}>
                 Live · refreshed every 60s · {new Date().toLocaleString()}
               </span>
