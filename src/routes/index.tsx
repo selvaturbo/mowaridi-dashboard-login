@@ -875,14 +875,15 @@ const buyerConcentration = [
   { name: "Carrefour", v: 7 },
 ];
 
+// Share-of-total demand: v = (orders in city / total orders) × 100. Sums to 100.
 const regionalDemand = [
-  { name: "Riyadh", v: 92 },
-  { name: "Jeddah", v: 78 },
-  { name: "Makkah", v: 64 },
-  { name: "Dammam", v: 58 },
-  { name: "Medina", v: 44 },
-  { name: "Khobar", v: 38 },
-  { name: "Taif", v: 28 },
-  { name: "Abha", v: 22 },
-  { name: "Tabuk", v: 18 },
+  { name: "Riyadh", v: 28 },
+  { name: "Jeddah", v: 20 },
+  { name: "Makkah", v: 14 },
+  { name: "Dammam", v: 11 },
+  { name: "Medina", v: 8 },
+  { name: "Khobar", v: 6 },
+  { name: "Taif", v: 5 },
+  { name: "Abha", v: 4 },
+  { name: "Tabuk", v: 4 },
 ];
