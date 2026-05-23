@@ -604,22 +604,25 @@ function DashboardPage() {
             </Card>
             <Card title="Regional Demand Heatmap">
               <div className="grid grid-cols-3 gap-2">
-                {regionalDemand.map((r) => {
-                  const intensity = r.v / 100;
-                  return (
-                    <div
-                      key={r.name}
-                      className="flex flex-col items-center justify-center rounded-xl p-4"
-                      style={{
-                        background: `oklch(0.55 ${0.08 + intensity * 0.12} 200 / ${0.2 + intensity * 0.6})`,
-                        color: intensity > 0.55 ? "white" : ESPRESSO,
-                      }}
-                    >
-                      <span className="text-[10px] font-semibold uppercase tracking-wider opacity-80">{r.name}</span>
-                      <span className="mt-1 text-xl font-bold">{r.v}%</span>
-                    </div>
-                  );
-                })}
+                {(() => {
+                  const maxV = Math.max(...regionalDemand.map((r) => r.v));
+                  return regionalDemand.map((r) => {
+                    const intensity = r.v / maxV;
+                    return (
+                      <div
+                        key={r.name}
+                        className="flex flex-col items-center justify-center rounded-xl p-4"
+                        style={{
+                          background: `oklch(0.55 ${0.08 + intensity * 0.12} 200 / ${0.2 + intensity * 0.6})`,
+                          color: intensity > 0.55 ? "white" : ESPRESSO,
+                        }}
+                      >
+                        <span className="text-[10px] font-semibold uppercase tracking-wider opacity-80">{r.name}</span>
+                        <span className="mt-1 text-xl font-bold">{r.v}%</span>
+                      </div>
+                    );
+                  });
+                })()}
               </div>
             </Card>
           </div>
