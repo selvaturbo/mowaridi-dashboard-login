@@ -250,18 +250,8 @@ function DashboardPage() {
 
         {/* ===================== SECTION 3 — PROCUREMENT & ORDER INTELLIGENCE ===================== */}
         <Section title="Procurement & Order Intelligence" caption="Marketplace transaction performance">
-          <SubHeading>Procurement KPIs</SubHeading>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
-            <StatTile label="Total Orders" value="4,218" />
-            <StatTile label="GMV" value="SAR 184,920" />
-            <StatTile label="Delivered GMV (NMV)" value="SAR 162,480" />
-            <StatTile label="AOV" value="SAR 43.85" />
-            <StatTile label="Delivered AOV" value="SAR 41.20" />
-            <StatTile label="COD / PP Ratio (Value)" value="38% / 62%" />
-            <StatTile label="Fulfillment Option Mix" value="71% / 29%" sub="supplier / pickup" />
-            <StatTile label="Fulfillment Rate" value="93.8%" />
-            <StatTile label="On-Time Delivery" value="87.4%" />
-          </div>
+
+
 
           <SubHeading className="mt-6">Cancellation Intelligence</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
