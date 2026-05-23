@@ -266,7 +266,7 @@ function DashboardPage() {
 
           <SubHeading className="mt-6">Cancellation Intelligence</SubHeading>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <StatTile label="Total Cancelled Orders" value="262" accent />
+            <StatTile label="Total Cancelled Shipments" value="262" accent />
             <StatTile label="Cancelled GMV" value="SAR 11,840" accent />
             <StatTile label="Customer Cancellations (Value)" value="SAR 7,420" />
             <StatTile label="Supplier Cancellations (Value)" value="SAR 4,420" />
