@@ -337,16 +337,23 @@ function DashboardPage() {
             </Card>
             <Card title="Supplier Geography — Makkah vs Outside Makkah">
               <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={[
-                  { name: "Makkah", v: 142 },
-                  { name: "Outside Makkah", v: 170 },
-                ]}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.55 0.1 40 / 0.15)" />
-                  <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-                  <YAxis tick={{ fontSize: 10 }} />
+                <PieChart>
                   <Tooltip />
-                  <Bar dataKey="v" fill={CORAL} radius={[4, 4, 0, 0]} />
-                </BarChart>
+                  <Legend wrapperStyle={{ fontSize: 11 }} />
+                  <Pie
+                    data={[
+                      { name: "Makkah", value: 142 },
+                      { name: "Outside Makkah", value: 170 },
+                    ]}
+                    innerRadius={60}
+                    outerRadius={100}
+                    dataKey="value"
+                    label={{ fontSize: 11 }}
+                  >
+                    <Cell fill={CORAL} />
+                    <Cell fill={TEAL} />
+                  </Pie>
+                </PieChart>
               </ResponsiveContainer>
             </Card>
           </div>
